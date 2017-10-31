@@ -10,14 +10,15 @@ public class BaseCharacter : MonoBehaviour
 {
     public GameObject MyModel=null;
     public Vector3 MyPosition;
-    public Vector3 TargetPosition;
+    private Vector3 TargetPosition;
     public float MySpeed;
+    public Vector3 MyDirection;		//自身の向いている方向
 
     static BaseCharacter CreateCharacter(string path, Vector3 pos, float speed)
     {
         BaseCharacter baseCharacter = new BaseCharacter();
 
-        baseCharacter.MyModel = Resources.Load(path) as GameObject;
+        //baseCharacter.MyModel = Resources.Load(path) as GameObject;
         baseCharacter.MyPosition = pos;
         baseCharacter.MySpeed = speed;
 
@@ -27,7 +28,7 @@ public class BaseCharacter : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        MySpeed = 5.0f;
     }
     // Update is called once per frame
     void Update()
@@ -57,12 +58,47 @@ public class BaseCharacter : MonoBehaviour
     public void Move()
     {
         Vector3 moving = TargetPosition - MyPosition;
-        moving.Normalize();
+        if (Math.Length(moving) <= 0.1f) return;
+       // moving.Normalize();
 
         MyPosition += moving * MySpeed * Time.deltaTime;
 
         transform.position = MyPosition;
+
+        SetDirection(moving);
+
     }
+    public void SetTarget(Vector3 target)
+    {
+        TargetPosition = target;
+    }
+    public Vector3 GetTarget()
+    {
+        return TargetPosition;
+    }
+
+    public void SetDirection(Vector3 v)
+    {
+        MyDirection = v;
+    }
+
+    //Y軸基点で回転(正数で左回転？)
+    public void RotateY(float deg)
+    {
+        Vector3 vector = (TargetPosition-MyPosition).normalized;
+        //ラジアンに変換
+        float rag = Math.DegToRag(deg);
+
+        float ax = vector.x * Mathf.Cos(rag) - vector.z * Mathf.Sin(rag);
+        float az = vector.x * Mathf.Sin(rag) + vector.z * Mathf.Cos(rag);
+
+        vector.x = ax ;
+        vector.z = az ;
+
+        SetDirection(vector);
+        SetTarget(vector);
+    }
+
     void OnCollisionEnter(Collision c)
     {
 
