@@ -23,6 +23,8 @@ public class Controller : MonoBehaviour {
 
     void Update()
     {
+
+        
         moveX = Input.GetAxis("Horizontal");
         moveZ = Input.GetAxis("Vertical") ;
         Vector3 direction = new Vector3(moveX, 0, moveZ);
@@ -39,6 +41,27 @@ public class Controller : MonoBehaviour {
             Debug.Log("ok");
             
         }
-        //jump.y += Physics.gravity.y * Time.deltaTime;
+
+        if (Input.GetButtonDown("square"))
+        {
+
+            Debug.Log("卍");
+
+        }
+
+        if (Input.GetButtonDown("cross"))
+        {
+
+            Debug.Log("unch");
+
+        }
+
+        if (Input.GetButtonDown("circle"))
+        {
+
+            Debug.Log("ばななぁ");
+
+        }
+
     }
 }

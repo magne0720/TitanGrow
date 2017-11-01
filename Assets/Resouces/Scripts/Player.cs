@@ -111,7 +111,7 @@ public class Player : BaseCharacter {
     void Grow(int point)
     {
         //大きくなる
-        transform.localScale += new Vector3(0.1f, 0.1f, 0.1f);
+        transform.localScale += new Vector3(0.02f, 0.02f, 0.02f);
     }
 
     //ダメージを受ける
