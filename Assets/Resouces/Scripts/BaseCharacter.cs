@@ -10,9 +10,10 @@ public class BaseCharacter : MonoBehaviour
 {
     public GameObject MyModel=null;
     public Vector3 MyPosition;
-    private Vector3 TargetPosition;
+    public Vector3 TargetPosition;
     public float MySpeed;
     public Vector3 MyDirection;		//自身の向いている方向
+    public Physics velo;
 
     static BaseCharacter CreateCharacter(string path, Vector3 pos, float speed)
     {
@@ -63,7 +64,7 @@ public class BaseCharacter : MonoBehaviour
 
         MyPosition += moving * MySpeed * Time.deltaTime;
 
-        transform.position = MyPosition;
+        transform.position = new Vector3(MyPosition.x,0,MyPosition.z);
 
         SetDirection(moving);
 

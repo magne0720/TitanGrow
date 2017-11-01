@@ -41,7 +41,6 @@ public class Enemy : BaseCharacter
         SetTarget(lastTarget);
         serchHeight = 5.0f;
         serchRange = 45.0f;
-     
     }
 
     // Update is called once per frame
@@ -112,7 +111,7 @@ public class Enemy : BaseCharacter
                 if (temp_ans >= dis)
                 {
                     temp_ans = dis;
-                    //SetEnemy(i);
+                    SetEnemy(i);
                 }
             }
             i++;
