@@ -34,24 +34,16 @@ public class CameraControl : MonoBehaviour {
         transform.position = new Vector3(0, 0, Math.Length(playerPos - transform.position) * player.transform.localScale.z);
         if (Input.GetMouseButton(0))
         {
-            InputMouse();
+            InputJoystick(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
         }
-
-        InputJoystick();
+        
         transform.LookAt(playerPos);
     }
 
-    void InputMouse()
+    public void InputJoystick(float x,float y)
     {
-        float mouseInputX = Input.GetAxis("Mouse X");
-        float mouseInputY = Input.GetAxis("Mouse Y");
-        transform.RotateAround(playerPos, Vector3.up, mouseInputX * speedX);
-        transform.RotateAround(playerPos, Vector3.right, mouseInputY * speedY);
-    }
-
-    void InputJoystick()
-    {
-        //ネオ用
+        transform.RotateAround(playerPos, Vector3.up, x * speedX);
+        transform.RotateAround(playerPos, Vector3.right, y * speedY);
     }
 
     void SetDistance(float s)
