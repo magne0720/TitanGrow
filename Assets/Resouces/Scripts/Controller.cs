@@ -8,27 +8,33 @@ public class Controller : MonoBehaviour {
     private float rotateSpeed = 2f;
     float moveX = 0f, moveZ = 0f;
     public float controlsensivity = 0.01f;
+    public float camerasensivity = 0.01f;
 
     CharacterController controller;
 
     public BaseCharacter player;
     public Vector3 control;
+    //public CameraControl inputmouse;
     
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
+
         
     }
 
     void Update()
     {
+
+        
+
         moveX = Input.GetAxis("Horizontal");
         moveZ = Input.GetAxis("Vertical") ;
         Vector3 direction = new Vector3(moveX, 0, moveZ);
         if (direction.magnitude > controlsensivity)
         {
-            // player.TargetPosition += direction;
+            player.TargetPosition += direction;
             control = direction;
         }
 
@@ -39,6 +45,27 @@ public class Controller : MonoBehaviour {
             Debug.Log("ok");
             
         }
-        //jump.y += Physics.gravity.y * Time.deltaTime;
+
+        if (Input.GetButtonDown("square"))
+        {
+
+            Debug.Log("卍");
+
+        }
+
+        if (Input.GetButtonDown("cross"))
+        {
+
+            Debug.Log("unch");
+
+        }
+
+        if (Input.GetButtonDown("circle"))
+        {
+
+            Debug.Log("ばななぁ");
+
+        }
+
     }
 }
