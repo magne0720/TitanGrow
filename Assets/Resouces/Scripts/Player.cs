@@ -3,16 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : BaseCharacter {
-    public int hp;                  //自身の体力
-    public GameObject catchObject;  //つかんだもの
-    private float z;                //自身のZ軸
-    public int FoodPoint;           //食ったものポイント 
-    private float timeElapsed;      //時間
+    public int hp;                                               //自身の体力
+    private float z;                                             //自身のZ軸
 
+    public GameObject catchObject;                               //つかんだもの
 
+    public int FoodPoint;                                        //食ったものポイント 
+    public float CastAwaySpeed = 1250.0f;                        //投げた時のスピード
+    public float GrowTime = 0.0f;                                //　
+    public bool flag = true;                                     //
+
+    public Vector3 GrowRate = new Vector3(0.05f, 0.05f, 0.05f);  //大きさの倍率
 
     // Use this for initialization
     void Start () {
+        this.transform.tag = "Player";
+        base.Start();
         z = transform.position.z; //自身のZ軸を取得
 
     }
@@ -37,20 +43,37 @@ public class Player : BaseCharacter {
             Eat(catchObject);
         }
 
+
         //大きくなる
-        Grow(FoodPoint); 
+        if (flag == true)
+        {
+            Grow(FoodPoint);
+        }
+
+        //4秒の間成長が止まる
+        if (flag == false)
+        {
+            GrowTime += Time.deltaTime;
+            if(GrowTime >= 4.0f)
+            {
+                //成長再開
+                flag = true;
+                GrowTime = 0.0f;
+            }
+        }
+
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if (catchObject == null)
-        {
-            if (collision.gameObject.tag == "Food")
+            if (catchObject == null)
             {
-                catchObject = collision.transform.gameObject;
-                Catch(catchObject);
+                if (collision.gameObject.tag == "Food")
+                {
+                    catchObject = collision.transform.gameObject;
+                    Catch(catchObject);
+                }
             }
-        }
     }
 
     //つかむ
@@ -64,7 +87,8 @@ public class Player : BaseCharacter {
     //投げる
     void CastAway(GameObject g)
     {
-        catchObject.GetComponent<Rigidbody>().AddForce(transform.forward * 750.0f);
+        //自身のz軸方面に飛ばす
+        catchObject.GetComponent<Rigidbody>().AddForce(transform.forward * CastAwaySpeed);
         g.transform.parent = null;
         catchObject = null;
     }
@@ -89,34 +113,47 @@ public class Player : BaseCharacter {
     //食べた時のポイントを追加する
     void EatPoint(GameObject g, int point)
     {
-        if(catchObject.name == "Capsule")
+
+        //Ainimal含まれている
+        if(catchObject.name.IndexOf("Animal") >= 0 )
         {
+            FoodPoint = 4;
+            GlowCount(FoodPoint);
 
-            FoodPoint -= 4;
         }
-
-        if (catchObject.name == "Cube")
+        //Human
+        if (catchObject.name.IndexOf("Human") >= 0)
         {
             FoodPoint -= 2;
         }
 
-
-        if (FoodPoint == 6)
-        {
-            transform.localScale += new Vector3(-2.0f, -2.0f, -2.0f);
-        }
     }
 
     //自身の成長
     void Grow(int point)
     {
+
         //大きくなる
-        transform.localScale += new Vector3(0.1f, 0.1f, 0.1f);
+        transform.localScale += GrowRate;
+    }
+
+    void GlowCount(int point)
+    {
+        //大きくなるのを止める
+        if(FoodPoint == 4)
+        {
+            flag = false;
+        }
+        ////大きくなるのを再開
+        //if (GrowTime >= 4.0f)
+        //{
+        //}
+
     }
 
     //ダメージを受ける
     void Damege(int point)
     {
-        hp -= 1;
+        hp -= point;
     }
 }
