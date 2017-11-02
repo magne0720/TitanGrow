@@ -4,17 +4,20 @@ using UnityEngine;
 
 //計算用メソッド群
 
-public class Math : MonoBehaviour {
+public class Math : MonoBehaviour
+{
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    // Use this for initialization
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
 
     /*
@@ -29,21 +32,20 @@ public class Math : MonoBehaviour {
 の両方を満たせばよい。
 */
     //視覚方向から円錐上に見る
-    public static float SerchCone(Vector3 pos,Vector3 dir,float height,float range,Vector3 target)
+    public static float SerchCone(Vector3 pos, Vector3 dir, float height, float range, Vector3 target)
     {
         float dis = float.MaxValue;
-        Vector3 moving = (dir - pos).normalized*height;
+        Vector3 moving = (dir - pos).normalized * height;
         float dot = Dot(target - pos, moving - pos);
-        // 0≦(p-a)･(d-a)≦h^2 （･はベクトルの内積）
-        if (0 <= dot && dot <=height*height)
-            //| (target - pos)×(dir - pos) |≦| target - pos | range * height /√(range ^ 2 + height ^ 2) （×はベクトルの外積）
-            if (Length(Cross(target - pos, moving - pos)) <= Length(target - pos) * range * height / Mathf.Sqrt(range * range + height * height)){
-                return Length(target-pos);
+        // 0≦(p-a)･(d-a)≦h^2 (･はベクトルの内積)
+        if (0 <= dot && dot <= height * height)
+            //|(target - pos)×(dir - pos) |≦| target - pos | range * height /√(range ^ 2 + height ^ 2)(×はベクトルの外積)
+            if (Length(Cross(target - pos, moving - pos)) <= Length(target - pos) * range * height / Mathf.Sqrt(range * range + height * height))
+            {
+                return Length(target - pos);
             }
         return dis;
     }
-
-
 
     //ベクトル上に指定したものが衝突しているか
 
@@ -58,14 +60,14 @@ public class Math : MonoBehaviour {
     //面とカプセル
 
     //内積
-    public static float Dot(Vector3 a,Vector3 b)
+    public static float Dot(Vector3 a, Vector3 b)
     {
         return a.x * b.x + a.y * b.y + a.z * b.z;
     }
 
 
     //外積
-    public static Vector3 Cross(Vector3 a,Vector3 b)
+    public static Vector3 Cross(Vector3 a, Vector3 b)
     {
         Vector3 c;
 
@@ -103,5 +105,4 @@ public class Math : MonoBehaviour {
         //度 = ラジアン × 180 ÷ 円周率
         return rag * 180 / Mathf.PI;
     }
-
 }

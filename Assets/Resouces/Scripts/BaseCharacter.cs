@@ -60,7 +60,7 @@ public class BaseCharacter : MonoBehaviour
     {
         Vector3 moving = TargetPosition - MyPosition;
         if (Math.Length(moving) <= 0.1f) return;
-       // moving.Normalize();
+       moving.Normalize();
 
         MyPosition += moving * MySpeed * Time.deltaTime;
 

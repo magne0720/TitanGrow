@@ -24,6 +24,14 @@ public class Enemy : BaseCharacter
     public GameObject testObject = null;//テスト用オブジェクト
     private float timer = 0;
 
+    public static GameObject Create(GameObject g)
+    {
+        if (g.GetComponent<Enemy>()==null)
+        g.AddComponent<Enemy>();
+
+        return g;
+    } 
+
     static Enemy Create(string path)
     {
         Enemy e = new Enemy();
@@ -32,23 +40,33 @@ public class Enemy : BaseCharacter
 
         return e;
     }
+    static Enemy Create(string path, Vector3 lastPos)
+    {
+        Enemy e = new Enemy();
+
+        e.MyModel = Resources.Load(path) as GameObject;
+        e.lastTarget = lastPos;
+
+        return e;
+    }
 
     // Use this for initialization
     void Start()
     {
         MySpeed = 1.0f;
-        lastTarget = new Vector3(0, 0, 1);
+        if(lastTarget==Vector3.zero)
+        lastTarget = new Vector3(transform.position.x, transform.position.y, 2);
+        MyPosition = transform.position;
         SetTarget(lastTarget);
         serchHeight = 5.0f;
-        serchRange = 45.0f;
+        serchRange = 30.0f;
+        timer = 0;
     }
-
     // Update is called once per frame
     void Update()
     {
         Move();
         serchEnemy();
-        
         
         if (Input.GetKey(KeyCode.K))
         {
@@ -102,7 +120,7 @@ public class Enemy : BaseCharacter
         foreach (GameObject g in Enemys)
         {
             //探す計算処理
-            dis = Math.SerchCone(MyPosition, GetTarget(), serchHeight,serchRange, g.transform.position);
+            dis = Math.SerchCone(MyPosition,TargetPosition, serchHeight,serchRange, g.transform.position);
             //視界に見えているもの
             if (ans >= dis)
             {
@@ -111,7 +129,7 @@ public class Enemy : BaseCharacter
                 if (temp_ans >= dis)
                 {
                     temp_ans = dis;
-                    SetEnemy(i);
+                    //SetEnemy(i);
                 }
             }
             i++;
@@ -120,8 +138,12 @@ public class Enemy : BaseCharacter
 
         if (battleEnemy == null)
         {
-            //RotateY(timer+=0.04f);
-            if (timer > 360) timer = 0;
+            timer += 1;
+            if (timer > 120)
+            {
+                timer = 0;
+                TargetPosition += new Vector3(0, 0, 2);
+            }
         }
     }
 
