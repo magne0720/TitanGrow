@@ -27,7 +27,7 @@ public class BaseCharacter : MonoBehaviour
     }
 
     // Use this for initialization
-    void Start()
+    public void Start()
     {
         MySpeed = 5.0f;
     }
@@ -36,7 +36,7 @@ public class BaseCharacter : MonoBehaviour
     {
         Move();
     }
-    void Initialize()
+    public void Initialize()
     {
 
     }

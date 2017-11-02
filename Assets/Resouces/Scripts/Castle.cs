@@ -62,34 +62,28 @@ public class Castle : MonoBehaviour {
     {
         for (int unit = 0; unit < 3; unit++)
         {
-<<<<<<< HEAD
-            Vector3 pos = new Vector3(2*sol1-4, 0, 0);
-            GameObject.Instantiate(Enemy.Create(soldier1), pos, Quaternion.identity);
-            
-=======
             for (int sol1 = 0; sol1 < soldier1Spawn; sol1++)
             {
-                Vector3 pos = new Vector3(2 * sol1 - 4, 0, 2*unit);
+                Vector3 pos = new Vector3(2 * sol1 - 4, 0, 2 * unit);
                 GameObject.Instantiate(soldier1, pos, Quaternion.identity);
 
             }
->>>>>>> origin/kosuke.sato
         }
 
 
         if (CastleHp <= 80)
-        {  
-           
-                for (int sol2 = 0; sol2 < soldier2Spawn; sol2++)
-                {
-                    Vector3 pos2 = new Vector3(3 * sol2 - 3, 5, 0);
-                    GameObject.Instantiate(soldier2, pos2, Quaternion.identity);
-                }
-                          
+        {
+
+            for (int sol2 = 0; sol2 < soldier2Spawn; sol2++)
+            {
+                Vector3 pos2 = new Vector3(3 * sol2 - 3, 5, 0);
+                GameObject.Instantiate(soldier2, pos2, Quaternion.identity);
+            }
+
         }
 
         SpawnTime = 0;
         GoSortie = false;
-        
+
     }
 }
