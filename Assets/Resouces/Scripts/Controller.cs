@@ -11,23 +11,32 @@ public class Controller : MonoBehaviour {
     public float camerasensivity = 0.01f;
 
     CharacterController controller;
+    public CameraControl camera;
 
     public BaseCharacter player;
     public Vector3 control;
-    //public CameraControl inputmouse;
     
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
-
+        
         
     }
 
     void Update()
     {
 
-        
+        float cameraX = Input.GetAxis("MouseX");
+        float cameraY = Input.GetAxis("MouseY");
+        camera.InputJoystick(cameraX, cameraY);
+        Vector3 abc = new Vector3(cameraX, cameraY, 0);
+        if (abc.magnitude > camerasensivity)
+        {
+
+        }
+        Debug.Log(cameraX+","+cameraY);
+
 
         moveX = Input.GetAxis("Horizontal");
         moveZ = Input.GetAxis("Vertical") ;
