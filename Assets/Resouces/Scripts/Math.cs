@@ -22,9 +22,9 @@ public class Math : MonoBehaviour
 
     /*
     直円錐の位置・向きが書かれていませんのでそこは適当に決めます。
-... 円錐の頂点： 位置ベクトルpos
+...円錐の頂点： 位置ベクトルpos
 ...円錐の底面の中心： 位置ベクトルdir（但し、height=|dir-pos|）
-... 円錐の底面の半径： range
+...円錐の底面の半径： range
 ...テストする点： 位置ベクトルtarget=(x,y,z)
 とするとき、
 ... 0≦(target-pos)･(dir-pos)≦height^2 （･はベクトルの内積）
@@ -35,7 +35,7 @@ public class Math : MonoBehaviour
     public static float SerchCone(Vector3 pos, Vector3 dir, float height, float range, Vector3 target)
     {
         float dis = float.MaxValue;
-        Vector3 moving = (dir - pos).normalized * height;
+        Vector3 moving = (dir - pos);
         float dot = Dot(target - pos, moving - pos);
         // 0≦(p-a)･(d-a)≦h^2 (･はベクトルの内積)
         if (0 <= dot && dot <= height * height)

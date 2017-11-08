@@ -8,10 +8,11 @@ using UnityEngine;
 //AIにも対応させるので、ここにはインターフェースの処理を書かないこと
 public class BaseCharacter : MonoBehaviour
 {
+    public int MyHitpoint;
+    public float MySpeed;
     public GameObject MyModel=null;
     public Vector3 MyPosition;
     public Vector3 TargetPosition;
-    public float MySpeed;
     public Vector3 MyDirection;		//自身の向いている方向
     public Physics velo;
 
@@ -32,9 +33,11 @@ public class BaseCharacter : MonoBehaviour
         MySpeed = 5.0f;
     }
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
         Move();
+        LiveCheck();
+        
     }
     public void Initialize()
     {
@@ -59,16 +62,36 @@ public class BaseCharacter : MonoBehaviour
     public void Move()
     {
         Vector3 moving = TargetPosition - MyPosition;
-        if (Math.Length(moving) <= 0.1f) return;
+        if (Math.Length(moving) <= MySpeed*Time.deltaTime) return;
        moving.Normalize();
 
         MyPosition += moving * MySpeed * Time.deltaTime;
 
-        transform.position = new Vector3(MyPosition.x,0,MyPosition.z);
+        transform.position = new Vector3(MyPosition.x,MyPosition.y,MyPosition.z);
 
-        SetDirection(moving);
+        //SetDirection(moving);
+        Quaternion q = Quaternion.LookRotation(moving);
+        transform.rotation = q;
 
     }
+
+    void Damage(int p)
+    {
+        MyHitpoint -= p;
+    }
+
+    void Death()
+    {
+        MyHitpoint = 0;
+        Destroy(gameObject);
+    }
+
+    void LiveCheck()
+    {
+        if (MyHitpoint <= 0)
+            Death();
+    }
+
     public void SetTarget(Vector3 target)
     {
         TargetPosition = target;
@@ -84,7 +107,7 @@ public class BaseCharacter : MonoBehaviour
     }
 
     //Y軸基点で回転(正数で左回転？)
-    public void RotateY(float deg)
+    public void RotateY(float deg,float height=1)
     {
         Vector3 vector = (TargetPosition-MyPosition).normalized;
         //ラジアンに変換
@@ -96,8 +119,8 @@ public class BaseCharacter : MonoBehaviour
         vector.x = ax ;
         vector.z = az ;
 
-        SetDirection(vector);
-        SetTarget(vector);
+       // SetDirection(vector+transform.position);
+        SetTarget(vector*height+MyPosition);
     }
 
     void OnCollisionEnter(Collision c)
