@@ -2,130 +2,158 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : BaseCharacter {
-    public int hp;                                               //自身の体力
+public class Player : BaseCharacter
+{
     private float z;                                             //自身のZ軸
 
-    public GameObject catchObject;                               //つかんだもの
+    public List<GameObject> catchObjects;                        //つかんだものリスト
 
     public int FoodPoint;                                        //食ったものポイント 
     public float CastAwaySpeed = 1250.0f;                        //投げた時のスピード
-    public float GrowTime = 0.0f;                                //　
-    public bool flag = true;                                     //
-
+    public float GrowTime = 0.0f;                                //成長が止まっている時間　
+    public bool Growflag = true;                                 //成長しているかどうか
     public Vector3 GrowRate = new Vector3(0.05f, 0.05f, 0.05f);  //大きさの倍率
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         this.transform.tag = "Player";
         base.Start();
         z = transform.position.z; //自身のZ軸を取得
-
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
+
         //投げる
         if (Input.GetKeyDown(KeyCode.U))
         {
-            CastAway(catchObject);
+            CastAway();
         }
 
         //離す
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            Release(catchObject);
+            Release();
         }
 
         //食べる
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Eat(catchObject);
+            Eat();
         }
 
-
         //大きくなる
-        if (flag == true)
+        if (Growflag == true)
         {
             Grow(FoodPoint);
         }
 
         //4秒の間成長が止まる
-        if (flag == false)
+        if (Growflag == false)
         {
             GrowTime += Time.deltaTime;
-            if(GrowTime >= 4.0f)
+            if (GrowTime >= FoodPoint)
             {
                 //成長再開
-                flag = true;
+                Growflag = true;
                 GrowTime = 0.0f;
+                //食ったもののポイントをなくす
+                FoodPoint = 0;
             }
         }
+
+
         Move();
 
     }
 
+    //タグがFoodなら当たったものをCatchにもっていく
     void OnCollisionEnter(Collision collision)
     {
-            if (catchObject == null)
-            {
-                if (collision.gameObject.tag == "Food")
-                {
-                    catchObject = collision.transform.gameObject;
-                    Catch(catchObject);
-                }
-            }
+        if (collision.gameObject.tag == "Food")
+        {
+            Catch(collision.transform.gameObject);
+        }
     }
 
     //つかむ
     void Catch(GameObject g)
     {
-        catchObject = g;
-
+        //つかんだもの情報
+        catchObjects.Add(g);
+        //子にする
         g.transform.parent = this.transform;
+        //子のあたり判定を消す
+        g.GetComponent<Collider>().enabled = false;
     }
 
     //投げる
-    void CastAway(GameObject g)
+    void CastAway()
     {
-        //自身のz軸方面に飛ばす
-        catchObject.GetComponent<Rigidbody>().AddForce(transform.forward * CastAwaySpeed);
-        g.transform.parent = null;
-        catchObject = null;
+        foreach (GameObject g in catchObjects)
+        {
+            //このあたり判定を戻す
+            g.GetComponent<Collider>().enabled = true;
+            //自身のz軸方面に飛ばす
+            g.GetComponent<Rigidbody>().AddForce(transform.forward * CastAwaySpeed);
+            g.transform.parent = null;
+        }
+
+        //リストの初期化
+        catchObjects.Clear();
+
+
     }
 
     //離す
-    void Release(GameObject g)
+    void Release()
     {
-        g.transform.parent = null;
-        catchObject = null;
+        foreach (GameObject g in catchObjects)
+        {
+            //子のあたり判定を戻す
+            g.GetComponent<Collider>().enabled = true;
+            g.transform.parent = null;
+        }
+        //リストの初期化
+        catchObjects.Clear();
+
     }
 
     //食べる
-    void Eat(GameObject g)
+    void Eat()
     {
-        //ポイントを得る処理
-        EatPoint(catchObject, FoodPoint);
+        foreach (GameObject g in catchObjects)
+        {
+            //ポイントを得る処理
+            EatPoint(g, FoodPoint);
 
-        //食べたものを消す処理
-        DestroyObject(g);
+            //食べたものを消す処理
+            DestroyObject(g);
+
+        }
+        //リストの初期化
+        catchObjects.Clear();
+
     }
 
     //食べた時のポイントを追加する
     void EatPoint(GameObject g, int point)
     {
 
-        //Ainimal含まれている
-        if(catchObject.name.IndexOf("Animal") >= 0 )
+        //Ainimalが含まれている文字列
+        if (g.name.IndexOf("Animal") >= 0)
         {
-            FoodPoint = 4;
+            FoodPoint += 4;
             GlowCount(FoodPoint);
 
         }
-        //Human
-        if (catchObject.name.IndexOf("Human") >= 0)
+        //Humanが含まれている文字列
+        if (g.name.IndexOf("Human") >= 0)
         {
-            FoodPoint -= 2;
+            FoodPoint += 2;
+            GlowCount(FoodPoint);
         }
 
     }
@@ -133,7 +161,6 @@ public class Player : BaseCharacter {
     //自身の成長
     void Grow(int point)
     {
-
         //大きくなる
         transform.localScale += GrowRate;
     }
@@ -141,20 +168,10 @@ public class Player : BaseCharacter {
     void GlowCount(int point)
     {
         //大きくなるのを止める
-        if(FoodPoint == 4)
+        if (FoodPoint >= 1)
         {
-            flag = false;
+            Growflag = false;
         }
-        ////大きくなるのを再開
-        //if (GrowTime >= 4.0f)
-        //{
-        //}
-
     }
 
-    //ダメージを受ける
-    void Damege(int point)
-    {
-        hp -= point;
-    }
 }
