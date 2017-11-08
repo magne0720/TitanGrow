@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class tsetde : MonoBehaviour {
-    public Vector3 defaultScale = Vector3.zero; 
+public class Grabbed : MonoBehaviour {
+
+    public Vector3 defaultScale = Vector3.zero;
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         defaultScale = transform.lossyScale;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         Vector3 lossScale = transform.lossyScale;
         Vector3 localScale = transform.localScale;
         transform.localScale = new Vector3(
@@ -19,5 +22,4 @@ public class tsetde : MonoBehaviour {
                 localScale.z / lossScale.z * defaultScale.z
         );
     }
-
 }
