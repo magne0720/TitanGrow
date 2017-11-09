@@ -18,7 +18,8 @@ public class Enemy : BaseCharacter
     public Vector3 lastTarget;//敵の城の拠点
     public int battleEnemyCount;//今から戦いに行く敵のカウント
     public GameObject battleEnemy;//今から戦いに行く敵
-    public List<GameObject> Enemys;//自身から見て敵となるもの
+    public Vector3 HeadingCastle;//向かう城
+    public List<GameObject> Enemys;
 
 
     public GameObject testObject = null;//テスト用オブジェクト
@@ -53,30 +54,25 @@ public class Enemy : BaseCharacter
     // Use this for initialization
     void Start()
     {
-        MySpeed = 1.0f;
+        //MySpeed = 1.0f;
         if(lastTarget==Vector3.zero)
         lastTarget = new Vector3(transform.position.x, transform.position.y, 2);
         MyPosition = transform.position;
         SetTarget(lastTarget);
-        serchHeight = 5.0f;
-        serchRange = 30.0f;
+        serchHeight = 25.0f;
+        serchRange = 120.0f;
         timer = 0;
+        MySpeed = 3.0f;
+        HeadingCastle = new Vector3(40, 0,40);
     }
     // Update is called once per frame
     void Update()
     {
         Move();
-        serchEnemy();
-        
-        if (Input.GetKey(KeyCode.K))
-        {
-            GameObject g = Instantiate(testObject);
-            g.transform.position = new Vector3(Random.Range(-3, 3), Random.Range(-3, 3), Random.Range(-3, 3));
-            Enemys.Add(g);
-        }
+        SerchEnemy();
 
         if (Input.GetKeyDown(KeyCode.L))
-            debugPoint();
+            GameMode.debugPoint(testObject);
 
         //if (Input.GetKey(KeyCode.Comma))
         //{
@@ -98,63 +94,66 @@ public class Enemy : BaseCharacter
         SetTarget(Enemys[i].transform.position);
     }
     //敵を探す
-    void serchEnemy()
+    void SerchEnemy()
     {
         //敵がいる時
         if (battleEnemy != null)
         {
-            if (Math.Length(battleEnemy.transform.position - transform.position)<=1.0f)
+            if (Math.Length(battleEnemy.transform.position - transform.position) <= 1.0f)
             {
                 Enemys.RemoveAt(battleEnemyCount);
                 Destroy(battleEnemy);
                 battleEnemy = null;
+                timer = 0;
             }
-           // return;
         }
-
-        int i = 0;
-        float dis = 0;
-        float ans = serchHeight;
-        float temp_ans = serchHeight;
-
-        foreach (GameObject g in Enemys)
+        else
         {
-            //探す計算処理
-            dis = Math.SerchCone(MyPosition,TargetPosition, serchHeight,serchRange, g.transform.position);
-            //視界に見えているもの
-            if (ans >= dis)
-            {
-                g.transform.Rotate(new Vector3(8, 0, 0));
-                //暫定的に一番近いものを検出し、無ければ最後に選んだものをターゲットにする
-                if (temp_ans >= dis)
-                {
-                    temp_ans = dis;
-                    //SetEnemy(i);
-                }
-            }
-            i++;
-        }
-
-
-        if (battleEnemy == null)
-        {
-            timer += 1;
-            if (timer > 120)
+            //いない場合
+            timer += Time.deltaTime;
+            if (timer > 2)
             {
                 timer = 0;
-                TargetPosition += new Vector3(0, 0, 2);
+                //RotateY(1, serchHeight);
+                TargetPosition = HeadingCastle;
+            }
+            int i = 0;
+            float dis = 0;
+            float ans = serchHeight;
+            float temp_ans = serchHeight;
+
+            if(Enemys.Count>0)
+            foreach (GameObject g in Enemys)
+            {
+                g.GetComponent<Renderer>().material.color = Color.white;
+                //探す計算処理
+                dis = Math.SerchCone(MyPosition, TargetPosition, serchHeight, serchRange, g.transform.position);
+                //視界に見えているもの
+                if (ans >= dis)
+                {
+                    /*デバッグの色*/
+                    g.GetComponent<Renderer>().material.color = Color.black;
+
+                    //暫定的に一番近いものを検出し、無ければ最後に選んだものをターゲットにする
+                    if (temp_ans >= dis)
+                    {
+                        temp_ans = dis;
+                        SetEnemy(i);
+                    }
+                }
+                i++;
             }
         }
     }
 
-    private void debugPoint()
+   
+
+    private void SetSerchHeight(float d)
     {
-        for (int x = -5; x < 5; x++)
-            for (int y = -5; y < 5; y++)
-            {
-                GameObject g = Instantiate(testObject);
-                g.transform.position = new Vector3(x, 0, y);
-                Enemys.Add(g);
-            }
+        serchHeight = d;
+    }
+    private void SetSerchRange(float d)
+    {
+        serchRange = d;
     }
 }

@@ -31,10 +31,10 @@ public class CameraControl : MonoBehaviour {
         //playerの移動量分、カメラも移動
         transform.position -= player.transform.position - playerPos;
         playerPos = player.transform.position;
-        transform.position = new Vector3(0, 0, Math.Length(playerPos - transform.position) * player.transform.localScale.z);
+       // transform.position = new Vector3(0, 0, Math.Length(playerPos - transform.position) * player.transform.localScale.z);
         if (Input.GetMouseButton(0))
         {
-            InputJoystick(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+            InputJoystick(Input.GetAxis("MouseX"), Input.GetAxis("MouseY"));
         }
         
         transform.LookAt(playerPos);

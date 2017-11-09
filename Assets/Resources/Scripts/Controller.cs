@@ -43,7 +43,7 @@ public class Controller : MonoBehaviour {
         Vector3 direction = new Vector3(moveX, 0, moveZ);
         if (direction.magnitude > controlsensivity)
         {
-            //player.TargetPosition += direction;
+            player.TargetPosition += direction;
             control = direction;
         }
 
