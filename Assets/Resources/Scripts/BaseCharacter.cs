@@ -13,7 +13,11 @@ public class BaseCharacter : MonoBehaviour
     public GameObject MyModel=null;
     public Vector3 MyPosition;
     public Vector3 TargetPosition;
-    public Vector3 MyDirection;		//自身の向いている方向
+    public Vector3 MyDirection;     //自身の向いている方向    
+    public float serchHeight = 0;//サーチ距離
+    public float serchRange = 0;//サーチ範囲
+    public bool isGround;
+    public CharacterController c;
 
     public static GameObject CreateCharacter(string path)
     {
@@ -30,7 +34,7 @@ public class BaseCharacter : MonoBehaviour
         return baseCharacter;
     }
 
-    // Use this for initialization
+    //Use this for initialization
     public void Start()
     {
         if (MyModel == null)
@@ -44,6 +48,11 @@ public class BaseCharacter : MonoBehaviour
     public void Update()
     {
         Move();
+        //CheckGround();
+        if (isGround)
+        {
+
+        }
         //LiveCheck();
     }
     public void Initialize(Vector3 pos, float speed)
@@ -75,7 +84,7 @@ public class BaseCharacter : MonoBehaviour
 
         MyPosition += moving * MySpeed * Time.deltaTime;
 
-        transform.position = new Vector3(MyPosition.x,MyPosition.y,MyPosition.z);
+        transform.position = MyPosition;
 
         //SetDirection(moving);
         Quaternion q = Quaternion.LookRotation(moving);
@@ -102,7 +111,7 @@ public class BaseCharacter : MonoBehaviour
 
     public void SetTarget(Vector3 target)
     {
-        TargetPosition = target;
+        TargetPosition = target+MyPosition;
     }
     public Vector3 GetTarget()
     {
@@ -124,12 +133,67 @@ public class BaseCharacter : MonoBehaviour
         float ax = vector.x * Mathf.Cos(rag) - vector.z * Mathf.Sin(rag);
         float az = vector.x * Mathf.Sin(rag) + vector.z * Mathf.Cos(rag);
 
-        vector.x = ax ;
-        vector.z = az ;
+        vector.x = ax;
+        vector.z = az;
 
        // SetDirection(vector+transform.position);
-        SetTarget(vector*height+MyPosition);
+        SetTarget(vector*height);
     }
+
+    public void SerchEnemy(GameObject obj)
+    {
+        //敵がいる時
+        if (obj != null)
+        {
+            if (Math.Length(obj.transform.position - transform.position) <= 1.0f)
+            {
+                //Enemys.RemoveAt(gCount);
+                Destroy(obj);
+                obj = null;
+                //timer = 0;
+            }
+        }
+        else
+        {
+            //いない場合
+            //timer += Time.deltaTime;
+            //if (timer > 2)
+            //{
+            //    timer = 0;
+            //    //RotateY(1, serchHeight);
+            //    TargetPosition = HeadingCastle;
+            //}
+            int i = 0;
+            float dis = 0;
+            float ans = serchHeight;
+            float temp_ans = serchHeight;
+
+            List<GameObject> objects = new List<GameObject>();
+
+            if (objects.Count > 0)
+                foreach (GameObject g in objects)
+                {
+                    g.GetComponent<Renderer>().material.color = Color.white;
+                    //探す計算処理
+                    dis = Math.SerchCone(MyPosition, TargetPosition, serchHeight, serchRange, g.transform.position);
+                    //視界に見えているもの
+                    if (ans >= dis)
+                    {
+                        /*デバッグの色*/
+                        g.GetComponent<Renderer>().material.color = Color.black;
+
+                        //暫定的に一番近いものを検出し、無ければ最後に選んだものをターゲットにする
+                        if (temp_ans >= dis)
+                        {
+                            temp_ans = dis;
+                            //SetEnemy(i);
+                        }
+                    }
+                    i++;
+                }
+        }
+    }
+
 
     void OnCollisionEnter(Collision c)
     {
@@ -142,5 +206,14 @@ public class BaseCharacter : MonoBehaviour
     void OnCollisionExit(Collision c)
     {
 
+    }
+    public void SetSpeed(float sp)
+    {
+        MySpeed = sp;
+    }
+
+    void CheckGround()
+    {
+   
     }
 }
