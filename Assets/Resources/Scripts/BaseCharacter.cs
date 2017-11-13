@@ -41,6 +41,7 @@ public class BaseCharacter : MonoBehaviour
         {
             MyModel = this.gameObject;
         }
+        GetComponent<Rigidbody>().isKinematic = true;
 
         MySpeed = 5.0f;
     }
@@ -78,18 +79,23 @@ public class BaseCharacter : MonoBehaviour
     }
     public void Move()
     {
-        Vector3 moving = TargetPosition - MyPosition;
-        if (Math.Length(moving) <= MySpeed*Time.deltaTime) return;
+       Vector3 moving = TargetPosition - MyPosition;
+       if (Math.Length(moving) <= 0.002f) return;
+       moving.y = 0;
        moving.Normalize();
 
         MyPosition += moving * MySpeed * Time.deltaTime;
 
+        MyPosition.y = transform.position.y;
         transform.position = MyPosition;
 
         //SetDirection(moving);
-        Quaternion q = Quaternion.LookRotation(moving);
-        transform.rotation = q;
-
+        if (Math.Length(moving) >= 1.0f)
+        {
+            Quaternion q = Quaternion.LookRotation(moving);
+            transform.rotation = q;
+        }
+        TargetPosition = MyPosition;
     }
 
     void Damage(int p)

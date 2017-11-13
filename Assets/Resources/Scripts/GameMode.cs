@@ -20,6 +20,7 @@ public class GameMode : MonoBehaviour {
 
     const float playerspeed = 4.5f;
 
+    public GameObject test;
     // Use this for initialization
     void Start ()
     {
@@ -28,7 +29,15 @@ public class GameMode : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            for(int i = 0; i < 40; i++)
+            {
+                GameObject g = Instantiate(test);
+                g.transform.position = new Vector3(i * 20, i * 20, i * 30);
+                g.transform.localScale = new Vector3(i * 5, i * 5, i * 5);
+            }
+        }
 	}
 
     void StartUp()
