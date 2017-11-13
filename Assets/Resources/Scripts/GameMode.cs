@@ -13,6 +13,7 @@ using UnityEngine;
 /// </summary>
 public class GameMode : MonoBehaviour {
 
+    public GameObject camera;
     public CollisionManager CM;
     public Player player;
     public Controller controller;
@@ -33,6 +34,11 @@ public class GameMode : MonoBehaviour {
     void StartUp()
     {
         //ゲームの立ち上げ(ゲームプレイ時)
+        //カメラの設定
+        if (camera == null)
+        {
+            camera = GameObject.FindGameObjectWithTag("MainCamera");
+        }
 
         //CollisionManagerの生成
         if (CM == null)
@@ -44,14 +50,15 @@ public class GameMode : MonoBehaviour {
         // if (player == null)
         if(player==null)
         {
-            player = BaseCharacter.CreateCharacter("a").AddComponent<Player>();
+            player = Player.Create("a").AddComponent<Player>();
             player.tag = "Player";
          }
         if (controller == null)
         {
             controller= this.gameObject.AddComponent<Controller>();
             controller.player = player;
-            controller.camera = this.gameObject.AddComponent<CameraControl>();
+            controller.camera = camera.GetComponent<CameraControl>();
+            controller.camera.player = player.gameObject;
         }
 
         //４．オブジェクト情報

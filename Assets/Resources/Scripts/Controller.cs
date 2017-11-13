@@ -13,15 +13,13 @@ public class Controller : MonoBehaviour {
     CharacterController controller;
     public CameraControl camera;
 
-    public BaseCharacter player;
+    public Player player;
     public Vector3 control;
     
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
-        
-        
     }
 
     void Update()
@@ -36,25 +34,22 @@ public class Controller : MonoBehaviour {
 
         }
         Debug.Log(cameraX+","+cameraY);
-
-
+        
         moveX = Input.GetAxis("Horizontal");
         moveZ = Input.GetAxis("Vertical") ;
         Vector3 direction = new Vector3(moveX, 0, moveZ);
         if (direction.magnitude > controlsensivity)
         {
-            player.TargetPosition += direction;
+            player.character.TargetPosition = direction+player.character.MyPosition;
+            player.character.SetTarget(direction);
             control = direction;
         }
-
-        
         if (Input.GetButtonDown("triangle"))
         {
 
             Debug.Log("ok");
             
         }
-
         if (Input.GetButtonDown("square"))
         {
 

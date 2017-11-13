@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : BaseCharacter
+/// <summary>
+/// 成長し続けるキャラクターのクラス
+/// </summary>
+public class Player : MonoBehaviour
 {
+    public BaseCharacter character;
     private float z;                                             //自身のZ軸
 
     public List<GameObject> catchObjects;                        //つかんだものリスト
@@ -14,18 +18,32 @@ public class Player : BaseCharacter
     public bool Growflag = true;                                 //成長しているかどうか
     public Vector3 GrowRate = new Vector3(0.05f, 0.05f, 0.05f);  //大きさの倍率
 
+    public static GameObject Create(string path)
+    {
+        GameObject g;
+
+        if (path == "a")
+        {
+            g = Instantiate(Resources.Load("Prefabs/test", typeof(GameObject))) as GameObject;
+        }
+        else
+        {
+            g = Resources.Load(path) as GameObject;
+        }
+        return g;
+    }
     // Use this for initialization
     void Start()
     {
         this.transform.tag = "Player";
-        base.Start();
         z = transform.position.z; //自身のZ軸を取得
+        if (character == null)
+            character = gameObject.AddComponent<BaseCharacter>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
         //投げる
         if (Input.GetKeyDown(KeyCode.U))
         {
@@ -44,29 +62,8 @@ public class Player : BaseCharacter
             Eat();
         }
 
-        //大きくなる
-        if (Growflag == true)
-        {
-            Grow(FoodPoint);
-        }
-
-        //4秒の間成長が止まる
-        if (Growflag == false)
-        {
-            GrowTime += Time.deltaTime;
-            if (GrowTime >= FoodPoint)
-            {
-                //成長再開
-                Growflag = true;
-                GrowTime = 0.0f;
-                //食ったもののポイントをなくす
-                FoodPoint = 0;
-            }
-        }
-
-
-        Move();
-
+        //成長の制御
+        Grow(FoodPoint);
     }
 
     //タグがFoodなら当たったものをCatchにもっていく
@@ -79,7 +76,7 @@ public class Player : BaseCharacter
     }
 
     //つかむ
-    void Catch(GameObject g)
+    public void Catch(GameObject g)
     {
         //つかんだもの情報
         catchObjects.Add(g);
@@ -90,25 +87,22 @@ public class Player : BaseCharacter
     }
 
     //投げる
-    void CastAway()
+    public void CastAway()
     {
         foreach (GameObject g in catchObjects)
         {
-            //このあたり判定を戻す
+            //つかんだものの衝突判定を戻す
             g.GetComponent<Collider>().enabled = true;
             //自身のz軸方面に飛ばす
             g.GetComponent<Rigidbody>().AddForce(transform.forward * CastAwaySpeed);
             g.transform.parent = null;
         }
-
         //リストの初期化
         catchObjects.Clear();
-
-
     }
 
     //離す
-    void Release()
+    public void Release()
     {
         foreach (GameObject g in catchObjects)
         {
@@ -118,11 +112,10 @@ public class Player : BaseCharacter
         }
         //リストの初期化
         catchObjects.Clear();
-
     }
 
     //食べる
-    void Eat()
+    public void Eat()
     {
         foreach (GameObject g in catchObjects)
         {
@@ -139,7 +132,7 @@ public class Player : BaseCharacter
     }
 
     //食べた時のポイントを追加する
-    void EatPoint(GameObject g, int point)
+    public void EatPoint(GameObject g, int point)
     {
 
         //Ainimalが含まれている文字列
@@ -155,17 +148,30 @@ public class Player : BaseCharacter
             FoodPoint += 2;
             GlowCount(FoodPoint);
         }
-
     }
 
     //自身の成長
-    void Grow(int point)
+    public void Grow(int point)
     {
+        if (FoodPoint > 0)
+        {
+            GrowTime += Time.deltaTime;
+            if (GrowTime >= 1.0f)
+            {
+                GrowTime = 0;
+                FoodPoint--;
+            }
+            transform.localScale -= GrowRate;
+        }
+
         //大きくなる
         transform.localScale += GrowRate;
+
+        //大きさに比例してスピードが上がる
+        character.SetSpeed(transform.localScale.magnitude);
     }
 
-    void GlowCount(int point)
+    public void GlowCount(int point)
     {
         //大きくなるのを止める
         if (FoodPoint >= 1)
@@ -173,5 +179,4 @@ public class Player : BaseCharacter
             Growflag = false;
         }
     }
-
 }

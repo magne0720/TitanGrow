@@ -4,7 +4,7 @@ using UnityEngine;
 
 //計算用メソッド群
 
-public class Math : MonoBehaviour
+public class Math   
 {
 
     // Use this for initialization
@@ -104,5 +104,20 @@ public class Math : MonoBehaviour
     {
         //度 = ラジアン × 180 ÷ 円周率
         return rag * 180 / Mathf.PI;
+    }
+    //中心から指定角回転させる
+    public static Vector3 Rotate(Vector3 target, float deg, float range = 1.0f)
+    {
+        Vector3 vector = (target).normalized;
+        //ラジアンに変換
+        float rag = DegToRag(deg);
+
+        float ax = vector.x * Mathf.Cos(rag) - vector.y * Mathf.Sin(rag);
+        float ay = vector.x * Mathf.Sin(rag) + vector.y * Mathf.Cos(rag);
+
+        vector.x = ax * range;
+        vector.y = ay * range;
+
+        return vector;
     }
 }
