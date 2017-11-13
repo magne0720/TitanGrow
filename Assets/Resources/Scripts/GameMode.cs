@@ -13,12 +13,14 @@ using UnityEngine;
 /// </summary>
 public class GameMode : MonoBehaviour {
 
+    public GameObject camera;
     public CollisionManager CM;
     public Player player;
     public Controller controller;
 
     const float playerspeed = 4.5f;
 
+    public GameObject test;
     // Use this for initialization
     void Start ()
     {
@@ -27,12 +29,25 @@ public class GameMode : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            for(int i = 0; i < 40; i++)
+            {
+                GameObject g = Instantiate(test);
+                g.transform.position = new Vector3(i * 20, i * 20, i * 30);
+                g.transform.localScale = new Vector3(i * 5, i * 5, i * 5);
+            }
+        }
 	}
 
     void StartUp()
     {
         //ゲームの立ち上げ(ゲームプレイ時)
+        //カメラの設定
+        if (camera == null)
+        {
+            camera = GameObject.FindGameObjectWithTag("MainCamera");
+        }
 
         //CollisionManagerの生成
         if (CM == null)
@@ -44,14 +59,15 @@ public class GameMode : MonoBehaviour {
         // if (player == null)
         if(player==null)
         {
-            player = BaseCharacter.CreateCharacter("a").AddComponent<Player>();
+            player = Player.Create("a").AddComponent<Player>();
             player.tag = "Player";
          }
         if (controller == null)
         {
             controller= this.gameObject.AddComponent<Controller>();
             controller.player = player;
-            controller.camera = this.gameObject.AddComponent<CameraControl>();
+            controller.camera = camera.GetComponent<CameraControl>();
+            controller.camera.player = player.gameObject;
         }
 
         //４．オブジェクト情報

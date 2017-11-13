@@ -38,6 +38,4 @@ public class CollisionManager : MonoBehaviour {
     {
         Humans.Remove(g);
     }
-
-
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : BaseCharacter
+public class Enemy : MonoBehaviour
 {
 
     public float eyeRange;//視覚距離
@@ -13,13 +13,14 @@ public class Enemy : BaseCharacter
     };
     public EMOTION myEmotion;//自身の感情
     public float attackDelay;//攻撃速度
-    public float serchHeight = 0;//サーチ距離
-    public float serchRange = 0;//サーチ範囲
+
     public Vector3 lastTarget;//敵の城の拠点
     public int battleEnemyCount;//今から戦いに行く敵のカウント
     public GameObject battleEnemy;//今から戦いに行く敵
     public Vector3 HeadingCastle;//向かう城
     public List<GameObject> Enemys;
+
+    public BaseCharacter character;
 
 
     public GameObject testObject = null;//テスト用オブジェクト
@@ -37,7 +38,7 @@ public class Enemy : BaseCharacter
     {
         Enemy e = new Enemy();
 
-        e.MyModel = Resources.Load(path) as GameObject;
+        //e.MyModel = Resources.Load(path) as GameObject;
 
         return e;
     }
@@ -45,7 +46,7 @@ public class Enemy : BaseCharacter
     {
         Enemy e = new Enemy();
 
-        e.MyModel = Resources.Load(path) as GameObject;
+        //e.MyModel = Resources.Load(path) as GameObject;
         e.lastTarget = lastPos;
 
         return e;
@@ -57,19 +58,21 @@ public class Enemy : BaseCharacter
         //MySpeed = 1.0f;
         if(lastTarget==Vector3.zero)
         lastTarget = new Vector3(transform.position.x, transform.position.y, 2);
-        MyPosition = transform.position;
-        SetTarget(lastTarget);
-        serchHeight = 25.0f;
-        serchRange = 120.0f;
+        //MyPosition = transform.position;
+        //SetTarget(lastTarget);
+        //serchHeight = 25.0f;
+        //serchRange = 120.0f;
         timer = 0;
-        MySpeed = 3.0f;
+        //MySpeed = 3.0f;
         HeadingCastle = new Vector3(40, 0,40);
+
+        character = GetComponent<BaseCharacter>();
     }
     // Update is called once per frame
     void Update()
     {
-        Move();
-        SerchEnemy();
+      //Move();
+        //SerchEnemy();
 
         if (Input.GetKeyDown(KeyCode.L))
             GameMode.debugPoint(testObject);
@@ -91,69 +94,18 @@ public class Enemy : BaseCharacter
     {
         battleEnemyCount = i;
         battleEnemy = Enemys[i];
-        SetTarget(Enemys[i].transform.position);
+        //SetTarget(Enemys[i].transform.position);
     }
     //敵を探す
-    void SerchEnemy()
-    {
-        //敵がいる時
-        if (battleEnemy != null)
-        {
-            if (Math.Length(battleEnemy.transform.position - transform.position) <= 1.0f)
-            {
-                Enemys.RemoveAt(battleEnemyCount);
-                Destroy(battleEnemy);
-                battleEnemy = null;
-                timer = 0;
-            }
-        }
-        else
-        {
-            //いない場合
-            timer += Time.deltaTime;
-            if (timer > 2)
-            {
-                timer = 0;
-                //RotateY(1, serchHeight);
-                TargetPosition = HeadingCastle;
-            }
-            int i = 0;
-            float dis = 0;
-            float ans = serchHeight;
-            float temp_ans = serchHeight;
-
-            if(Enemys.Count>0)
-            foreach (GameObject g in Enemys)
-            {
-                g.GetComponent<Renderer>().material.color = Color.white;
-                //探す計算処理
-                dis = Math.SerchCone(MyPosition, TargetPosition, serchHeight, serchRange, g.transform.position);
-                //視界に見えているもの
-                if (ans >= dis)
-                {
-                    /*デバッグの色*/
-                    g.GetComponent<Renderer>().material.color = Color.black;
-
-                    //暫定的に一番近いものを検出し、無ければ最後に選んだものをターゲットにする
-                    if (temp_ans >= dis)
-                    {
-                        temp_ans = dis;
-                        SetEnemy(i);
-                    }
-                }
-                i++;
-            }
-        }
-    }
 
    
 
     private void SetSerchHeight(float d)
     {
-        serchHeight = d;
+        //serchHeight = d;
     }
     private void SetSerchRange(float d)
     {
-        serchRange = d;
+        //serchRange = d;
     }
 }
