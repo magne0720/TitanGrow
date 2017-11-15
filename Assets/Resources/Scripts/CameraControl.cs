@@ -35,25 +35,29 @@ public class CameraControl : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.J))
+        if (player != null)
         {
-            distance += 0.2f;
-        }
-        if (Input.GetKey(KeyCode.K))
-        {
-            distance -= 0.2f;
-        }
-        if (Input.GetKey(KeyCode.L))
-        {
-            SetCameraFar(5.0f);
-        }
-        SetCameraFar(player.transform.localScale.z*20);
+            if (distance < 1) distance = 1;
+            if (Input.GetKey(KeyCode.J))
+            {
+                SetDistance(distance + 0.2f);
+            }
+            if (Input.GetKey(KeyCode.K))
+            {
+                SetDistance(distance - 0.2f);
+            }
+            if (Input.GetKey(KeyCode.L))
+            {
+                SetCameraFar(5.0f);
+            }
+            SetCameraFar(player.transform.localScale.z * 20);
 
 
-        //playerの移動量分、カメラも移動
-        transform.position = playerPos;
-        playerPos = player.transform.position;
-        //transform.position = new Vector3(0, 0,playerPos.z-10);
+            //playerの移動量分、カメラも移動
+            transform.position = playerPos;
+            playerPos = player.transform.position;
+            //transform.position = new Vector3(0, 0,playerPos.z-10);
+        }
     }
 
     public void InputJoystick(float x,float y)

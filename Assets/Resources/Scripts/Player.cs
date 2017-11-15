@@ -8,14 +8,12 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public BaseCharacter character;
-    private float z;                                             //自身のZ軸
 
     public List<GameObject> catchObjects;                        //つかんだものリスト
 
-    public int FoodPoint;                                        //食ったものポイント 
-    public float CastAwaySpeed = 1250.0f;                        //投げた時のスピード
-    public float GrowTime = 0.0f;                                //成長が止まっている時間　
-    public bool Growflag = true;                                 //成長しているかどうか
+    public int FoodPoint;                                       //食ったものポイント 
+    public float CastAwaySpeed = 1250.0f;                   //投げた時のスピード
+    public float GrowTime = 0.0f;                                //成長が止まっている時間
     public Vector3 GrowRate = new Vector3(0.05f, 0.05f, 0.05f);  //大きさの倍率
 
     public static GameObject Create(string path)
@@ -36,7 +34,6 @@ public class Player : MonoBehaviour
     void Start()
     {
         this.transform.tag = "Player";
-        z = transform.position.z; //自身のZ軸を取得
         if (character == null)
             character = gameObject.AddComponent<BaseCharacter>();
     }
@@ -173,10 +170,6 @@ public class Player : MonoBehaviour
 
     public void GlowCount(int point)
     {
-        //大きくなるのを止める
-        if (FoodPoint >= 1)
-        {
-            Growflag = false;
-        }
+       
     }
 }

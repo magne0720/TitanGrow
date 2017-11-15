@@ -17,7 +17,6 @@ public class BaseCharacter : MonoBehaviour
     public float serchHeight = 0;//サーチ距離
     public float serchRange = 0;//サーチ範囲
     public bool isGround;
-    public CharacterController c;
 
     public static GameObject CreateCharacter(string path)
     {
@@ -41,7 +40,7 @@ public class BaseCharacter : MonoBehaviour
         {
             MyModel = this.gameObject;
         }
-        GetComponent<Rigidbody>().isKinematic = true;
+        //GetComponent<Rigidbody>().isKinematic = true;
 
         MySpeed = 5.0f;
     }

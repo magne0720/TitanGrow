@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// ゲームの進行
@@ -13,40 +14,106 @@ using UnityEngine;
 /// </summary>
 public class GameMode : MonoBehaviour {
 
-    public GameObject camera;
+    const int TS_MAX = 3;
+    const int TS_MIN = 0;
+
+
+    public enum MODE
+    {
+        TITLE=0,GAME,OPTION,NUM
+    };
+    MODE mode;
+    int titleselect;
+
+    public GameObject cam;
     public CollisionManager CM;
     public Player player;
     public Controller controller;
+    public CanvasControl canvas;
 
     const float playerspeed = 4.5f;
-
-    public GameObject test;
     // Use this for initialization
     void Start ()
     {
-        StartUp();
+        mode = MODE.TITLE;
+        titleselect = 0;
     }
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKeyDown(KeyCode.M))
+        Game();
+	}
+
+    void Game()
+    {
+        DispTitle();
+        switch (mode)
         {
-            for(int i = 0; i < 40; i++)
+            case MODE.TITLE:
+                TitleSelectInput();
+                break;
+            case MODE.GAME:
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                        GameEnd();
+                        canvas.FadeOut();
+                }
+                break;
+            case MODE.OPTION:
+                break;
+            case MODE.NUM:
+                break;
+            default:
+                break;
+        }
+    }
+
+    void DispCanvas(bool visible)
+    {
+        if (canvas != null)
+        {
+        }
+    }
+
+    //タイトルの表示
+    void DispTitle()
+    {
+        if (canvas == null)
+        {
+            canvas = CanvasControl.CreateCanvas().GetComponent<CanvasControl>();
+        }
+        DispCanvas(true);
+    }
+    void TitleSelectInput()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            //左を選ぶ
+            if (titleselect < TS_MIN) titleselect = TS_MIN;
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            //右を選ぶ
+            if (titleselect > TS_MAX) titleselect = TS_MAX;
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (mode == MODE.TITLE)
             {
-                GameObject g = Instantiate(test);
-                g.transform.position = new Vector3(i * 20, i * 20, i * 30);
-                g.transform.localScale = new Vector3(i * 5, i * 5, i * 5);
+                canvas.FadeIn();
+                StartUp();
             }
         }
-	}
+    }
 
     void StartUp()
     {
+        mode = MODE.GAME;
         //ゲームの立ち上げ(ゲームプレイ時)
         //カメラの設定
-        if (camera == null)
+        if (cam == null)
         {
-            camera = GameObject.FindGameObjectWithTag("MainCamera");
+            cam = GameObject.FindGameObjectWithTag("MainCamera");
         }
 
         //CollisionManagerの生成
@@ -66,7 +133,7 @@ public class GameMode : MonoBehaviour {
         {
             controller= this.gameObject.AddComponent<Controller>();
             controller.player = player;
-            controller.camera = camera.GetComponent<CameraControl>();
+            controller.camera = cam.GetComponent<CameraControl>();
             controller.camera.player = player.gameObject;
         }
 
@@ -80,12 +147,12 @@ public class GameMode : MonoBehaviour {
 
     void GameStart()
     {
-
+        mode = MODE.GAME;
     }
 
     void GameEnd()
     {
-
+        mode = MODE.TITLE;
     }
 
     void GameStop()
