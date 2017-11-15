@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class CameraControl : MonoBehaviour {
 
-    const float CAM_Y_MAX = 230.0f;
+    const float CAM_Y_MAX = 260.0f;
     const float CAM_Y_MIN = 160.0f;
-    const float CAM_DISTANCE = 10.0f;
+    const float CAM_DISTANCE = 2.0f;
 
     public GameObject player; //player
     public Vector3 playerPos;
@@ -20,8 +20,9 @@ public class CameraControl : MonoBehaviour {
     void Start()
     {
         //初期化
-        speedX = 1.0f;
-        speedY = 1.0f;
+        speedX = 7.0f;
+        speedY = 7.0f;
+        distance = 1.0f;
 
         //タグ("Player")を検出
         player = GameObject.FindGameObjectWithTag("Player");
@@ -34,26 +35,43 @@ public class CameraControl : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        if (player != null)
+        {
+            if (distance < 1) distance = 1;
+            if (Input.GetKey(KeyCode.J))
+            {
+                SetDistance(distance + 0.2f);
+            }
+            if (Input.GetKey(KeyCode.K))
+            {
+                SetDistance(distance - 0.2f);
+            }
+            if (Input.GetKey(KeyCode.L))
+            {
+                SetCameraFar(5.0f);
+            }
+            SetCameraFar(player.transform.localScale.z * 20);
 
-        //playerの移動量分、カメラも移動
-        transform.position = playerPos;
-        playerPos = player.transform.position;
-        //transform.position = new Vector3(0, 0,playerPos.z-10);
+
+            //playerの移動量分、カメラも移動
+            transform.position = playerPos;
+            playerPos = player.transform.position;
+            //transform.position = new Vector3(0, 0,playerPos.z-10);
+        }
     }
 
     public void InputJoystick(float x,float y)
     {
-        direction.x += x;
-        direction.y += y;
+        direction.x += x * speedX;
+        direction.y += y * speedY;
         if (direction.x >= 360.0f) direction.x = 0.0f;
         if (direction.x < 0.0f) direction.x = 360.0f;
         if (direction.y >= CAM_Y_MAX) direction.y = CAM_Y_MAX;
         if (direction.y < CAM_Y_MIN) direction.y = CAM_Y_MIN;
-
-
-        float angX = Math.Rotate(Vector3.up, direction.x, CAM_DISTANCE + player.transform.localScale.x).x;
-        float angY = Math.Rotate(Vector3.left, direction.y, CAM_DISTANCE + player.transform.localScale.y).y;
-        float angZ = Math.Rotate(Vector3.left, direction.x, CAM_DISTANCE + player.transform.localScale.z).x;
+        
+        float angX = Math.Rotate(Vector3.up, direction.x, CAM_DISTANCE *distance* player.transform.localScale.x).x;
+        float angY = Math.Rotate(Vector3.left, direction.y, CAM_DISTANCE *distance* player.transform.localScale.y).y;
+        float angZ = Math.Rotate(Vector3.left, direction.x, CAM_DISTANCE *distance* player.transform.localScale.z).x;
         transform.position = new Vector3(angX, angY, angZ)+transform.position;
 
         transform.LookAt(playerPos);
@@ -69,5 +87,9 @@ public class CameraControl : MonoBehaviour {
         {
             distance *= -1;
         }
+    }
+    void SetCameraFar(float dis)
+    {
+        GetComponent<Camera>().farClipPlane = dis;
     }
 }

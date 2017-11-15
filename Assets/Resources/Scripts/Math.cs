@@ -106,6 +106,48 @@ public class Math
         return rag * 180 / Mathf.PI;
     }
     //中心から指定角回転させる
+    public static Vector3 RotateX(Vector3 target,float deg, float range = 1.0f)
+    {
+        Vector3 vector = (target).normalized;
+        //ラジアンに変換
+        float rag = DegToRag(deg);
+
+        float ay = vector.y * Mathf.Cos(rag) - vector.z * Mathf.Sin(rag);
+        float az = vector.y * Mathf.Sin(rag) + vector.z * Mathf.Cos(rag);
+
+        vector.y = ay * range;
+        vector.z = az * range;
+
+        return vector;
+    }
+    public static Vector3 RotateY(Vector3 target, float deg, float range = 1.0f)
+    {
+        Vector3 vector = (target).normalized;
+        //ラジアンに変換
+        float rag = DegToRag(deg);
+
+        float az = vector.z * Mathf.Cos(rag) - vector.x * Mathf.Sin(rag);
+        float ax = vector.z * Mathf.Sin(rag) + vector.x * Mathf.Cos(rag);
+
+        vector.z = az * range;
+        vector.x = ax * range;
+
+        return vector;
+    }
+    public static Vector3 RotateZ(Vector3 target,float deg, float range = 1.0f)
+    {
+        Vector3 vector = (target).normalized;
+        //ラジアンに変換
+        float rag = DegToRag(deg);
+
+        float ax = vector.x * Mathf.Cos(rag) - vector.y * Mathf.Sin(rag);
+        float ay = vector.x * Mathf.Sin(rag) + vector.y * Mathf.Cos(rag);
+
+        vector.x = ax * range;
+        vector.y = ay * range;
+
+        return vector;
+    }
     public static Vector3 Rotate(Vector3 target, float deg, float range = 1.0f)
     {
         Vector3 vector = (target).normalized;
