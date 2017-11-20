@@ -43,32 +43,13 @@ public class Controller : MonoBehaviour {
             player.SetTarget(direction);
             control = direction;
         }
-        if (Input.GetButtonDown("triangle"))
-        {
+        if (Input.GetButtonDown("triangle")) player.GetComponent<Player>().Eat();
 
-            Debug.Log("ok");
-            
-        }
-        if (Input.GetButtonDown("square"))
-        {
+        if (Input.GetButtonDown("square")) player.GetComponent<Player>().Catch(player.catchObjects[0]);
 
-            Debug.Log("卍");
+        if (Input.GetButtonDown("cross")) player.GetComponent<Player>().Release();
 
-        }
-
-        if (Input.GetButtonDown("cross"))
-        {
-
-            Debug.Log("unch");
-
-        }
-
-        if (Input.GetButtonDown("circle"))
-        {
-
-            Debug.Log("ばななぁ");
-
-        }
+        //if (Input.GetButtonDown("circle")) decision();
 
     }
 }
