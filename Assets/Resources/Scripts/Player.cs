@@ -32,13 +32,22 @@ public class Player : BaseCharacter
     override public void Start()
     {
         Initialize();
+        this.transform.name = "Player";
         this.transform.tag = "Player";
-        GetComponent<Rigidbody>().isKinematic = true;
+        //GetComponent<Rigidbody>().isKinematic = true;
     }
 
     // Update is called once per frame
     override public void Update()
     {
+        //つかむ
+        if (Input.GetKey(KeyCode.Alpha0))
+        {
+            serchHeight = 100.0f;
+            serchRange = 120.0f;
+            Catch(SerchObject(ObjectManager.GameObjects));
+        }
+
         //投げる
         if (Input.GetKeyDown(KeyCode.U))
         {
@@ -61,6 +70,7 @@ public class Player : BaseCharacter
         //成長の制御
         Grow(FoodPoint);
         SetMass(transform.localScale.magnitude);
+        UnderGround();
     }
 
     //タグがFoodなら当たったものをCatchにもっていく
@@ -69,6 +79,17 @@ public class Player : BaseCharacter
         if (collision.gameObject.tag == "Food")
         {
             Catch(collision.transform.gameObject);
+        }
+    }
+    public void CatchAction()
+    {
+        if (catchObjects.Count > 0)
+        {
+            Release();
+        }
+        else
+        {
+            //Catch(new GameObject());
         }
     }
 
@@ -81,6 +102,20 @@ public class Player : BaseCharacter
         g.transform.parent = this.transform;
         //子のあたり判定を消す
         g.GetComponent<Collider>().enabled = false;
+    }
+    //つかむ
+    public void Catch(List<GameObject> objs)
+    {
+        //つかんだもの情報
+        if (objs.Count > 0)
+            foreach (GameObject g in objs)
+            {
+                catchObjects.Add(g);
+                //子にする
+                g.transform.parent = this.transform;
+                //子のあたり判定を消す
+                g.GetComponent<Collider>().enabled = false;
+            }
     }
 
     //投げる

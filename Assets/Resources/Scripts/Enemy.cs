@@ -59,10 +59,9 @@ public class Enemy : BaseCharacter
         //serchHeight = 25.0f;
         //serchRange = 120.0f;
         timer = 0;
-        //MySpeed = 3.0f;
         HeadingCastle = new Vector3(40, 0,40);
-        MySpeed = transform.localScale.z*4.0f;
-        GetComponent<Rigidbody>().isKinematic = true;
+        MySpeed = transform.localScale.z*0.2f;
+        //GetComponent<Rigidbody>().isKinematic = true;
         MyPosition = transform.position;
 
         SetTarget(battleEnemy.transform.position);
@@ -75,6 +74,7 @@ public class Enemy : BaseCharacter
         SetMass(transform.localScale.magnitude);
 
         Move();
+        UnderGround();
     }
     //襲う敵の設定
     void SetEnemy(int i)

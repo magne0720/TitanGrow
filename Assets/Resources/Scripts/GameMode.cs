@@ -125,7 +125,7 @@ public class GameMode : MonoBehaviour {
             isArrowed = false;
         }
         //選択
-        if (Input.GetButtonDown("circle"))
+        if (Input.GetButtonDown("circle") || Input.GetKeyDown(KeyCode.Space))
         {
             if (mode == MODE.TITLE)
             {

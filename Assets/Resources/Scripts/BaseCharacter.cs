@@ -208,6 +208,27 @@ public class BaseCharacter : MonoBehaviour
     }
 
 
+    public List<GameObject> SerchObject(List<GameObject> objects)
+    {
+        List<GameObject> objs = new List<GameObject>();
+        float dis = 0;
+        float ans = serchHeight;
+        float temp_ans = serchHeight;
+
+            foreach (GameObject g in objects)
+            {
+                g.GetComponent<Renderer>().material.color = Color.white;
+                //探す計算処理
+                dis = Math.SerchCone(MyPosition, TargetPosition, serchHeight, serchRange, g.transform.position);
+                //視界に見えているもの
+                if (ans >= dis)
+                {
+                    objs.Add(g);
+                }
+            }
+        return objs;
+    }
+
     void OnCollisionEnter(Collision c)
     {
 
@@ -232,5 +253,12 @@ public class BaseCharacter : MonoBehaviour
     public void SetMass(float s)
     {
         rigid.mass = s;
+    }
+    public void UnderGround()
+    {
+        if (transform.position.y < -1)
+        {
+            transform.position = new Vector3(transform.position.x,1,transform.position.z);
+        }
     }
 }

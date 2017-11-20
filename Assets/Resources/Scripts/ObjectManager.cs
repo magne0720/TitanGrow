@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ObjectManager : MonoBehaviour {
 
-    public List<GameObject> GameObjects;//ゲームに使用するオブジェクト
+    public static List<GameObject> GameObjects;//ゲームに使用するオブジェクト
 
 	// Use this for initialization
 	void Start () {
