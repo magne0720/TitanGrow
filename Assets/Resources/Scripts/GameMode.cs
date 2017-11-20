@@ -14,7 +14,7 @@ using UnityEngine.UI;
 /// </summary>
 public class GameMode : MonoBehaviour {
 
-    const int TS_MAX = 3;
+    const int TS_MAX = 2;
     const int TS_MIN = 0;
 
 
@@ -24,9 +24,10 @@ public class GameMode : MonoBehaviour {
     };
     MODE mode;
     int titleselect;
+    bool isArrowed;
 
-    public GameObject cam;
-    public CollisionManager CM;
+    public CameraControl cam;
+    public ObjectManager Objects;
     public Player player;
     public Controller controller;
     public CanvasControl canvas;
@@ -35,12 +36,28 @@ public class GameMode : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
+        isArrowed = false;
+
+        Objects = gameObject.AddComponent<ObjectManager>();
+
         mode = MODE.TITLE;
         titleselect = 0;
+
+        if (cam == null)
+        {
+            cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraControl>();
+        }
+
+        if (controller == null)
+        {
+            controller = this.gameObject.AddComponent<Controller>();
+            controller.camera = cam.GetComponent<CameraControl>();
+
+        }
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
         Game();
 	}
 
@@ -80,28 +97,43 @@ public class GameMode : MonoBehaviour {
     {
         if (canvas == null)
         {
-            canvas = CanvasControl.CreateCanvas().GetComponent<CanvasControl>();
+            canvas = CanvasControl.CreateCanvas(cam.controlCamera).GetComponent<CanvasControl>();
         }
-        DispCanvas(true);
+        else
+        {
+            canvas.ChangeText(titleselect);
+        }
+        //DispCanvas(true);
     }
     void TitleSelectInput()
     {
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        int axis =(int)Input.GetAxis("LRArrow")+(int)Input.GetAxis("Horizontal");
+        //左右移動
+        if (axis != 0)
         {
-            //左を選ぶ
-            if (titleselect < TS_MIN) titleselect = TS_MIN;
+            if (!isArrowed)
+            {
+                //-1で左、1で右
+              titleselect+=(int)axis;
+                if (titleselect < TS_MIN) titleselect = TS_MIN;
+                if (titleselect > TS_MAX) titleselect = TS_MAX;
+                isArrowed = true;
+            }
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        else
         {
-            //右を選ぶ
-            if (titleselect > TS_MAX) titleselect = TS_MAX;
+            isArrowed = false;
         }
-        if (Input.GetKeyDown(KeyCode.Space))
+        //選択
+        if (Input.GetButtonDown("circle"))
         {
             if (mode == MODE.TITLE)
             {
-                canvas.FadeIn();
-                StartUp();
+                if (titleselect == 0)
+                {
+                    canvas.FadeIn();
+                    StartUp();
+                }
             }
         }
     }
@@ -111,35 +143,26 @@ public class GameMode : MonoBehaviour {
         mode = MODE.GAME;
         //ゲームの立ち上げ(ゲームプレイ時)
         //カメラの設定
-        if (cam == null)
-        {
-            cam = GameObject.FindGameObjectWithTag("MainCamera");
-        }
 
         //CollisionManagerの生成
-        if (CM == null)
+        if (Objects == null)
         {
-            //CM = this.gameObject.AddComponent<CollisionManager>();
+            Objects = this.gameObject.AddComponent<ObjectManager>();
         }
         //３．ゲーム設定
         //playerの生成
-        // if (player == null)
-        if(player==null)
-        {
-            player = Player.Create("a").AddComponent<Player>();
+            player = BaseCharacter.CreateCharacter("a").AddComponent<Player>();
             player.tag = "Player";
-         }
-        if (controller == null)
-        {
-            controller= this.gameObject.AddComponent<Controller>();
-            controller.player = player;
-            controller.camera = cam.GetComponent<CameraControl>();
+            Objects.AddObject(player.transform.gameObject);
+
+
+        controller.player = player;
             controller.camera.player = player.gameObject;
-        }
 
         //４．オブジェクト情報
 
         //５．オブジェクト追加
+        ObjectInstance();
 
         //６．ゲーム開始
         GameStart();
@@ -153,21 +176,24 @@ public class GameMode : MonoBehaviour {
     void GameEnd()
     {
         mode = MODE.TITLE;
+        controller.player = null;
+        player = null;
+        Objects.AllClear();
     }
 
     void GameStop()
     {
 
     }
-
-    public static void debugPoint(GameObject g)
+    void ObjectInstance()
     {
-        for (int x = -2; x <= 2; x++)
-            for (int y = -2; y <= 2; y++)
-                for (int z = -2; z <= 2; z++)
-                {
-                    GameObject go = Instantiate(g);
-                    go.transform.position = new Vector3(x * 10, z * 10, y * 10);
-                }
+        for(int i = 0; i < 100; i++)
+        {
+            Enemy g = BaseCharacter.CreateCharacter("Prefabs/test").AddComponent<Enemy>();
+            g.transform.position = Math.RotateY(new Vector3(0, 0, 1), i*10, i*20);
+            g.transform.localScale = new Vector3(i*2, i*2,i*2);
+            g.SetEnemy(player.gameObject);
+            Objects.AddObject(g.gameObject);
+        }
     }
 }

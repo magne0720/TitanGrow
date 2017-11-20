@@ -5,10 +5,8 @@ using UnityEngine;
 /// <summary>
 /// 成長し続けるキャラクターのクラス
 /// </summary>
-public class Player : MonoBehaviour
+public class Player : BaseCharacter
 {
-    public BaseCharacter character;
-
     public List<GameObject> catchObjects;                        //つかんだものリスト
 
     public int FoodPoint;                                       //食ったものポイント 
@@ -31,15 +29,15 @@ public class Player : MonoBehaviour
         return g;
     }
     // Use this for initialization
-    void Start()
+    override public void Start()
     {
+        Initialize();
         this.transform.tag = "Player";
-        if (character == null)
-            character = gameObject.AddComponent<BaseCharacter>();
+        GetComponent<Rigidbody>().isKinematic = true;
     }
 
     // Update is called once per frame
-    void Update()
+    override public void Update()
     {
         //投げる
         if (Input.GetKeyDown(KeyCode.U))
@@ -59,8 +57,10 @@ public class Player : MonoBehaviour
             Eat();
         }
 
+        Move();
         //成長の制御
         Grow(FoodPoint);
+        SetMass(transform.localScale.magnitude);
     }
 
     //タグがFoodなら当たったものをCatchにもっていく
@@ -165,7 +165,7 @@ public class Player : MonoBehaviour
         transform.localScale += GrowRate;
 
         //大きさに比例してスピードが上がる
-        character.SetSpeed(transform.localScale.magnitude);
+        SetSpeed(transform.localScale.magnitude);
     }
 
     public void GlowCount(int point)

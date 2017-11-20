@@ -39,8 +39,8 @@ public class Controller : MonoBehaviour {
         direction = Math.RotateY(direction,camera.direction.x);
        if (direction.magnitude > controlsensivity)
         {
-            player.character.TargetPosition = direction+player.character.MyPosition;
-            player.character.SetTarget(direction);
+            player.TargetPosition = direction+player.MyPosition;
+            player.SetTarget(direction);
             control = direction;
         }
         if (Input.GetButtonDown("triangle"))

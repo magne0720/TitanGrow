@@ -10,13 +10,13 @@ public class BaseCharacter : MonoBehaviour
 {
     public int MyHitpoint;
     public float MySpeed;
-    public GameObject MyModel=null;
     public Vector3 MyPosition;
     public Vector3 TargetPosition;
     public Vector3 MyDirection;     //自身の向いている方向    
     public float serchHeight = 0;//サーチ距離
     public float serchRange = 0;//サーチ範囲
     public bool isGround;
+    Rigidbody rigid;
 
     public static GameObject CreateCharacter(string path)
     {
@@ -28,24 +28,25 @@ public class BaseCharacter : MonoBehaviour
         }
         else
         {
-            baseCharacter = Resources.Load(path) as GameObject;
+            baseCharacter = Instantiate(Resources.Load(path, typeof(GameObject))) as GameObject;
         }
         return baseCharacter;
     }
+    public void Initialize()
+    {
+        if (rigid==null)
+        {
+            rigid = gameObject.AddComponent<Rigidbody>();
+        }
+    }
 
     //Use this for initialization
-    public void Start()
+    public virtual void Start()
     {
-        if (MyModel == null)
-        {
-            MyModel = this.gameObject;
-        }
-        //GetComponent<Rigidbody>().isKinematic = true;
-
         MySpeed = 5.0f;
     }
     // Update is called once per frame
-    public void Update()
+    public virtual void Update()
     {
         Move();
         //CheckGround();
@@ -86,6 +87,13 @@ public class BaseCharacter : MonoBehaviour
         MyPosition += moving * MySpeed * Time.deltaTime;
 
         MyPosition.y = transform.position.y;
+
+
+        if (isGround)
+        {
+            MyPosition.y -= 0.05f;
+        }
+
         transform.position = MyPosition;
 
         //SetDirection(moving);
@@ -220,5 +228,9 @@ public class BaseCharacter : MonoBehaviour
     void CheckGround()
     {
    
+    }
+    public void SetMass(float s)
+    {
+        rigid.mass = s;
     }
 }

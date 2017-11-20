@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : BaseCharacter
 {
 
     public float eyeRange;//視覚距離
@@ -19,29 +19,25 @@ public class Enemy : MonoBehaviour
     public GameObject battleEnemy;//今から戦いに行く敵
     public Vector3 HeadingCastle;//向かう城
     public List<GameObject> Enemys;
-
-    public BaseCharacter character;
-
-
+    
     public GameObject testObject = null;//テスト用オブジェクト
     private float timer = 0;
 
-    public static GameObject Create(GameObject g)
+    public static GameObject Create(string path="Prefabs/test")
     {
-        if (g.GetComponent<Enemy>()==null)
-        g.AddComponent<Enemy>();
+        GameObject g;
+        if (path == "a")
+        {
+             g = Instantiate(Resources.Load("Prefabs/test", typeof(GameObject))) as GameObject;
+        }
+        else
+        {
+             g = Instantiate(Resources.Load(path, typeof(GameObject))) as GameObject;
+        }
 
         return g;
     } 
-
-    static Enemy Create(string path)
-    {
-        Enemy e = new Enemy();
-
-        //e.MyModel = Resources.Load(path) as GameObject;
-
-        return e;
-    }
+    
     static Enemy Create(string path, Vector3 lastPos)
     {
         Enemy e = new Enemy();
@@ -55,7 +51,7 @@ public class Enemy : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        //MySpeed = 1.0f;
+        Initialize();
         if(lastTarget==Vector3.zero)
         lastTarget = new Vector3(transform.position.x, transform.position.y, 2);
         //MyPosition = transform.position;
@@ -65,29 +61,20 @@ public class Enemy : MonoBehaviour
         timer = 0;
         //MySpeed = 3.0f;
         HeadingCastle = new Vector3(40, 0,40);
+        MySpeed = transform.localScale.z*4.0f;
+        GetComponent<Rigidbody>().isKinematic = true;
+        MyPosition = transform.position;
 
-        character = GetComponent<BaseCharacter>();
+        SetTarget(battleEnemy.transform.position);
     }
     // Update is called once per frame
     void Update()
     {
-      //Move();
-        //SerchEnemy();
+        SetTarget(battleEnemy.transform.position - MyPosition);
 
-        if (Input.GetKeyDown(KeyCode.L))
-            GameMode.debugPoint(testObject);
+        SetMass(transform.localScale.magnitude);
 
-        //if (Input.GetKey(KeyCode.Comma))
-        //{
-        //    transform.Rotate(new Vector3(0, -5, 0));
-        //    SetDirection();
-        //}
-        //if (Input.GetKey(KeyCode.Period))
-        //{
-        //    transform.Rotate(new Vector3(0, 5, 0));
-        //    SetDirection();
-        //}
-
+        Move();
     }
     //襲う敵の設定
     void SetEnemy(int i)
@@ -98,7 +85,12 @@ public class Enemy : MonoBehaviour
     }
     //敵を探す
 
-   
+    public void SetEnemy(GameObject g)
+    {
+        battleEnemy = g;
+        //SetTarget(Enemys[i].transform.position);
+    }
+
 
     private void SetSerchHeight(float d)
     {

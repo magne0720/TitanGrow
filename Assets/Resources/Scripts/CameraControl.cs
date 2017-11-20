@@ -9,8 +9,8 @@ public class CameraControl : MonoBehaviour {
     const float CAM_DISTANCE = 2.0f;
 
     public GameObject player; //player
-    public Vector3 playerPos;
     public Vector3 direction;
+    public Camera controlCamera;
     
     public float distance;
     public float speedX;
@@ -20,15 +20,15 @@ public class CameraControl : MonoBehaviour {
     void Start()
     {
         //初期化
-        speedX = 7.0f;
-        speedY = 7.0f;
+        speedX = 30.0f;
+        speedY = 30.0f;
         distance = 1.0f;
 
         //タグ("Player")を検出
         player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
+        if (controlCamera == null)
         {
-            playerPos = player.transform.position;
+            controlCamera = GetComponent<Camera>();
         }
     }
 
@@ -52,34 +52,31 @@ public class CameraControl : MonoBehaviour {
             }
             SetCameraFar(player.transform.localScale.z * 20);
 
-
             //playerの移動量分、カメラも移動
-            transform.position = playerPos;
-            playerPos = player.transform.position;
+            transform.position = player.transform.position;
             //transform.position = new Vector3(0, 0,playerPos.z-10);
         }
     }
 
-    public void InputJoystick(float x,float y)
+    public void InputJoystick(float x, float y)
     {
-        direction.x += x * speedX;
-        direction.y += y * speedY;
-        if (direction.x >= 360.0f) direction.x = 0.0f;
-        if (direction.x < 0.0f) direction.x = 360.0f;
-        if (direction.y >= CAM_Y_MAX) direction.y = CAM_Y_MAX;
-        if (direction.y < CAM_Y_MIN) direction.y = CAM_Y_MIN;
-        
-        float angX = Math.Rotate(Vector3.up, direction.x, CAM_DISTANCE *distance* player.transform.localScale.x).x;
-        float angY = Math.Rotate(Vector3.left, direction.y, CAM_DISTANCE *distance* player.transform.localScale.y).y;
-        float angZ = Math.Rotate(Vector3.left, direction.x, CAM_DISTANCE *distance* player.transform.localScale.z).x;
-        transform.position = new Vector3(angX, angY, angZ)+transform.position;
+        if (player != null)
+        {
+            direction.x += x * speedX;
+            direction.y += y * speedY;
+            if (direction.x >= 360.0f) direction.x = 0.0f;
+            if (direction.x < 0.0f) direction.x = 360.0f;
+            if (direction.y >= CAM_Y_MAX) direction.y = CAM_Y_MAX;
+            if (direction.y < CAM_Y_MIN) direction.y = CAM_Y_MIN;
 
-        transform.LookAt(playerPos);
+            float angX = Math.Rotate(Vector3.up, direction.x, CAM_DISTANCE * distance * player.transform.localScale.x).x;
+            float angY = Math.Rotate(Vector3.left, direction.y, CAM_DISTANCE * distance * player.transform.localScale.y).y;
+            float angZ = Math.Rotate(Vector3.left, direction.x, CAM_DISTANCE * distance * player.transform.localScale.z).x;
+            transform.position = new Vector3(angX, angY, angZ) + transform.position;
 
-        //transform.RotateAround(playerPos, Vector3.up, x * speedX*Time.deltaTime);
-        //transform.RotateAround(playerPos, Vector3.right, y * speedY*Time.deltaTime);
+            transform.LookAt(player.transform.position);
+        }
     }
-
     void SetDistance(float s)
     {
         distance = s;
