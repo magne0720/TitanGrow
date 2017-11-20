@@ -45,7 +45,7 @@ public class Controller : MonoBehaviour {
         }
         if (Input.GetButtonDown("triangle")) player.GetComponent<Player>().Eat();
 
-        if (Input.GetButtonDown("square")) player.GetComponent<Player>().Catch(player.catchObjects[0]);
+        if (Input.GetButtonDown("square")) player.GetComponent<Player>().CatchAction();
 
         if (Input.GetButtonDown("cross")) player.GetComponent<Player>().Release();
 
