@@ -252,7 +252,7 @@ public class BaseCharacter : MonoBehaviour
     }
     public void SetMass(float s)
     {
-        rigid.mass = s;
+       // rigid.mass = s;
     }
     public void UnderGround()
     {
