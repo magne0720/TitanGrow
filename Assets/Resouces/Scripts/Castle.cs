@@ -65,7 +65,7 @@ public class Castle : MonoBehaviour {
             for (int sol1 = 0; sol1 < soldier1Spawn; sol1++)
             {
                 Vector3 pos = new Vector3(2 * sol1 - 4, 0, 2 * unit);
-                GameObject.Instantiate(soldier1, pos, Quaternion.identity);
+                GameObject.Instantiate(Enemy.Create(soldier1), pos, Quaternion.identity);
 
             }
         }
