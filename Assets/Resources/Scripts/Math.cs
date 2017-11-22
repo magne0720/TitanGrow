@@ -4,7 +4,7 @@ using UnityEngine;
 
 //計算用メソッド群
 
-public class Math : MonoBehaviour
+public class Math   
 {
 
     // Use this for initialization
@@ -22,9 +22,9 @@ public class Math : MonoBehaviour
 
     /*
     直円錐の位置・向きが書かれていませんのでそこは適当に決めます。
-... 円錐の頂点： 位置ベクトルpos
+...円錐の頂点： 位置ベクトルpos
 ...円錐の底面の中心： 位置ベクトルdir（但し、height=|dir-pos|）
-... 円錐の底面の半径： range
+...円錐の底面の半径： range
 ...テストする点： 位置ベクトルtarget=(x,y,z)
 とするとき、
 ... 0≦(target-pos)･(dir-pos)≦height^2 （･はベクトルの内積）
@@ -35,7 +35,7 @@ public class Math : MonoBehaviour
     public static float SerchCone(Vector3 pos, Vector3 dir, float height, float range, Vector3 target)
     {
         float dis = float.MaxValue;
-        Vector3 moving = (dir - pos).normalized * height;
+        Vector3 moving = (dir - pos);
         float dot = Dot(target - pos, moving - pos);
         // 0≦(p-a)･(d-a)≦h^2 (･はベクトルの内積)
         if (0 <= dot && dot <= height * height)
@@ -104,5 +104,62 @@ public class Math : MonoBehaviour
     {
         //度 = ラジアン × 180 ÷ 円周率
         return rag * 180 / Mathf.PI;
+    }
+    //中心から指定角回転させる
+    public static Vector3 RotateX(Vector3 target,float deg, float range = 1.0f)
+    {
+        Vector3 vector = (target).normalized;
+        //ラジアンに変換
+        float rag = DegToRag(deg);
+
+        float ay = vector.y * Mathf.Cos(rag) - vector.z * Mathf.Sin(rag);
+        float az = vector.y * Mathf.Sin(rag) + vector.z * Mathf.Cos(rag);
+
+        vector.y = ay * range;
+        vector.z = az * range;
+
+        return vector;
+    }
+    public static Vector3 RotateY(Vector3 target, float deg, float range = 1.0f)
+    {
+        Vector3 vector = (target).normalized;
+        //ラジアンに変換
+        float rag = DegToRag(deg);
+
+        float az = vector.z * Mathf.Cos(rag) - vector.x * Mathf.Sin(rag);
+        float ax = vector.z * Mathf.Sin(rag) + vector.x * Mathf.Cos(rag);
+
+        vector.z = az * range;
+        vector.x = ax * range;
+
+        return vector;
+    }
+    public static Vector3 RotateZ(Vector3 target,float deg, float range = 1.0f)
+    {
+        Vector3 vector = (target).normalized;
+        //ラジアンに変換
+        float rag = DegToRag(deg);
+
+        float ax = vector.x * Mathf.Cos(rag) - vector.y * Mathf.Sin(rag);
+        float ay = vector.x * Mathf.Sin(rag) + vector.y * Mathf.Cos(rag);
+
+        vector.x = ax * range;
+        vector.y = ay * range;
+
+        return vector;
+    }
+    public static Vector3 Rotate(Vector3 target, float deg, float range = 1.0f)
+    {
+        Vector3 vector = (target).normalized;
+        //ラジアンに変換
+        float rag = DegToRag(deg);
+
+        float ax = vector.x * Mathf.Cos(rag) - vector.y * Mathf.Sin(rag);
+        float ay = vector.x * Mathf.Sin(rag) + vector.y * Mathf.Cos(rag);
+
+        vector.x = ax * range;
+        vector.y = ay * range;
+
+        return vector;
     }
 }
