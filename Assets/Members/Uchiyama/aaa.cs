@@ -25,9 +25,11 @@ public class aaa : MonoBehaviour {
         gameObject.transform.rotation = new Quaternion(0, 0, 0,0);
         if (flg == true)
         {
-
+            Efect.transform.position =gameObject.transform.position ;
             Instantiate(Efect);
+            Effect2.transform.position = gameObject.transform.position;
             Instantiate(Effect2);
+            G.transform.position = gameObject.transform.position;
             Instantiate(G);
             Destroy(gameObject);
         }
