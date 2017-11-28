@@ -38,7 +38,9 @@ public class GameMode : MonoBehaviour {
     {
         isArrowed = false;
 
-        Objects = gameObject.AddComponent<ObjectManager>();
+        GameObject OM = new GameObject();
+        OM.name = "ObjectManager";
+        Objects = OM.gameObject.AddComponent<ObjectManager>();
 
         mode = MODE.TITLE;
         titleselect = 0;
@@ -50,9 +52,10 @@ public class GameMode : MonoBehaviour {
 
         if (controller == null)
         {
-            controller = this.gameObject.AddComponent<Controller>();
+            GameObject CO = new GameObject();
+            CO.name = "Controller";
+            controller = CO.gameObject.AddComponent<Controller>();
             controller.camera = cam.GetComponent<CameraControl>();
-
         }
     }
 
@@ -70,7 +73,7 @@ public class GameMode : MonoBehaviour {
                 TitleSelectInput();
                 break;
             case MODE.GAME:
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKeyDown(KeyCode.Space)||Input.GetButtonDown("circle"))
                 {
                         GameEnd();
                         canvas.FadeOut();
@@ -151,13 +154,13 @@ public class GameMode : MonoBehaviour {
         }
         //３．ゲーム設定
         //playerの生成
-            player = BaseCharacter.CreateCharacter("a").AddComponent<Player>();
-            player.tag = "Player";
-            Objects.AddObject(player.transform.gameObject);
+        player = Player.CreatePlayer("a").GetComponent<Player>();
+        player.tag = "Player";
+        ObjectManager.AddObject(player.transform.gameObject);
 
 
         controller.player = player;
-            controller.camera.player = player.gameObject;
+        controller.camera.player = player.gameObject;
 
         //４．オブジェクト情報
 
@@ -176,9 +179,9 @@ public class GameMode : MonoBehaviour {
     void GameEnd()
     {
         mode = MODE.TITLE;
+        Objects.AllClear();
         controller.player = null;
         player = null;
-        Objects.AllClear();
     }
 
     void GameStop()
@@ -187,13 +190,15 @@ public class GameMode : MonoBehaviour {
     }
     void ObjectInstance()
     {
-        for(int i = 0; i < 100; i++)
+        for (int i = 0; i < 100; i++)
         {
-            Enemy g = BaseCharacter.CreateCharacter("Prefabs/test").AddComponent<Enemy>();
-            g.transform.position = Math.RotateY(new Vector3(0, 0, 1), i*10, i*20);
-            g.transform.localScale = new Vector3(i*2, i*2,i*2);
-            g.SetEnemy(player.gameObject);
-            Objects.AddObject(g.gameObject);
+                if(i>=5)
+            {
+                GameObject g = Enemy.CreateEnemy("Prefabs/rob_001");
+                g.transform.position = Math.RotateY(new Vector3(0, 0, 1), i * 3, i * i);
+                ObjectManager.AddObject(g.gameObject);
+                g.GetComponent<Enemy>().SetEnemy(player.gameObject);
+            }
         }
     }
 }

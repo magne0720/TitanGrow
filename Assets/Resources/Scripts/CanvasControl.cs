@@ -82,7 +82,7 @@ public class CanvasControl : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Q))
         {
-            AddDestItem(Enemy.Create("a")as GameObject);
+            AddDestItem(Enemy.CreateCharacter("a")as GameObject);
         }
         DispDestItem();
 
@@ -148,7 +148,7 @@ public class CanvasControl : MonoBehaviour
 
     private void DispDestItem()
     {
-        float size = 1.0f;
+        //float size = 1.0f;
         int count = 0;
         foreach(GameObject g in destItems)
         {

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectManager : MonoBehaviour {
-
+public class ObjectManager : MonoBehaviour
+{
+    
     public static List<GameObject> GameObjects;//ゲームに使用するオブジェクト
-
+    public List<GameObject> GameObjects_copy;
 	// Use this for initialization
 	void Start () {
         GameObjects = new List<GameObject>();
@@ -13,16 +14,16 @@ public class ObjectManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        GameObjects_copy = GameObjects;
 	}
 
-    public void AddObject(GameObject g)
+    public static void AddObject(GameObject g)
     {
         GameObjects.Add(g);
     }
-    public void removeObject(GameObject g)
+    public static void removeObject(GameObject g)
     {
-        Destroy(g);
+        GameObjects.Remove(g);
     }
     public void AllClear()
     {
