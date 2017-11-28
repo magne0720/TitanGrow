@@ -17,6 +17,7 @@ public class BaseCharacter : MonoBehaviour
     public float serchRange = 0;//サーチ範囲
     public bool isGround;
     Rigidbody rigid;
+    public List<GameObject> SerchObjects;
 
     public static GameObject CreateCharacter(string path)
     {
@@ -30,6 +31,8 @@ public class BaseCharacter : MonoBehaviour
         {
             baseCharacter = Instantiate(Resources.Load(path, typeof(GameObject))) as GameObject;
         }
+        baseCharacter.AddComponent<BaseCharacter>();
+
         return baseCharacter;
     }
     public void Initialize()
@@ -38,6 +41,11 @@ public class BaseCharacter : MonoBehaviour
         {
             rigid = gameObject.AddComponent<Rigidbody>();
         }
+        rigid.freezeRotation = true;
+        serchHeight = 200.0f;
+        serchRange = 120.0f;
+        SetSpeed(transform.localScale.magnitude);
+        MyDirection = transform.forward;
     }
 
     //Use this for initialization
@@ -88,15 +96,9 @@ public class BaseCharacter : MonoBehaviour
 
         MyPosition.y = transform.position.y;
 
-
-        if (isGround)
-        {
-            MyPosition.y -= 0.05f;
-        }
-
         transform.position = MyPosition;
 
-        //SetDirection(moving);
+        SetDirection(moving);
         if (Math.Length(moving) >= 1.0f)
         {
             Quaternion q = Quaternion.LookRotation(moving);
@@ -208,9 +210,35 @@ public class BaseCharacter : MonoBehaviour
     }
 
 
+    public List<GameObject> SerchObject(List<GameObject> objects, string tag = "Enemy")
+    {
+        List<GameObject> objs = new List<GameObject>();
+        float dis = 0;
+        float ans = serchHeight;
+        float temp_ans = serchHeight;
+
+        foreach (GameObject g in objects)
+        {
+            if (g.tag == tag)
+            {
+                g.GetComponent<Renderer>().material.color = Color.black;
+                //探す計算処理
+                dis = Math.SerchCone(MyPosition, MyDirection + MyPosition, serchHeight, serchRange, g.transform.position);
+                //視界に見えているもの
+                if (ans >= dis)
+                {
+                    objs.Add(g);
+                }
+            }
+        }
+        SerchObjects = objs;
+        return objs;
+    }
+
     void OnCollisionEnter(Collision c)
     {
-
+        if(c.transform.name == "Ground")
+        isGround = true;
     }
     void OnCollisionStay(Collision c)
     {
@@ -218,7 +246,8 @@ public class BaseCharacter : MonoBehaviour
     }
     void OnCollisionExit(Collision c)
     {
-
+        if (c.transform.name == "Ground")
+            isGround = false;
     }
     public void SetSpeed(float sp)
     {
@@ -231,6 +260,13 @@ public class BaseCharacter : MonoBehaviour
     }
     public void SetMass(float s)
     {
-        rigid.mass = s;
+       // rigid.mass = s;
+    }
+    public void UnderGround()
+    {
+        if (transform.position.y < -1)
+        {
+            transform.position = new Vector3(transform.position.x,1,transform.position.z);
+        }
     }
 }

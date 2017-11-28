@@ -35,7 +35,7 @@ public class Math
     public static float SerchCone(Vector3 pos, Vector3 dir, float height, float range, Vector3 target)
     {
         float dis = float.MaxValue;
-        Vector3 moving = (dir - pos);
+        Vector3 moving = dir;
         float dot = Dot(target - pos, moving - pos);
         // 0≦(p-a)･(d-a)≦h^2 (･はベクトルの内積)
         if (0 <= dot && dot <= height * height)
@@ -98,7 +98,6 @@ public class Math
         //ラジアン = 度 × 円周率 ÷ 180
         return deg * Mathf.PI / 180;
     }
-
     //ラジアンをデグリに変換する(単位は度)
     public static float RagToDeg(float rag)
     {
