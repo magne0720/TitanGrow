@@ -9,15 +9,22 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
+<<<<<<< HEAD
   m_RootGameObject: {fileID: 1101799183862226}
   m_IsPrefabParent: 1
 --- !u!1 &1016234530325214
+=======
+  m_RootGameObject: {fileID: 1641712863031204}
+  m_IsPrefabParent: 1
+--- !u!1 &1641712863031204
+>>>>>>> origin/kosuke.sato
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
+<<<<<<< HEAD
   - component: {fileID: 4241710399344752}
   - component: {fileID: 33877608809816666}
   - component: {fileID: 23072201206018178}
@@ -37,6 +44,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4969962380891790}
   - component: {fileID: 95734611151387736}
+=======
+  - component: {fileID: 4456967164546554}
+  - component: {fileID: 33725404234340496}
+  - component: {fileID: 135295511375088496}
+  - component: {fileID: 23268278196798434}
+>>>>>>> origin/kosuke.sato
   m_Layer: 0
   m_Name: ene_001
   m_TagString: Untagged
@@ -44,6 +57,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+<<<<<<< HEAD
 --- !u!1 &1112529186613772
 GameObject:
   m_ObjectHideFlags: 0
@@ -152,10 +166,14 @@ Transform:
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4789806261932320
+=======
+--- !u!4 &4456967164546554
+>>>>>>> origin/kosuke.sato
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
+<<<<<<< HEAD
   m_GameObject: {fileID: 1112529186613772}
   m_LocalRotation: {x: -0.40379918, y: 0, z: -0, w: 0.9148477}
   m_LocalPosition: {x: -0, y: 0, z: 0}
@@ -196,24 +214,46 @@ Transform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &23055574607835310
+=======
+  m_GameObject: {fileID: 1641712863031204}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &23268278196798434
+>>>>>>> origin/kosuke.sato
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
+<<<<<<< HEAD
   m_GameObject: {fileID: 1112529186613772}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+=======
+  m_GameObject: {fileID: 1641712863031204}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+>>>>>>> origin/kosuke.sato
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
+<<<<<<< HEAD
   - {fileID: 2100010, guid: 5b5015fb23debb548881f1a43e6d3e78, type: 3}
   - {fileID: 2100002, guid: 5b5015fb23debb548881f1a43e6d3e78, type: 3}
   - {fileID: 2100012, guid: 5b5015fb23debb548881f1a43e6d3e78, type: 3}
   - {fileID: 2100014, guid: 5b5015fb23debb548881f1a43e6d3e78, type: 3}
   - {fileID: 2100016, guid: 5b5015fb23debb548881f1a43e6d3e78, type: 3}
+=======
+  - {fileID: 2100000, guid: 9832183e31abd364ca0ac3d86c9db372, type: 2}
+>>>>>>> origin/kosuke.sato
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -221,10 +261,16 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+<<<<<<< HEAD
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 0
+=======
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+>>>>>>> origin/kosuke.sato
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -233,6 +279,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+<<<<<<< HEAD
 --- !u!23 &23072201206018178
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -379,10 +426,14 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33141207345689220
+=======
+--- !u!33 &33725404234340496
+>>>>>>> origin/kosuke.sato
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
+<<<<<<< HEAD
   m_GameObject: {fileID: 1112529186613772}
   m_Mesh: {fileID: 4300004, guid: 5b5015fb23debb548881f1a43e6d3e78, type: 3}
 --- !u!33 &33506530025524942
@@ -430,3 +481,19 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+=======
+  m_GameObject: {fileID: 1641712863031204}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!135 &135295511375088496
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1641712863031204}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+>>>>>>> origin/kosuke.sato
