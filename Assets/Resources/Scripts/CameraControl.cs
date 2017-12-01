@@ -20,8 +20,8 @@ public class CameraControl : MonoBehaviour {
     void Start()
     {
         //初期化
-        speedX = 30.0f;
-        speedY = 30.0f;
+        speedX = 45.0f;
+        speedY = 45.0f;
         distance = 1.0f;
 
         //タグ("Player")を検出
@@ -50,11 +50,28 @@ public class CameraControl : MonoBehaviour {
             {
                 SetCameraFar(5.0f);
             }
-            SetCameraFar(player.transform.localScale.z * 20);
+            SetCameraFar(player.transform.localScale.z * 100);
 
             //playerの移動量分、カメラも移動
             transform.position = player.transform.position;
             //transform.position = new Vector3(0, 0,playerPos.z-10);
+        }
+        else
+        {
+            distance = 7.0f;
+            direction.x += speedX*0.01f;
+            direction.y += speedY*0.01f;
+            if (direction.x >= 360.0f) direction.x = 0.0f;
+            if (direction.x < 0.0f) direction.x = 360.0f;
+            if (direction.y >= CAM_Y_MAX) direction.y = CAM_Y_MAX;
+            if (direction.y < CAM_Y_MIN) direction.y = CAM_Y_MIN;
+
+            float angX = Math.Rotate(Vector3.up, direction.x, CAM_DISTANCE * distance).x;
+            float angY = Math.Rotate(Vector3.left, direction.y, CAM_DISTANCE * distance).y;
+            float angZ = Math.Rotate(Vector3.left, direction.x, CAM_DISTANCE * distance).x;
+            transform.position = new Vector3(angX, angY, angZ);
+
+            transform.LookAt(new Vector3(0,5,0));
         }
     }
 

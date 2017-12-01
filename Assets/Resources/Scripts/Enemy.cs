@@ -37,15 +37,21 @@ public class Enemy : BaseCharacter
         g.name = path;
         g.AddComponent<Enemy>();
 
+        //オブジェクトの追加
+        ObjectManager.AddObject(g);
+
         return g;
     } 
     public static GameObject CreateEnemy(DataBaseManager.ENEMY data)
     {
         GameObject g;
-            g = Instantiate(Resources.Load("Prefabs/"+data.path, typeof(GameObject))) as GameObject;
+            g = Instantiate(Resources.Load("Models/"+data.path, typeof(GameObject))) as GameObject;    
         g.name = data.path;
         g.transform.position = data.pos;
         g.AddComponent<Enemy>();
+        
+        //オブジェクトの追加
+        ObjectManager.AddObject(g);
 
         return g;
     }
@@ -54,6 +60,7 @@ public class Enemy : BaseCharacter
         Enemy e = new Enemy();
         
         e.lastTarget = lastPos;
+
 
         return e;
     }

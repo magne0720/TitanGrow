@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class Player : BaseCharacter
 {
-    private List<GameObject> catchObjects;                        //つかんだものリスト
+    public List<GameObject> catchObjects;                        //つかんだものリスト
 
     public int FoodPoint;                                       //食ったものポイント 
     public float CastAwaySpeed = 1250.0f;                   //投げた時のスピード
@@ -20,13 +20,16 @@ public class Player : BaseCharacter
 
         if (path == "a")
         {
-            g = Instantiate(Resources.Load("Prefabs/Player", typeof(GameObject))) as GameObject;
+            g = Instantiate(Resources.Load("Models/rob_001", typeof(GameObject))) as GameObject;
         }
         else
         {
             g = Resources.Load(path) as GameObject;
         }
         g.AddComponent<Player>();
+
+        //オブジェクトの追加
+        ObjectManager.AddObject(g);
 
         return g;
     }
@@ -37,12 +40,12 @@ public class Player : BaseCharacter
         catchObjects = new List<GameObject>();
         this.transform.name = "Player";
         this.transform.tag = "Player";
-        //GetComponent<Rigidbody>().isKinematic = true;
     }
 
     // Update is called once per frame
     override public void Update()
     {
+        MyPosition = transform.position;
         SerchObject(ObjectManager.GameObjects,"Untagged");
         serchHeight = 3.0f* transform.localScale.z;
         serchRange = 30.0f;
@@ -134,37 +137,25 @@ public class Player : BaseCharacter
     //食べる
     public void Eat()
     {
+        List<GameObject> eats=new List<GameObject>();
+
         foreach (GameObject g in catchObjects)
         {
             //ポイントを得る処理
-            EatPoint(g, FoodPoint);
+            EatPoint(g.GetComponent<EatBase>());
 
             //食べたものを消す処理
             ObjectManager.removeObject(g);
-
-            Destroy(g);
+            
         }
         //リストの初期化
-        //SerchObjects.Clear();
-        //catchObjects.Clear();
+        catchObjects.Clear();
     }
 
     //食べた時のポイントを追加する
-    public void EatPoint(GameObject g, int point)
+    public void EatPoint(EatBase e)
     {
-
-        //Ainimalが含まれている文字列
-        if (g.name.IndexOf("Animal") >= 0)
-        {
-            FoodPoint += 4;
-            GlowCount(FoodPoint);
-        }
-        //Humanが含まれている文字列
-        if (g.name.IndexOf("Human") >= 0)
-        {
-            FoodPoint += 2;
-            GlowCount(FoodPoint);
-        }
+        FoodPoint += e.eatPoint;
     }
     //自身の成長
     public void Grow(int point)

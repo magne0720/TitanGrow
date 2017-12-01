@@ -6,9 +6,9 @@ using UnityEngine;
 //これをアタッチすると以下の行動ができるようになる
 //「移動」「ジャンプ」
 //AIにも対応させるので、ここにはインターフェースの処理を書かないこと
-public class BaseCharacter : MonoBehaviour
+public class BaseCharacter : EatBase
 {
-    public int MyHitpoint;
+    public int HP;
     public float MySpeed;
     public Vector3 MyPosition;
     public Vector3 TargetPosition;
@@ -21,31 +21,38 @@ public class BaseCharacter : MonoBehaviour
 
     public static GameObject CreateCharacter(string path)
     {
-        GameObject baseCharacter;
+        GameObject g;
 
         if (path == "a")
         {
-            baseCharacter = Instantiate(Resources.Load("Prefabs/test", typeof(GameObject)))as GameObject;
+            g = Instantiate(Resources.Load("Prefabs/test", typeof(GameObject)))as GameObject;
         }
         else
         {
-            baseCharacter = Instantiate(Resources.Load(path, typeof(GameObject))) as GameObject;
+            g = Instantiate(Resources.Load(path, typeof(GameObject))) as GameObject;
         }
-        baseCharacter.AddComponent<BaseCharacter>();
+        g.AddComponent<BaseCharacter>();
 
-        return baseCharacter;
+        //オブジェクトの追加
+        ObjectManager.AddObject(g);
+
+        return g;
     }
     public void Initialize()
     {
         if (rigid==null)
         {
             rigid = gameObject.AddComponent<Rigidbody>();
+            gameObject.AddComponent<MeshCollider>();
         }
         rigid.freezeRotation = true;
         serchHeight = 200.0f;
         serchRange = 120.0f;
         SetSpeed(transform.localScale.magnitude);
         MyDirection = transform.forward;
+
+        //食べられたポイント
+        eatPoint = 200;
     }
 
     //Use this for initialization
@@ -109,18 +116,18 @@ public class BaseCharacter : MonoBehaviour
 
     void Damage(int p)
     {
-        MyHitpoint -= p;
+        HP -= p;
     }
 
     void Death()
     {
-        MyHitpoint = 0;
+        HP = 0;
         Destroy(gameObject);
     }
 
     void LiveCheck()
     {
-        if (MyHitpoint <= 0)
+        if (HP <= 0)
             Death();
     }
 
@@ -132,7 +139,6 @@ public class BaseCharacter : MonoBehaviour
     {
         return TargetPosition;
     }
-
     public void SetDirection(Vector3 v)
     {
         MyDirection = v;
@@ -188,7 +194,7 @@ public class BaseCharacter : MonoBehaviour
             if (objects.Count > 0)
                 foreach (GameObject g in objects)
                 {
-                    g.GetComponent<Renderer>().material.color = Color.white;
+
                     //探す計算処理
                     dis = Math.SerchCone(MyPosition, TargetPosition, serchHeight, serchRange, g.transform.position);
                     //視界に見えているもの
@@ -219,15 +225,18 @@ public class BaseCharacter : MonoBehaviour
 
         foreach (GameObject g in objects)
         {
-            if (g.tag == tag)
+            //同期中に削除されたものは見ない
+            if (g != null)
             {
-                g.GetComponent<Renderer>().material.color = Color.black;
-                //探す計算処理
-                dis = Math.SerchCone(MyPosition, MyDirection + MyPosition, serchHeight, serchRange, g.transform.position);
-                //視界に見えているもの
-                if (ans >= dis)
+                if (g.tag == tag)
                 {
-                    objs.Add(g);
+                    //探す計算処理
+                    dis = Math.SerchCone(MyPosition, MyDirection + MyPosition, serchHeight, serchRange, g.transform.position);
+                    //視界に見えているもの
+                    if (ans >= dis)
+                    {
+                        objs.Add(g);
+                    }
                 }
             }
         }

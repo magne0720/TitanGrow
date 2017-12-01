@@ -69,7 +69,7 @@ public class DataBaseManager : MonoBehaviour {
     {
         Enemy.CreateEnemy(path);
     }
-    public void SpawnEnemyWave(string path)
+    public static void SpawnEnemyWave(string path)
     {
         ENEMY enemy = new ENEMY();
 
@@ -82,7 +82,6 @@ public class DataBaseManager : MonoBehaviour {
         }
         //行分け
         string[] lineText = temp.Split('\n');
-        enemysData = new ENEMY[lineText.Length];
         foreach (string line in lineText)
             if (line[0] != '#')//コメントアウトは読み込まない
             {
@@ -94,7 +93,7 @@ public class DataBaseManager : MonoBehaviour {
                 enemy.pos.y = int.Parse(dataText[2]);
                 enemy.pos.z = int.Parse(dataText[3]);
                 Debug.Log(enemy.path + ",{" + enemy.pos.x + "," + enemy.pos.y + "," + enemy.pos.z + "}");
-               Enemy.CreateEnemy(enemy);
+               GameObject g=Enemy.CreateEnemy(enemy);
             }
     }
 }

@@ -1,20 +1,24 @@
 fileFormatVersion: 2
-guid: a577b7b69dfec6541b20538dbd1e1391
-timeCreated: 1511758440
+guid: 062a04a77906afb4dab4bb7366fc9522
+timeCreated: 1512108237
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
     400000: //RootNode
-    2100000: COG_1
-    2100002: COG_2
-    2100004: COG_3
-    2100006: COG_4
-    2100008: COG_5
+    2100000: PWL_5
+    2100002: PWL_1
+    2100004: PWL_4
+    2100006: PWL_7
+    2100008: PWL_6
+    2100010: PWL_3
+    2100012: PWL_2
+    2100014: PWL_9
+    2100016: PWL_8
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Cylinder001
+    4300000: PWL_Body
     9500000: //RootNode
   externalObjects: {}
   materials:

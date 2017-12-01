@@ -49,7 +49,12 @@ public class Controller : MonoBehaviour {
 
         if (Input.GetButtonDown("cross")) player.GetComponent<Player>().Release();
 
+        if (Input.GetButton("R1")) camera.distance += 0.02f;
+        if (Input.GetButton("R2")) camera.distance -= 0.02f;
+
         //if (Input.GetButtonDown("circle")) decision();
+
+
 
     }
 }

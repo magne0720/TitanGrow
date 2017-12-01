@@ -19,16 +19,19 @@ public class ObjectManager : MonoBehaviour
 
     public static void AddObject(GameObject g)
     {
+        g.name +=" "+ GameObjects.Count.ToString();
         GameObjects.Add(g);
     }
     public static void removeObject(GameObject g)
     {
-        GameObjects.Remove(g);
+        Destroy(g);
+        //GameObjects.Remove(g);
     }
     public void AllClear()
     {
         foreach(GameObject g in GameObjects)
         {
+            Debug.Log("objectsize=" + GameObjects.IndexOf(g));
             removeObject(g);
         }
         GameObjects.Clear();

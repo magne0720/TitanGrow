@@ -1,4 +1,5 @@
-﻿#name,speed,eat
-rob_001 100 10 100
-rob_001 100 20 100
-rob_001 100 30 100
+﻿#path x y z eat
+rob_001 40 1 10
+rob_001 80 2 10
+rob_001 10 3 10
+rob_002 0 3 1

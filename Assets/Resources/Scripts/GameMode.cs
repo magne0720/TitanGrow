@@ -162,6 +162,8 @@ public class GameMode : MonoBehaviour {
         controller.player = player;
         controller.camera.player = player.gameObject;
 
+        cam.distance = 1.0f;
+
         //４．オブジェクト情報
 
         //５．オブジェクト追加
@@ -190,15 +192,6 @@ public class GameMode : MonoBehaviour {
     }
     void ObjectInstance()
     {
-        for (int i = 0; i < 100; i++)
-        {
-                if(i>=5)
-            {
-                GameObject g = Enemy.CreateEnemy("Prefabs/rob_001");
-                g.transform.position = Math.RotateY(new Vector3(0, 0, 1), i * 3, i * i);
-                ObjectManager.AddObject(g.gameObject);
-                g.GetComponent<Enemy>().SetEnemy(player.gameObject);
-            }
-        }
+        DataBaseManager.SpawnEnemyWave("EnemyData");
     }
 }
