@@ -89,9 +89,9 @@ public class DataBaseManager : MonoBehaviour {
                 //敵の数
                 //敵の種類　ｘ　ｙ　ｚ
                 enemy.path = dataText[0];
-                enemy.pos.x = int.Parse(dataText[1]);
-                enemy.pos.y = int.Parse(dataText[2]);
-                enemy.pos.z = int.Parse(dataText[3]);
+                enemy.pos.x = float.Parse(dataText[1]);
+                enemy.pos.y = float.Parse(dataText[2]);
+                enemy.pos.z = float.Parse(dataText[3]);
                 Debug.Log(enemy.path + ",{" + enemy.pos.x + "," + enemy.pos.y + "," + enemy.pos.z + "}");
                GameObject g=Enemy.CreateEnemy(enemy);
             }
