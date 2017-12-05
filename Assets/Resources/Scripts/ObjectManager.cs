@@ -17,22 +17,25 @@ public class ObjectManager : MonoBehaviour
         GameObjects_copy = GameObjects;
 	}
 
+    public static void StartUpData()
+    {
+        GameObjects = new List<GameObject>();
+    }
+
     public static void AddObject(GameObject g)
     {
-        g.name +=" "+ GameObjects.Count.ToString();
+        //g.name +=" "+ GameObjects.Count.ToString();
         GameObjects.Add(g);
     }
     public static void removeObject(GameObject g)
     {
-        Destroy(g);
-        //GameObjects.Remove(g);
+        GameObjects.Remove(g);
     }
-    public void AllClear()
+    public static void AllClear()
     {
         foreach(GameObject g in GameObjects)
         {
-            Debug.Log("objectsize=" + GameObjects.IndexOf(g));
-            removeObject(g);
+            Destroy(g);
         }
         GameObjects.Clear();
     }

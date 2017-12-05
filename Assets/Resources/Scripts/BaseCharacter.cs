@@ -21,20 +21,21 @@ public class BaseCharacter : EatBase
 
     public static GameObject CreateCharacter(string path)
     {
+        Debug.Log(path);
+        path.Substring(0, 7);
         GameObject g;
-
-        if (path == "a")
+        try
         {
-            g = Instantiate(Resources.Load("Prefabs/test", typeof(GameObject)))as GameObject;
+            g = Instantiate(Resources.Load("Models/" + path, typeof(GameObject))) as GameObject;
         }
-        else
+        catch
         {
-            g = Instantiate(Resources.Load(path, typeof(GameObject))) as GameObject;
-        }
-        g.AddComponent<BaseCharacter>();
+            //オブジェクトパスが見つからない場合
+                g = Instantiate(Resources.Load("Models/DummyPre", typeof(GameObject))) as GameObject;
+                Debug.Log("Object Null");
+          }
+        //g.AddComponent<BaseCharacter>();
 
-        //オブジェクトの追加
-        ObjectManager.AddObject(g);
 
         return g;
     }
@@ -43,16 +44,27 @@ public class BaseCharacter : EatBase
         if (rigid==null)
         {
             rigid = gameObject.AddComponent<Rigidbody>();
-            gameObject.AddComponent<MeshCollider>();
+            gameObject.AddComponent<BoxCollider>().center.Set(0,0.5f,0);
         }
         rigid.freezeRotation = true;
         serchHeight = 200.0f;
-        serchRange = 120.0f;
-        SetSpeed(transform.localScale.magnitude);
+        serchRange = 22.5f;
+        SetSpeed(0.01f);
+        //SetSpeed(transform.localScale.magnitude);
         MyDirection = transform.forward;
 
         //食べられたポイント
         eatPoint = 200;
+
+
+        //オブジェクトの追加
+        ObjectManager.AddObject(gameObject);
+
+    }
+    public void Initialize(Vector3 pos, float speed)
+    {
+        MyPosition = pos;
+        MySpeed = speed;
     }
 
     //Use this for initialization
@@ -71,11 +83,7 @@ public class BaseCharacter : EatBase
         }
         //LiveCheck();
     }
-    public void Initialize(Vector3 pos, float speed)
-    {
-        MyPosition = pos;
-        MySpeed = speed;
-    }
+  
     public void MoveRight()
     {
         TargetPosition.x += 1.0f;
@@ -94,6 +102,11 @@ public class BaseCharacter : EatBase
     }
     public void Move()
     {
+        if (transform.parent != null)
+        {
+            return;
+        }
+
        Vector3 moving = TargetPosition - MyPosition;
        if (Math.Length(moving) <= 0.002f) return;
        moving.y = 0;
@@ -218,11 +231,13 @@ public class BaseCharacter : EatBase
 
     public List<GameObject> SerchObject(List<GameObject> objects, string tag = "Enemy")
     {
+        if (objects == null) return null;
+
         List<GameObject> objs = new List<GameObject>();
         float dis = 0;
         float ans = serchHeight;
         float temp_ans = serchHeight;
-
+        
         foreach (GameObject g in objects)
         {
             //同期中に削除されたものは見ない
@@ -231,16 +246,23 @@ public class BaseCharacter : EatBase
                 if (g.tag == tag)
                 {
                     //探す計算処理
-                    dis = Math.SerchCone(MyPosition, MyDirection + MyPosition, serchHeight, serchRange, g.transform.position);
+                    dis = Math.Length(g.transform.position - transform.position);
                     //視界に見えているもの
                     if (ans >= dis)
                     {
-                        objs.Add(g);
+                        //扇形に見る
+                        if (Math.OnDirectionFan(MyPosition,MyDirection, g.transform.position,serchRange))
+                        {
+                            objs.Add(g);
+                        }
                     }
                 }
             }
         }
         SerchObjects = objs;
+        Debug.DrawRay(MyPosition, MyDirection * serchHeight, Color.red, 0.3f);
+        Debug.DrawRay(MyPosition, Math.getDirectionDegree(MyDirection, serchRange,serchHeight), Color.green, 0.3f);
+        Debug.DrawRay(MyPosition, Math.getDirectionDegree(MyDirection, -serchRange,serchHeight), Color.green, 0.3f);
         return objs;
     }
 

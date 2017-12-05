@@ -19,11 +19,7 @@ public class CameraControl : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        //初期化
-        speedX = 45.0f;
-        speedY = 45.0f;
-        distance = 1.0f;
-
+        Initialize();
         //タグ("Player")を検出
         player = GameObject.FindGameObjectWithTag("Player");
         if (controlCamera == null)
@@ -53,7 +49,7 @@ public class CameraControl : MonoBehaviour {
             SetCameraFar(player.transform.localScale.z * 100);
 
             //playerの移動量分、カメラも移動
-            transform.position = player.transform.position;
+            transform.position = new Vector3(player.transform.position.z,0,player.transform.position.z);
             //transform.position = new Vector3(0, 0,playerPos.z-10);
         }
         else
@@ -75,6 +71,18 @@ public class CameraControl : MonoBehaviour {
         }
     }
 
+    public void Initialize()
+    {  
+        //初期化
+        speedX = 3.0f;
+        speedY = 3.0f;
+
+        distance = 1.0f;
+
+        direction.x = 0;
+        direction.y = 210.0f;
+    }
+
     public void InputJoystick(float x, float y)
     {
         if (player != null)
@@ -89,9 +97,9 @@ public class CameraControl : MonoBehaviour {
             float angX = Math.Rotate(Vector3.up, direction.x, CAM_DISTANCE * distance * player.transform.localScale.x).x;
             float angY = Math.Rotate(Vector3.left, direction.y, CAM_DISTANCE * distance * player.transform.localScale.y).y;
             float angZ = Math.Rotate(Vector3.left, direction.x, CAM_DISTANCE * distance * player.transform.localScale.z).x;
-            transform.position = new Vector3(angX, angY, angZ) + transform.position;
+            transform.position = new Vector3(angX, angY, angZ) + new Vector3(player.transform.position.x,0,player.transform.position.z);
 
-            transform.LookAt(player.transform.position);
+            transform.LookAt(new Vector3(player.transform.position.x,0,player.transform.position.z));
         }
     }
     void SetDistance(float s)

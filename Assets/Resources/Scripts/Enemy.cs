@@ -23,35 +23,24 @@ public class Enemy : BaseCharacter
     public GameObject testObject = null;//テスト用オブジェクト
     private float timer = 0;
 
-    public static GameObject CreateEnemy(string path="Prefabs/test")
+    public static GameObject CreateEnemy(string path="a")
     {
-        GameObject g;
-        if (path == "a")
-        {
-             g = Instantiate(Resources.Load("Prefabs/test", typeof(GameObject))) as GameObject;
-        }
-        else
-        {
-             g = Instantiate(Resources.Load(path, typeof(GameObject))) as GameObject;
-        }
+        //GameObject g = CreateCharacter(path);
+        GameObject g = null;
+
         g.name = path;
         g.AddComponent<Enemy>();
 
-        //オブジェクトの追加
-        ObjectManager.AddObject(g);
 
         return g;
     } 
     public static GameObject CreateEnemy(DataBaseManager.ENEMY data)
     {
-        GameObject g;
-            g = Instantiate(Resources.Load("Models/"+data.path, typeof(GameObject))) as GameObject;    
-        g.name = data.path;
+        GameObject g = CreateCharacter(data.path);
+        g.name = data.name;
         g.transform.position = data.pos;
+        g.transform.localScale *= data.scale;
         g.AddComponent<Enemy>();
-        
-        //オブジェクトの追加
-        ObjectManager.AddObject(g);
 
         return g;
     }
@@ -77,6 +66,7 @@ public class Enemy : BaseCharacter
     // Update is called once per frame
     void Update()
     {
+        MyPosition = transform.position;
         ActionBrain();
         if(battleEnemy!=null)
         SetTarget(battleEnemy.transform.position - transform.position);

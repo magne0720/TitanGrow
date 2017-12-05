@@ -20,7 +20,7 @@ public class Player : BaseCharacter
 
         if (path == "a")
         {
-            g = Instantiate(Resources.Load("Models/rob_001", typeof(GameObject))) as GameObject;
+            g = Instantiate(Resources.Load("Models/rob_003", typeof(GameObject))) as GameObject;
         }
         else
         {
@@ -28,8 +28,8 @@ public class Player : BaseCharacter
         }
         g.AddComponent<Player>();
 
-        //オブジェクトの追加
-        ObjectManager.AddObject(g);
+        g.transform.name = "Player";
+        g.transform.tag = "Player";
 
         return g;
     }
@@ -45,23 +45,21 @@ public class Player : BaseCharacter
     // Update is called once per frame
     override public void Update()
     {
-        MyPosition = transform.position;
+        //MyPosition = transform.position;
         SerchObject(ObjectManager.GameObjects,"Untagged");
-        serchHeight = 3.0f* transform.localScale.z;
-        serchRange = 30.0f;
         Move();
         //成長の制御
         Grow(FoodPoint);
-        SetMass(transform.localScale.magnitude);
-        UnderGround();
+        //SetMass(transform.localScale.magnitude);
+        //UnderGround();
     }
 
     //タグがFoodなら当たったものをCatchにもっていく
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Food")
+        if (collision.transform.tag != "Untagged")
         {
-            Catch(collision.transform.gameObject);
+            collision.transform.GetComponent<Rigidbody>().AddForce(transform.forward * CastAwaySpeed * transform.localScale.z);
         }
     }
     public void CatchAction()
@@ -98,7 +96,7 @@ public class Player : BaseCharacter
                 {
                     catchObjects.Add(g);
                     //子にする
-                    // g.transform.parent = this.transform;
+                    //g.transform.parent = this.transform;
                     //子のあたり判定を消す
                     //g.GetComponent<Collider>().enabled = false;
                     //デバッグ用
@@ -116,6 +114,8 @@ public class Player : BaseCharacter
             //g.GetComponent<Collider>().enabled = true;
             //自身のz軸方面に飛ばす
             g.GetComponent<Rigidbody>().AddForce(transform.forward * CastAwaySpeed * transform.localScale.z);
+            //子から話す
+            g.transform.parent = null;
          }
         //リストの初期化
         catchObjects.Clear();
@@ -146,6 +146,7 @@ public class Player : BaseCharacter
 
             //食べたものを消す処理
             ObjectManager.removeObject(g);
+            Destroy(g);
             
         }
         //リストの初期化
@@ -168,14 +169,18 @@ public class Player : BaseCharacter
                 GrowTime = 0;
                 FoodPoint--;
             }
-            transform.localScale -= GrowRate;
+            return;
         }
+        else
+        {
+            //大きくなる
+            transform.localScale += GrowRate;
 
-        //大きくなる
-        transform.localScale += GrowRate;
+            serchHeight = 3.0f * transform.localScale.z;
 
-        //大きさに比例してスピードが上がる
-        SetSpeed(transform.localScale.magnitude);
+            //大きさに比例してスピードが上がる
+            SetSpeed(transform.localScale.magnitude);
+        }
     }
 
     public void GlowCount(int point)

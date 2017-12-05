@@ -6,10 +6,13 @@ public class DataBaseManager : MonoBehaviour {
 
     public struct ENEMY
     {
+        public string name;
+        public string cate;
+        public string guid;
         public string path;
-        public float speed;
-        public int eat;
         public Vector3 pos;
+        public float speed;
+        public float scale;
     }
     public struct OBJECT
     {
@@ -17,13 +20,11 @@ public class DataBaseManager : MonoBehaviour {
         int eat;
     }
 
-    ENEMY[] enemysData;
-    OBJECT[] objectsData;
+    static ENEMY[] enemysData;
+    static OBJECT[] objectsData;
 
     // Use this for initialization
     void Start () {
-
-        //SetUpEnemyData();
         //SpawnEnemyWave("EnemyData");
     }
 	
@@ -36,9 +37,7 @@ public class DataBaseManager : MonoBehaviour {
 	}
     void SetUpDataBase()
     {
-        string temp;
-        //プレイヤーベース
-        temp = Resources.Load("Others/PlayerData", typeof(TextAsset)).ToString();
+        string temp = Resources.Load("Others/PlayerData", typeof(TextAsset)).ToString();
         //行分け
         string[] lineText = temp.Split('\n');
         foreach (string s in lineText)
@@ -47,37 +46,44 @@ public class DataBaseManager : MonoBehaviour {
 
             }
     }
-    void SetUpEnemyData()
+    public static void SetUpEnemyData()
     {
-        string temp;
+        string temp = Resources.Load("Others/AboutData", typeof(TextAsset)).ToString();
         int count = 0;
-        temp = Resources.Load("Others/EnemyData", typeof(TextAsset)).ToString();
         //行分け
         string[] lineText = temp.Split('\n');
         enemysData = new ENEMY[lineText.Length];
-        foreach (string s in lineText)
-            if (s.StartsWith("#") )
+        foreach (string line in lineText)
+            if (line.StartsWith("#"))
             {
-                string[] dataText = s.Split(',');
-                enemysData[count].path = dataText[0];
-                enemysData[count].speed = float.Parse(dataText[1]);
-                enemysData[count].eat = int.Parse(dataText[2]);
+                //コメントアウトの部分なので何もしない
+            }
+            else
+            {
+                //タブ区切り(.TSV) 
+                string[] dataText = line.Split('\t');
+                enemysData[count].name = dataText[0];
+                enemysData[count].cate = dataText[1];
+                enemysData[count].guid = dataText[2];
+                enemysData[count].path = dataText[3];
                 count++;
             }
+    }
+    public static ENEMY GetEnemyNum(int num)
+    {
+        return enemysData[num];
     }
     public static void SpawnEnemy(string path)
     {
         Enemy.CreateEnemy(path);
     }
-    public static void SpawnEnemyWave(string path)
+    public static void SpawnEnemyWave(string path,Vector3 offset=new Vector3())
     {
         ENEMY enemy = new ENEMY();
 
-        string temp;
-        temp = Resources.Load("Others/"+path, typeof(TextAsset)).ToString();
+        string temp = Resources.Load("Others/" + path, typeof(TextAsset)).ToString();
         if(temp==null)
         {
-            Debug.Log("NoData[" + temp+"]");
             return;
         }
         //行分け
@@ -87,13 +93,37 @@ public class DataBaseManager : MonoBehaviour {
             {
                 string[] dataText = line.Split(' ');
                 //敵の数
-                //敵の種類　ｘ　ｙ　ｚ
-                enemy.path = dataText[0];
+                //敵の種類　ｘ　ｙ　Z    scale(記述なしで１)
+                enemy = GetEnemyData(dataText[0]);
                 enemy.pos.x = float.Parse(dataText[1]);
                 enemy.pos.y = float.Parse(dataText[2]);
                 enemy.pos.z = float.Parse(dataText[3]);
-                Debug.Log(enemy.path + ",{" + enemy.pos.x + "," + enemy.pos.y + "," + enemy.pos.z + "}");
+                if (dataText.Length >= 5)
+                {
+                    //enemy.scale = float.Parse(dataText[4]);これではいけない
+                    //ene_001 2 3 4 ←４の右側に空白がある場合形式エラーが起きる
+                    //成功検証のためTryParseを利用
+                    if(!float.TryParse(dataText[4],out enemy.scale))
+                    {
+                        //空白があったら大体スケールの変更はないので等倍
+                        enemy.scale = 1.0f;
+                    }
+                }
                GameObject g=Enemy.CreateEnemy(enemy);
             }
+    }
+    //パスから敵データの取得
+    static ENEMY GetEnemyData(string path)
+    {
+        ENEMY e = new ENEMY();
+        foreach (ENEMY s in enemysData)
+        {
+            if(s.path!=null)
+            if (s.path.Substring(0, 7) == path.Substring(0, 7))
+            {
+                e = s;
+            }
+        }
+        return e;
     }
 }
