@@ -96,7 +96,7 @@ public class Player : BaseCharacter
                 {
                     catchObjects.Add(g);
                     //子にする
-                    //g.transform.parent = this.transform;
+                    g.transform.parent = this.transform;
                     //子のあたり判定を消す
                     //g.GetComponent<Collider>().enabled = false;
                     //デバッグ用

@@ -243,6 +243,6 @@ public class GameMode : MonoBehaviour {
 
     void ObjectInstance()
     {
-        DataBaseManager.SpawnEnemyWave("EnemyData");
+        DataBaseManager.SpawnEnemyWave("EnemyPos");
     }
 }

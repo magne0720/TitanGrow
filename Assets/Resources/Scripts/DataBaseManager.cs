@@ -13,7 +13,18 @@ public class DataBaseManager : MonoBehaviour {
         public Vector3 pos;
         public float speed;
         public float scale;
+        public ENEMY(string c="non")
+        {
+            name = "DummyPre";
+            cate = c;
+            guid = "欠番";
+            path = "DummyPre";
+            pos = new Vector3(0,0,0);
+            speed = 1.0f;
+            scale = 1.0f;
+        }
     }
+
     public struct OBJECT
     {
         string path;
@@ -115,7 +126,7 @@ public class DataBaseManager : MonoBehaviour {
     //パスから敵データの取得
     static ENEMY GetEnemyData(string path)
     {
-        ENEMY e = new ENEMY();
+        ENEMY e = new ENEMY("non");
         foreach (ENEMY s in enemysData)
         {
             if(s.path!=null)
