@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 95427202121695570}
   - component: {fileID: 65771595354155846}
   - component: {fileID: 54315236919849412}
-  - component: {fileID: 114347844246531962}
+  - component: {fileID: 114375264470914468}
   m_Layer: 0
   m_Name: 160
   m_TagString: Untagged
@@ -157,7 +157,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1654116473097634}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -54, y: 0.5, z: -42}
+  m_LocalPosition: {x: -48, y: 0.5, z: -54}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4724163928172216}
@@ -356,7 +356,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.4, y: 2, z: 0.4}
+  m_Size: {x: 0.5, y: 2, z: 0.5}
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!95 &95427202121695570
 Animator:
@@ -375,7 +375,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114347844246531962
+--- !u!114 &114375264470914468
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -383,10 +383,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1654116473097634}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f1257a95fb108d4da1cd0ee028aa177, type: 3}
+  m_Script: {fileID: 11500000, guid: 62edf2825f948154f9cf21760d91692d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Efect: {fileID: 1347723127960898, guid: dd6e4211710ffb04290432291d8fb8b5, type: 2}
   Effect2: {fileID: 1458354214639480, guid: d057890b9de6d4441a74aeefaf1e299d, type: 2}
-  G: {fileID: 1340203492913862, guid: 72666b7b844a1bb4a83597493133e9c5, type: 2}
+  RockPiece: {fileID: 1289316841626030, guid: dba737ab791f36645be2fe052161b9a4, type: 2}
+  WoodPiece: {fileID: 1685060585916786, guid: 81d4206a91cb8c14ebffa20cd8435912, type: 2}
+  Type: wood
   flg: 0

@@ -21,10 +21,9 @@ GameObject:
   - component: {fileID: 4641649181555296}
   - component: {fileID: 33383190234973474}
   - component: {fileID: 23614711078508056}
-  - component: {fileID: 95844580054472596}
   - component: {fileID: 65150564948175014}
   - component: {fileID: 54503784877413780}
-  - component: {fileID: 114466558703306906}
+  - component: {fileID: 114702221007944442}
   m_Layer: 0
   m_Name: iwa
   m_TagString: Untagged
@@ -40,8 +39,8 @@ Transform:
   m_GameObject: {fileID: 1062661522248472}
   m_LocalRotation: {x: -0.70710677, y: -0.000000022476463, z: -0.000000084293696,
     w: 0.7071068}
-  m_LocalPosition: {x: -64, y: 0.5, z: -38}
-  m_LocalScale: {x: 7.3752017, y: 7.3752017, z: 7.3752017}
+  m_LocalPosition: {x: 0, y: 0.493, z: 0}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -112,26 +111,9 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.08493642, y: 0.072667435, z: 0.06917933}
-  m_Center: {x: -0.00008833772, y: 0.0094460305, z: 0.041155804}
---- !u!95 &95844580054472596
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1062661522248472}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 3bb8f6c63ceae3e48acdf23c1a40a8b2, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114466558703306906
+  m_Size: {x: 0.0924752, y: 0.08259529, z: 0.08434055}
+  m_Center: {x: -0.0062376023, y: 0.01563788, z: 0.03862972}
+--- !u!114 &114702221007944442
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -139,10 +121,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1062661522248472}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f1257a95fb108d4da1cd0ee028aa177, type: 3}
+  m_Script: {fileID: 11500000, guid: 62edf2825f948154f9cf21760d91692d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Efect: {fileID: 1347723127960898, guid: dd6e4211710ffb04290432291d8fb8b5, type: 2}
   Effect2: {fileID: 1458354214639480, guid: d057890b9de6d4441a74aeefaf1e299d, type: 2}
-  G: {fileID: 1340203492913862, guid: 72666b7b844a1bb4a83597493133e9c5, type: 2}
+  RockPiece: {fileID: 1289316841626030, guid: dba737ab791f36645be2fe052161b9a4, type: 2}
+  WoodPiece: {fileID: 1685060585916786, guid: 81d4206a91cb8c14ebffa20cd8435912, type: 2}
+  Type: rock
   flg: 0
