@@ -12,19 +12,22 @@ public class Player : BaseCharacter
     public int FoodPoint;                                       //食ったものポイント 
     public float CastAwaySpeed = 1250.0f;                   //投げた時のスピード
     public float GrowTime = 0.0f;                                //成長が止まっている時間
-    public Vector3 GrowRate = new Vector3(0.05f, 0.05f, 0.05f);  //大きさの倍率
+    public Vector3 GrowRate = new Vector3(0.001f, 0.001f, 0.001f);  //大きさの倍率
 
     public static GameObject CreatePlayer(string path)
     {
         GameObject g;
 
-        if (path == "a")
+        path.Substring(0, 7);
+        try
         {
-            g = Instantiate(Resources.Load("Models/rob_003", typeof(GameObject))) as GameObject;
+            g = Instantiate(Resources.Load("Models/" + path, typeof(GameObject))) as GameObject;
         }
-        else
+        catch
         {
-            g = Resources.Load(path) as GameObject;
+            //オブジェクトパスが見つからない場合
+            g = Instantiate(Resources.Load("Models/DummyPre", typeof(GameObject))) as GameObject;
+            Debug.Log("Object Null");
         }
         g.AddComponent<Player>();
 
@@ -46,10 +49,10 @@ public class Player : BaseCharacter
     override public void Update()
     {
         //MyPosition = transform.position;
-        SerchObject(ObjectManager.GameObjects,"Untagged");
-        Move();
         //成長の制御
         Grow(FoodPoint);
+        SerchObject(ObjectManager.GameObjects,"Untagged");
+        Move();
         //SetMass(transform.localScale.magnitude);
         //UnderGround();
     }

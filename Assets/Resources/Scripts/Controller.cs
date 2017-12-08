@@ -12,6 +12,7 @@ public class Controller : MonoBehaviour {
     CameraControl cCam;
 
     public Player player;
+    private bool isControll;
 
     void Start()
     {
@@ -20,7 +21,7 @@ public class Controller : MonoBehaviour {
 
     void Update()
     {
-        if (player != null)
+        if (isControll)
         {
             //カメラ操作
             float cameraX = Input.GetAxis("MouseX");
@@ -46,7 +47,6 @@ public class Controller : MonoBehaviour {
             if (Input.GetButton("R2")) cCam.distance -= 0.02f;
             //デバッグ用(成長抑制)
             if (Input.GetButtonDown("L1")) player.FoodPoint++;
-
         }
     }
     public void SetCamera(CameraControl c)
@@ -57,5 +57,9 @@ public class Controller : MonoBehaviour {
     {
         player = p;
         cCam.player = p.gameObject;
+    }
+    public void SetControll(bool  isOK=true)
+    {
+        isControll = isOK;
     }
 }

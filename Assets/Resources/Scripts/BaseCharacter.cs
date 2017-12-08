@@ -16,25 +16,22 @@ public class BaseCharacter : EatBase
     public float serchHeight = 0;//サーチ距離
     public float serchRange = 0;//サーチ範囲
     public bool isGround;
-    Rigidbody rigid;
     public List<GameObject> SerchObjects;
 
     public static GameObject CreateCharacter(string path)
     {
-        Debug.Log(path);
-        path.Substring(0, 7);
+        string temp=path.Substring(0, 7);
         GameObject g;
         try
         {
-            g = Instantiate(Resources.Load("Models/" + path, typeof(GameObject))) as GameObject;
+            g = Instantiate(Resources.Load("Models/" + temp, typeof(GameObject))) as GameObject;
         }
         catch
         {
             //オブジェクトパスが見つからない場合
-                g = Instantiate(Resources.Load("Models/DummyPre", typeof(GameObject))) as GameObject;
-                Debug.Log("Object Null");
+                g = Instantiate(Resources.Load("Models/OUT_BOX", typeof(GameObject))) as GameObject;
+                Debug.Log("Object Null="+temp);
           }
-        //g.AddComponent<BaseCharacter>();
 
 
         return g;
@@ -44,9 +41,9 @@ public class BaseCharacter : EatBase
         if (rigid==null)
         {
             rigid = gameObject.AddComponent<Rigidbody>();
-            gameObject.AddComponent<BoxCollider>().center.Set(0,0.5f,0);
+            gameObject.AddComponent<BoxCollider>();
+            rigid.freezeRotation = true;
         }
-        rigid.freezeRotation = true;
         serchHeight = 200.0f;
         serchRange = 22.5f;
         SetSpeed(0.01f);

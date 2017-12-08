@@ -5,6 +5,7 @@ using UnityEngine;
 public class EatBase : MonoBehaviour {
 
     public int eatPoint;
+    public Rigidbody rigid;
 
     public void SetEatPoint(int i)
     {

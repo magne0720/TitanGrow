@@ -13,22 +13,29 @@ public class DataBaseManager : MonoBehaviour {
         public Vector3 pos;
         public float speed;
         public float scale;
+        public int eat;
         public ENEMY(string c="non")
         {
-            name = "DummyPre";
+            name = "OUT_BOX";
             cate = c;
             guid = "欠番";
-            path = "DummyPre";
+            path = "OUT_BOX";
             pos = new Vector3(0,0,0);
             speed = 1.0f;
             scale = 1.0f;
+            eat = 1;
         }
     }
 
     public struct OBJECT
     {
-        string path;
-        int eat;
+        public string name;
+        public string cate;
+        public string guid;
+        public string path;
+        public Vector3 pos;
+        public float scale;
+        public int eat;
     }
 
     static ENEMY[] enemysData;
@@ -59,7 +66,7 @@ public class DataBaseManager : MonoBehaviour {
     }
     public static void SetUpEnemyData()
     {
-        string temp = Resources.Load("Others/AboutData", typeof(TextAsset)).ToString();
+        string temp = Resources.Load("Others/EnemyData", typeof(TextAsset)).ToString();
         int count = 0;
         //行分け
         string[] lineText = temp.Split('\n');
@@ -80,6 +87,55 @@ public class DataBaseManager : MonoBehaviour {
                 count++;
             }
     }
+    public static void SetUpObjectData()
+    {
+        string temp = Resources.Load("Others/ObjectData", typeof(TextAsset)).ToString();
+        int count = 0;
+        //行分け
+        string[] lineText = temp.Split('\n');
+        objectsData = new OBJECT [lineText.Length];
+        foreach (string line in lineText)
+            if (line.StartsWith("#"))
+            {
+                //コメントアウトの部分なので何もしない
+            }
+            else
+            {
+                //タブ区切り(.TSV) 
+                string[] dataText = line.Split('\t');
+                objectsData[count].name = dataText[0];
+                objectsData[count].cate = dataText[1];
+                objectsData[count].guid = dataText[2];
+                objectsData[count].path = dataText[3];
+                count++;
+            }
+    }
+    //SetUpObjectData()から読み込んだものの中から選択する
+    public static string[] SetUpStartObjectData()
+    {
+        string temp = Resources.Load("Others/GameStartObjectData", typeof(TextAsset)).ToString();
+        int count = 0;
+        //行分け
+        string[] lineText = temp.Split('\n');
+        string[] objNames = new string[lineText.Length];
+        foreach (string line in lineText)
+            if (line.StartsWith("#"))
+            {
+                //コメントアウトの部分なので何もしない
+            }
+            else if (line.StartsWith("@"))
+            {
+                objNames = new string[int.Parse(line.Substring(1,3))];
+            }
+            else
+            {
+                objNames[count] = line;
+                count++;
+            }
+
+        return objNames;
+    }
+
     public static ENEMY GetEnemyNum(int num)
     {
         return enemysData[num];
@@ -126,15 +182,32 @@ public class DataBaseManager : MonoBehaviour {
     //パスから敵データの取得
     static ENEMY GetEnemyData(string path)
     {
-        ENEMY e = new ENEMY("non");
-        foreach (ENEMY s in enemysData)
+        ENEMY ene = new ENEMY("non");
+        foreach (ENEMY data in enemysData)
         {
-            if(s.path!=null)
-            if (s.path.Substring(0, 7) == path.Substring(0, 7))
+            if(data.path!=null)
+            if (data.path.Substring(0, 7) == path.Substring(0, 7))
             {
-                e = s;
+                ene = data;
             }
         }
-        return e;
+        return ene;
+    }
+    public static OBJECT GetObjectData(string path)
+    {
+        OBJECT obj = new OBJECT();
+        foreach (OBJECT data in objectsData)
+        {
+            if (data.path != null)
+                if (data.path.Substring(0, 7) == path.Substring(0, 7))
+                {
+                    obj = data;
+                }
+        }
+        return obj;
+    }
+    public static int GetObjectLength()
+    {
+        return objectsData.Length;
     }
 }

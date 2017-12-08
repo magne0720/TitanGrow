@@ -56,6 +56,7 @@ public class GameMode : MonoBehaviour {
 
         ObjectManager.StartUpData();
         DataBaseManager.SetUpEnemyData();
+        StageCreator.StartUp();
     }
 
     // Update is called once per frame
@@ -193,6 +194,10 @@ public class GameMode : MonoBehaviour {
             isArrowed = false;
             selectGravity = 0;
         }
+        if (Input.GetButtonDown("cross"))
+        {
+            mode = MODE.TITLE;
+        }
     }
 
     void StartUp()
@@ -204,7 +209,7 @@ public class GameMode : MonoBehaviour {
 
         //３．ゲーム設定
         //playerの生成
-        player = Player.CreatePlayer("a").GetComponent<Player>();
+        player = Player.CreatePlayer("rob_002").GetComponent<Player>();
 
 
         controller.SetPlayer(player);
@@ -221,6 +226,7 @@ public class GameMode : MonoBehaviour {
     void GameStart()
     {
         mode = MODE.GAME;
+        controller.SetControll(true);
     }
 
     void GameEnd()
@@ -228,7 +234,9 @@ public class GameMode : MonoBehaviour {
         mode = MODE.TITLE;
         controller.player = null;
         player = null;
+        controller.SetControll(false);
         ObjectManager.AllClear();
+        StageCreator.StartUp();
     }
 
     void GameStop()
@@ -243,6 +251,7 @@ public class GameMode : MonoBehaviour {
 
     void ObjectInstance()
     {
-        DataBaseManager.SpawnEnemyWave("EnemyPos");
+        StageCreator.NextStartUp();
+        //DataBaseManager.SpawnEnemyWave("EnemyPos");
     }
 }
