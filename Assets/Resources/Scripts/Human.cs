@@ -28,10 +28,12 @@ public class Human : BaseCharacter
         //moveTimeが0以下なら次のポイントを設定する
         if (moveTime < 0)
         {
-            
             moveTime = MoveTime();
             targetPosition = GetRandomPosition();
+            Debug.Log(targetPosition);
         }
+
+
     }
 
     public Vector3 GetRandomPosition()
@@ -44,4 +46,17 @@ public class Human : BaseCharacter
     {
         return Random.Range(1, 5);
     }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "wall")
+        {
+            moveTime = 0;
+            moveTime = MoveTime();
+            targetPosition = GetRandomPosition();
+            Debug.Log(targetPosition);
+        }
+    }
+
+
 }
