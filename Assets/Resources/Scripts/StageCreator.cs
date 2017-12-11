@@ -64,8 +64,7 @@ public class StageCreator : MonoBehaviour {
                         if (woodlist[z, x] == -1)
                         {
                             int rInst = Random.Range(0, ObjNames.Length);
-                            GameObject g = BaseObject.CreateObject(ObjNames[rInst]);
-                            g.transform.position = new Vector3((x-STAGE_AREA/2) * 10, 0, (z - STAGE_AREA / 2) * 10);
+                            GameObject g = BaseObject.CreateObject(ObjNames[rInst], new Vector3((x - STAGE_AREA / 2), 0, (z - STAGE_AREA / 2)));
                             woodlist[z, x] = rInst;
                             BreedCount++;
                         }
@@ -85,7 +84,7 @@ public class StageCreator : MonoBehaviour {
             {
                 if (woodlist[z, x] > 0)
                 {
-                    search(z, x, count--, woodlist[z, x]);
+                    //search(z, x, count--, woodlist[z, x]);
                 }
             }
         }
@@ -98,8 +97,7 @@ public class StageCreator : MonoBehaviour {
         {
             return;
         }
-        obj = BaseObject.CreateObject(ObjNames[random]);
-        obj.transform.position = new Vector3((x - STAGE_AREA / 2) * 10, 0, (z - STAGE_AREA / 2) * 10);
+        obj = BaseObject.CreateObject(ObjNames[random], new Vector3((x - STAGE_AREA / 2), 0, (z - STAGE_AREA / 2)));
 
     }
 }

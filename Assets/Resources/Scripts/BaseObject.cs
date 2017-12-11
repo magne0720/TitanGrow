@@ -13,6 +13,7 @@ public class BaseObject : EatBase
     // Update is called once per frame
     void Update()
     {
+
     }
 
    public void Initialize()
@@ -20,7 +21,7 @@ public class BaseObject : EatBase
         if (rigid == null)
         {
             rigid = gameObject.AddComponent<Rigidbody>();
-            gameObject.AddComponent<CapsuleCollider>().center.Set(0, 0.5f, 0);
+            gameObject.AddComponent<BoxCollider>().center.Set(0, 0.5f, 0);
             rigid.freezeRotation = true;
         }
 
@@ -33,8 +34,9 @@ public class BaseObject : EatBase
 
     }
 
-    public static GameObject CreateObject(string path)
+    public static GameObject CreateObject(string path,Vector3 pos=new Vector3())
     {
+        Debug.Log(path+","+pos.z);
         string temp=path.Substring(0, 7);
         GameObject g;
         try
@@ -49,6 +51,8 @@ public class BaseObject : EatBase
         }
         g.AddComponent<BaseObject>();
         g.name = temp;
+        g.transform.position = pos;
+        Debug.Log(path + "," +g.transform.position);
 
         return g;
     }

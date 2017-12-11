@@ -14,7 +14,7 @@ public class Player : BaseCharacter
     public float GrowTime = 0.0f;                                //成長が止まっている時間
     public Vector3 GrowRate = new Vector3(0.001f, 0.001f, 0.001f);  //大きさの倍率
 
-    public static GameObject CreatePlayer(string path)
+    public static GameObject CreatePlayer(string path,Vector3 pos=new Vector3())
     {
         GameObject g;
 
@@ -30,7 +30,7 @@ public class Player : BaseCharacter
             Debug.Log("Object Null");
         }
         g.AddComponent<Player>();
-
+        g.transform.position = pos;
         g.transform.name = "Player";
         g.transform.tag = "Player";
 

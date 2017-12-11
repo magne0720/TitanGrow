@@ -40,6 +40,7 @@ public class DataBaseManager : MonoBehaviour {
 
     static ENEMY[] enemysData;
     static OBJECT[] objectsData;
+    public static Player player;
 
     // Use this for initialization
     void Start () {
@@ -119,21 +120,55 @@ public class DataBaseManager : MonoBehaviour {
         string[] lineText = temp.Split('\n');
         string[] objNames = new string[lineText.Length];
         foreach (string line in lineText)
-            if (line.StartsWith("#"))
+        {
+            char c = line[0];
+            switch (c)
             {
-                //コメントアウトの部分なので何もしない
+                case '#':
+                    //コメントアウトの部分なので何もしない
+                    break;
+                case '@':
+                    objNames = new string[int.Parse(line.Substring(1, 3))];
+                    break;
+                default:
+                    objNames[count] = line;
+                    count++;
+                    break;
             }
-            else if (line.StartsWith("@"))
-            {
-                objNames = new string[int.Parse(line.Substring(1,3))];
-            }
-            else
-            {
-                objNames[count] = line;
-                count++;
-            }
-
+        }
         return objNames;
+    }
+
+    public static void SetUpStartData()
+    {
+        string temp = Resources.Load("Others/GameStartData", typeof(TextAsset)).ToString();
+        int count = 0;
+        //行分け
+        string[] lineText = temp.Split('\n');
+        string[] objNames = new string[lineText.Length];
+        Vector3[] objPos = new Vector3[lineText.Length];
+        foreach (string line in lineText)
+        {
+            string[] dataText = line.Split(' ');
+            char c = line[0];
+            switch (c)
+            {
+                case '#':
+                    //コメントアウトの部分なので何もしない
+                    break;
+                default:
+                    objNames[count] = dataText[0];
+                    objPos[count].x = float.Parse(dataText[1]);
+                    objPos[count].y = float.Parse(dataText[2]);
+                    objPos[count].z = float.Parse(dataText[3]);
+                    count++;
+                    break;
+            }
+        }
+        //オブジェクト生成
+        player=Player.CreatePlayer(objNames[0],objPos[0]).GetComponent<Player>();
+        GameObject g1=BaseObject.CreateObject(objNames[1], objPos[1]);
+        g1.transform.localScale *= 0.05f;
     }
 
     public static ENEMY GetEnemyNum(int num)
@@ -209,5 +244,9 @@ public class DataBaseManager : MonoBehaviour {
     public static int GetObjectLength()
     {
         return objectsData.Length;
+    }
+    public static Player GetPlayer()
+    {
+        return player;
     }
 }

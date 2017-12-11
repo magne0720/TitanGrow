@@ -18,7 +18,7 @@ public class BaseCharacter : EatBase
     public bool isGround;
     public List<GameObject> SerchObjects;
 
-    public static GameObject CreateCharacter(string path)
+    public static GameObject CreateCharacter(string path,Vector3 pos = new Vector3())
     {
         string temp=path.Substring(0, 7);
         GameObject g;
@@ -32,7 +32,7 @@ public class BaseCharacter : EatBase
                 g = Instantiate(Resources.Load("Models/OUT_BOX", typeof(GameObject))) as GameObject;
                 Debug.Log("Object Null="+temp);
           }
-
+        g.transform.position = pos;
 
         return g;
     }
@@ -41,7 +41,7 @@ public class BaseCharacter : EatBase
         if (rigid==null)
         {
             rigid = gameObject.AddComponent<Rigidbody>();
-            gameObject.AddComponent<BoxCollider>();
+            gameObject.AddComponent<CapsuleCollider>().radius = 0.1f;
             rigid.freezeRotation = true;
         }
         serchHeight = 200.0f;

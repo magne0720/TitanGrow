@@ -209,14 +209,15 @@ public class GameMode : MonoBehaviour {
 
         //３．ゲーム設定
         //playerの生成
-        player = Player.CreatePlayer("rob_002").GetComponent<Player>();
-
+        DataBaseManager.SetUpStartData();
+        player = DataBaseManager.GetPlayer();
 
         controller.SetPlayer(player);
 
         //４．オブジェクト情報
 
         //５．オブジェクト追加
+        //CastleInstance();
         ObjectInstance();
 
         //６．ゲーム開始
@@ -247,6 +248,15 @@ public class GameMode : MonoBehaviour {
     void GalleryStart()
     {
         mode = MODE.GALLERY;
+    }
+
+    void CastleInstance()
+    {
+        GameObject g = Instantiate(Resources.Load("Models/cat_001", typeof(GameObject)) as GameObject);
+        g.name = "castle";
+        g.transform.position = new Vector3(100, 0, 0);
+        g.transform.localScale *= 0.05f;
+        g.AddComponent<Castle>();
     }
 
     void ObjectInstance()
