@@ -63,6 +63,7 @@ public class CastleBlock : MonoBehaviour {
         float z = Random.Range(-30.0f, 30.0f);
 
         part.transform.parent = null;
+        part.gameObject.AddComponent<BoxCollider>();
         Rigidbody rb = part.gameObject.AddComponent<Rigidbody>();
         rb.isKinematic = false;
        rb.useGravity = true;
