@@ -9,7 +9,7 @@ public class CastleBlock : MonoBehaviour {
     public int CastleBlockHp=50;
 
     //飛んでいく力
-    float force = 800f;
+    float force =500f;
 
     //壁破壊のトリガー
     bool wall;
@@ -30,7 +30,7 @@ public class CastleBlock : MonoBehaviour {
 	void Update () {
 
         //CastleBlockHpが0のとき部位破壊
-        if (CastleBlockHp == 0) {
+        if (CastleBlockHp <= 0) {
             wall = true;
 
             if (wall == true)
@@ -58,17 +58,17 @@ public class CastleBlock : MonoBehaviour {
     //子を都バス
     public void ExplodePart(Transform part, float force)
     {
-        float x = Random.Range(-50.0f, 50.0f);
-        float y = Random.Range(-50.0f, -20.0f);
-        float z = Random.Range(-50.0f, 50.0f);
+        float x = Random.Range(-30.0f, 30.0f);
+        float y = Random.Range(20.0f, 10.0f);
+        float z = Random.Range(-30.0f, 30.0f);
 
         part.transform.parent = null;
         Rigidbody rb = part.gameObject.AddComponent<Rigidbody>();
         rb.isKinematic = false;
-        rb.useGravity = true;
+       rb.useGravity = true;
         rb.AddExplosionForce(force, new Vector3(x, y, z), 0.0f);
-        Destroy(part.gameObject, 5f);
-        Destroy(this.gameObject,0.5f);
+       // Destroy(part.gameObject, 5f);
+        Destroy(this.gameObject,1.5f);
     }
     void OnTriggerEnter(Collider collider)
     {
@@ -80,6 +80,7 @@ public class CastleBlock : MonoBehaviour {
             unti.CastleHp -= 10;
            // unti.GoSortie = true;
             CastleBlockHp -= 10;
+            Debug.Log(CastleBlockHp);
  
         }
     }
