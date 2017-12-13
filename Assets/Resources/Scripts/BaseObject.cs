@@ -18,12 +18,14 @@ public class BaseObject : EatBase
 
    public void Initialize()
     {
-        if (rigid == null)
-        {
-            rigid = gameObject.AddComponent<Rigidbody>();
-            gameObject.AddComponent<BoxCollider>().center.Set(0, 0.5f, 0);
-            rigid.freezeRotation = true;
-        }
+        BoxCollider c = gameObject.AddComponent<BoxCollider>();
+        c.center = new Vector3(0, 0.5f, 0);
+        //if (rigid == null)
+        //{
+        //    rigid = gameObject.AddComponent<Rigidbody>();
+        //    rigid.freezeRotation = true;
+        //    rigid.isKinematic = true;
+        //}
 
         //オブジェクトの追加
         ObjectManager.AddObject(gameObject);
@@ -47,12 +49,10 @@ public class BaseObject : EatBase
         {
             //オブジェクトパスが見つからない場合
             g = Instantiate(Resources.Load("Models/OUT_BOX", typeof(GameObject))) as GameObject;
-            Debug.Log("Object Null="+temp);
         }
         g.AddComponent<BaseObject>();
         g.name = temp;
         g.transform.position = pos;
-        Debug.Log(path + "," +g.transform.position);
 
         return g;
     }

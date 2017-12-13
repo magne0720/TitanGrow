@@ -55,8 +55,9 @@ public class GameMode : MonoBehaviour {
         }
 
         ObjectManager.StartUpData();
-        DataBaseManager.SetUpEnemyData();
-        StageCreator.StartUp();
+        DataBaseManager.SetUpObjectData();
+        //StageCreator.StartUp();
+        //GrowPlant.CreateGrowPlant("nat_001",new Vector3(),5);
     }
 
     // Update is called once per frame
@@ -170,6 +171,7 @@ public class GameMode : MonoBehaviour {
     }
     void GallerySelectInput()
     {
+        int size = DataBaseManager.GetObjectLength();
         float axis = (int)Input.GetAxis("LRArrow") + (int)Input.GetAxis("Horizontal");
         //左右移動
         if (axis != 0)
@@ -187,7 +189,7 @@ public class GameMode : MonoBehaviour {
                 galleryselect += (int)axis;
             }
             if (galleryselect < 0) galleryselect = 0;
-            if (galleryselect > 20) galleryselect = 20;
+            if (galleryselect >= size) galleryselect = size - 1;
         }
         else
         {
@@ -261,7 +263,7 @@ public class GameMode : MonoBehaviour {
 
     void ObjectInstance()
     {
-        StageCreator.NextStartUp();
+        StageCreator.StartUp();
         //DataBaseManager.SpawnEnemyWave("EnemyPos");
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraControl : MonoBehaviour {
 
     const float CAM_Y_MAX = 260.0f;
-    const float CAM_Y_MIN = 160.0f;
+    const float CAM_Y_MIN = 180.0f;
     const float CAM_DISTANCE = 2.0f;
 
     public GameObject player; //player
@@ -77,7 +77,7 @@ public class CameraControl : MonoBehaviour {
         speedX = 3.0f;
         speedY = 3.0f;
 
-        distance = 1.0f;
+        distance = 4.0f;
 
         direction.x = 0;
         direction.y = 210.0f;
@@ -99,7 +99,7 @@ public class CameraControl : MonoBehaviour {
             float angZ = Math.Rotate(Vector3.left, direction.x, CAM_DISTANCE * distance * player.transform.localScale.z).x;
             transform.position = new Vector3(angX, angY, angZ) + new Vector3(player.transform.position.x,0,player.transform.position.z);
 
-            transform.LookAt(new Vector3(player.transform.position.x,0,player.transform.position.z));
+            transform.LookAt(new Vector3(player.transform.position.x,player.transform.localScale.y,player.transform.position.z));
         }
     }
     void SetDistance(float s)

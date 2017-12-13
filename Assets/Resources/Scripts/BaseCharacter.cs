@@ -15,7 +15,7 @@ public class BaseCharacter : EatBase
     public Vector3 MyDirection;     //自身の向いている方向    
     public float serchHeight = 0;//サーチ距離
     public float serchRange = 0;//サーチ範囲
-    public bool isGround;
+    public bool isFowardHit;
     public List<GameObject> SerchObjects;
 
     public static GameObject CreateCharacter(string path,Vector3 pos = new Vector3())
@@ -30,7 +30,6 @@ public class BaseCharacter : EatBase
         {
             //オブジェクトパスが見つからない場合
                 g = Instantiate(Resources.Load("Models/OUT_BOX", typeof(GameObject))) as GameObject;
-                Debug.Log("Object Null="+temp);
           }
         g.transform.position = pos;
 
@@ -38,12 +37,13 @@ public class BaseCharacter : EatBase
     }
     public void Initialize()
     {
-        if (rigid==null)
-        {
-            rigid = gameObject.AddComponent<Rigidbody>();
-            gameObject.AddComponent<CapsuleCollider>().radius = 0.1f;
-            rigid.freezeRotation = true;
-        }
+        //if (rigid==null)
+        //{
+        //    rigid = gameObject.AddComponent<Rigidbody>();
+        //    gameObject.AddComponent<CapsuleCollider>().radius = 0.1f;
+        //    gameObject.GetComponent<CapsuleCollider>().center = new Vector3(0, 0.5f, 0);
+        //    //rigid.freezeRotation = true;
+        //}
         serchHeight = 200.0f;
         serchRange = 22.5f;
         SetSpeed(0.01f);
@@ -62,6 +62,7 @@ public class BaseCharacter : EatBase
     {
         MyPosition = pos;
         MySpeed = speed;
+        isFowardHit = false;
     }
 
     //Use this for initialization
@@ -72,13 +73,8 @@ public class BaseCharacter : EatBase
     // Update is called once per frame
     public virtual void Update()
     {
-        Move();
+            Move();
         //CheckGround();
-        if (isGround)
-        {
-
-        }
-        //LiveCheck();
     }
   
     public void MoveRight()
@@ -103,13 +99,13 @@ public class BaseCharacter : EatBase
         {
             return;
         }
-
+        int hit = (isFowardHit) ? 0 : 1;
        Vector3 moving = TargetPosition - MyPosition;
        if (Math.Length(moving) <= 0.002f) return;
        moving.y = 0;
        moving.Normalize();
 
-        MyPosition += moving * MySpeed * Time.deltaTime;
+        MyPosition += moving * MySpeed * Time.deltaTime*hit;
 
         MyPosition.y = transform.position.y;
 
@@ -234,7 +230,9 @@ public class BaseCharacter : EatBase
         float dis = 0;
         float ans = serchHeight;
         float temp_ans = serchHeight;
-        
+
+        isFowardHit = false;
+
         foreach (GameObject g in objects)
         {
             //同期中に削除されたものは見ない
@@ -247,6 +245,12 @@ public class BaseCharacter : EatBase
                     //視界に見えているもの
                     if (ans >= dis)
                     {
+                        //目の前にいるか調べる
+                        if (Physics.Raycast(new Ray(transform.position, transform.forward),serchHeight/10))
+                         {
+                            Debug.Log("out");
+                            isFowardHit = true;
+                        }
                         //扇形に見る
                         if (Math.OnDirectionFan(MyPosition,MyDirection, g.transform.position,serchRange))
                         {
@@ -265,8 +269,7 @@ public class BaseCharacter : EatBase
 
     void OnCollisionEnter(Collision c)
     {
-        if(c.transform.name == "Ground")
-        isGround = true;
+
     }
     void OnCollisionStay(Collision c)
     {
@@ -274,8 +277,7 @@ public class BaseCharacter : EatBase
     }
     void OnCollisionExit(Collision c)
     {
-        if (c.transform.name == "Ground")
-            isGround = false;
+
     }
     public void SetSpeed(float sp)
     {

@@ -40,6 +40,7 @@ public class Player : BaseCharacter
     override public void Start()
     {
         Initialize();
+        //GetComponent<Rigidbody>().freezeRotation = true;
         catchObjects = new List<GameObject>();
         this.transform.name = "Player";
         this.transform.tag = "Player";
@@ -52,18 +53,29 @@ public class Player : BaseCharacter
         //成長の制御
         Grow(FoodPoint);
         SerchObject(ObjectManager.GameObjects,"Untagged");
-        Move();
+
+            Move();
         //SetMass(transform.localScale.magnitude);
         //UnderGround();
+        if (catchObjects.Count > 0)
+        {
+            foreach(GameObject g in catchObjects)
+            {
+                g.GetComponent<Rigidbody>().isKinematic = false;
+                g.transform.position =transform.forward*transform.localScale.z+transform.position;
+            }
+        }
     }
 
     //タグがFoodなら当たったものをCatchにもっていく
-    void OnCollisionEnter(Collision collision)
+    void OnCollisionStay(Collision collision)
     {
         if (collision.transform.tag != "Untagged")
         {
             collision.transform.GetComponent<Rigidbody>().AddForce(transform.forward * CastAwaySpeed * transform.localScale.z);
         }
+        transform.GetComponent<Rigidbody>().AddForce(-transform.forward);
+
     }
     public void CatchAction()
     {

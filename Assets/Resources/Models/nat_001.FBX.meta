@@ -1,19 +1,21 @@
 fileFormatVersion: 2
-guid: 27049da3bfe093840ba99b107f8407fd
-timeCreated: 1512633969
+guid: 9dddbeaf4cc1a024d8e4ba4fe7834537
+timeCreated: 1513008429
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: //RootNode
-    100002: Sphere005
-    400000: //RootNode
-    400002: Sphere005
+    100000: Cylinder001
+    100002: //RootNode
+    100004: Sphere005
+    400000: Cylinder001
+    400002: //RootNode
+    400004: Sphere005
     2100000: ki1
     2100002: kusa3
-    2300000: //RootNode
+    2300000: Cylinder001
     2300002: Sphere005
-    3300000: //RootNode
+    3300000: Cylinder001
     3300002: Sphere005
     4300000: Cylinder001
     4300002: Sphere005

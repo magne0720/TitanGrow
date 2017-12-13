@@ -5,9 +5,9 @@ using UnityEngine;
 public class StageCreator : MonoBehaviour {
 
     //ステージの範囲
-    public const int STAGE_AREA = 50;
+    public const int STAGE_AREA = 100;
     //初期繁殖
-    public const int BREED_LIMIT = 200;
+    public const int BREED_LIMIT = 500;
 
     static int[,] woodlist;
 
@@ -36,19 +36,19 @@ public class StageCreator : MonoBehaviour {
         {
             for (int yz = 0; yz < STAGE_AREA; yz++)
             {
-                woodlist[xz, yz] = -1;
+                woodlist[xz, yz] = 0;
                 if (xz < AreaPos_A.x + (Area_A / 2) && xz > AreaPos_A.x - (Area_A / 2))
                 {
                     if (yz < AreaPos_A.z + (Area_A / 2) && yz > AreaPos_A.z - (Area_A / 2))
                     {
-                        woodlist[xz, yz] = -2;
+                        woodlist[xz, yz] = -1;
                     }
                 }
                 //B国の範囲内には生成しない
                 Vec3 = new Vector3(xz, 0, yz);
                 if (Math.Length(AreaPos_B - Vec3) < Area_B)
                 {
-                    woodlist[xz, yz] = -2;
+                    woodlist[xz, yz] = -1;
                 }
             }
         }
@@ -60,44 +60,15 @@ public class StageCreator : MonoBehaviour {
             {
                 if (BreedCount < BREED_LIMIT)//第１世代
                 {
-                    if (Random.Range(0, 100) >90 && woodlist[z, x] == -1 )
-                        if (woodlist[z, x] == -1)
+                    if (Random.Range(0, 100) > 90 && woodlist[z, x] == 0)
                         {
                             int rInst = Random.Range(0, ObjNames.Length);
-                            GameObject g = BaseObject.CreateObject(ObjNames[rInst], new Vector3((x - STAGE_AREA / 2), 0, (z - STAGE_AREA / 2)));
+                            GameObject g = GrowPlant.CreateGrowPlant(ObjNames[rInst], new Vector3((x - STAGE_AREA / 2) * 10, 0, (z - STAGE_AREA / 2) * 10),8);
                             woodlist[z, x] = rInst;
                             BreedCount++;
                         }
                 }
             }
         }
-    }
-
-    //次世代を生成
-    public static void NextStartUp()
-    {
-        int count = BREED_MAX;
-        string[,] temp = new string[50,50];
-        for (int z = 0; z < STAGE_AREA; z++)
-        {
-            for (int x = 0; x < STAGE_AREA; x++)
-            {
-                if (woodlist[z, x] > 0)
-                {
-                    //search(z, x, count--, woodlist[z, x]);
-                }
-            }
-        }
-    }
-
-    static void search(int z, int x, int move, int random)
-    {
-        GameObject obj;
-        if (move < 0)
-        {
-            return;
-        }
-        obj = BaseObject.CreateObject(ObjNames[random], new Vector3((x - STAGE_AREA / 2), 0, (z - STAGE_AREA / 2)));
-
     }
 }

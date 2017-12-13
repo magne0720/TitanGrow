@@ -1,6 +1,4 @@
-﻿#path x y z eat
-#NAME CATEGORY GUIDE PATH 
-牛	cre	家畜畜生0	cre_001
+﻿牛	cre	家畜畜生0	cre_001
 鳥	cre	家畜畜生1	cre_002
 豚	cre	家畜畜生2	cre_003
 犬	cre	家畜畜生3	cre_004

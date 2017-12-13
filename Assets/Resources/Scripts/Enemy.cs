@@ -34,7 +34,7 @@ public class Enemy : BaseCharacter
 
         return g;
     } 
-    public static GameObject CreateEnemy(DataBaseManager.ENEMY data)
+    public static GameObject CreateEnemy(DataBaseManager.OBJECT data)
     {
         GameObject g = CreateCharacter(data.path);
         g.name = data.name;
