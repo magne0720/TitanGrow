@@ -28,10 +28,38 @@ public class Castle : MonoBehaviour {
 
     int iRandNum;
 
+    public static GameObject CreateCastle(string path, Vector3 pos = new Vector3())
+    {
+        Debug.Log(path + "," + pos.z);
+        string temp = path.Substring(0, 7);
+        GameObject g;
+        try
+        {
+            g = Instantiate(Resources.Load("Models/" + temp, typeof(GameObject))) as GameObject;
+        }
+        catch
+        {
+            //オブジェクトパスが見つからない場合
+            g = Instantiate(Resources.Load("Models/OUT_BOX", typeof(GameObject))) as GameObject;
+        }
+        g.AddComponent<Castle>();
+        g.name = temp;
+        g.transform.position = pos;
+
+        return g;
+    }
+
+    void Initialize()
+    {
+
+
+        //オブジェクトの追加
+        ObjectManager.AddObject(gameObject);
+    }
 
     // Use this for initialization
     void Start () {
-
+        Initialize();
         
         SpawnTime = 0.0f;
         GoSortie = false;

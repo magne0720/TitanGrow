@@ -2,6 +2,6 @@
 #player
 pla_001 0 0 0 
 #castle1
-cat_001 250 0 0
+cat_001 500 0 0
 #castle2
 cat_001 -100 0 0

@@ -125,8 +125,7 @@ public class DataBaseManager : MonoBehaviour {
         }
         //オブジェクト生成
         player=Player.CreatePlayer(objNames[0],objPos[0]).GetComponent<Player>();
-        GameObject g1=BaseObject.CreateObject(objNames[1], objPos[1]);
-        g1.transform.localScale *= 0.05f;
+        GameObject g1=Castle.CreateCastle(objNames[1], objPos[1]);
     }
 
     public static OBJECT GetEnemyNum(int num)

@@ -18,8 +18,8 @@ public class BaseObject : EatBase
 
    public void Initialize()
     {
-        BoxCollider c = gameObject.AddComponent<BoxCollider>();
-        c.center = new Vector3(0, 0.5f, 0);
+        //BoxCollider c = gameObject.AddComponent<BoxCollider>();
+        //c.center = new Vector3(0, 0.5f, 0);
         //if (rigid == null)
         //{
         //    rigid = gameObject.AddComponent<Rigidbody>();
