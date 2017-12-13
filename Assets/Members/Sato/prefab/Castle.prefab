@@ -863,8 +863,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CastleHp: 1000
-  soldier1: {fileID: 1994934605848430, guid: 0fb78f475a741d9459d8c9f046f3b82b, type: 2}
-  soldier2: {fileID: 1409801747439030, guid: e3de271ed5f6f26438b26c4901e2545a, type: 2}
+  soldier1: '&'
+  soldier2: .
   SpawnTime: 0
   GoSortie: 0
 --- !u!114 &114308754866551478

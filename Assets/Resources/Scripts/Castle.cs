@@ -16,7 +16,7 @@ public class Castle : MonoBehaviour {
     private int soldier2Spawn = 3;
 
     //生成する間隔
-    private float Interval = 1.0f;
+    private float Interval = 2.0f;
 
     //時間
    public float SpawnTime;
@@ -24,6 +24,9 @@ public class Castle : MonoBehaviour {
     //兵士出撃のトリガー
     public bool GoSortie;
 
+    // public int SpawnRandom;
+
+    int iRandNum;
 
 
     // Use this for initialization
@@ -42,40 +45,71 @@ public class Castle : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+       
+       // SpawnRandom = Random.Range(0, 4);
+
         //兵士沸かせる
 
-        if (GoSortie == true)
-        {
-            if (CastleHp > 50)
-            {
+        //if (GoSortie == true)
+        //{
+        //    if (CastleHp > 50)
+        //    {
                 SpawnTime += Time.deltaTime;
 
                 if (SpawnTime >= Interval)
                 {
+                    iRandNum=Random.Range(0, 4);
                     Spawn();
                 }
 
-            }
-        }
+        //    }
+        //}
 
         
-		
-	}
+
+    }
 
     //兵士わくわくさん
     void Spawn()
     {
 
-        DataBaseManager.SpawnEnemyWave("EnemyM");
+
+        
+
+
+        switch (iRandNum)
+        {
+            case 0:
+                DataBaseManager.SpawnEnemyWave("EnemyColumn");
+                Debug.Log("縦列");
+                break;
+
+            case 1:
+                DataBaseManager.SpawnEnemyWave("EnemyUnit");
+                Debug.Log("部隊");
+                break;
+            case 2:
+                DataBaseManager.SpawnEnemyWave("EnemyPlatoon");
+                Debug.Log("小隊");
+                break;
+            case 3:
+                DataBaseManager.SpawnEnemyWave("EnemyV");
+                Debug.Log("V字");
+                break;
+        }
 
 
 
-        //if (CastleHp <= 80)
-        //{
 
-        //    DataBaseManager.SpawnEnemyWave("EnemyPos");
 
-        //}
+
+
+        if (CastleHp <= 80)
+        {
+
+            DataBaseManager.SpawnEnemyWave("EnemyM");
+
+        }
 
         SpawnTime = 0;
         GoSortie = false;

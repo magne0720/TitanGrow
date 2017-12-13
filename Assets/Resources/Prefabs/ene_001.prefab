@@ -49,7 +49,11 @@ GameObject:
   - component: {fileID: 33725404234340496}
   - component: {fileID: 135295511375088496}
   - component: {fileID: 23268278196798434}
+<<<<<<< HEAD
 >>>>>>> origin/kosuke.sato
+=======
+  - component: {fileID: 114407782015159976}
+>>>>>>> 466b0b95144f1e6cf5f476f8e77239dc5716fd93
   m_Layer: 0
   m_Name: ene_001
   m_TagString: Untagged
@@ -484,6 +488,17 @@ Animator:
 =======
   m_GameObject: {fileID: 1641712863031204}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114407782015159976
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1641712863031204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b54519927fb34c74a88e045ffcbcdf8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!135 &135295511375088496
 SphereCollider:
   m_ObjectHideFlags: 1
