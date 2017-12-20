@@ -16,6 +16,11 @@ public class CanvasControl : MonoBehaviour
     bool isFade;
     int select;
     int fader;
+    public enum MODE
+    {
+        NONE,TITLE,GALLERY
+    }
+    MODE mode;
 
     public static GameObject CreateCanvas(Camera mCam)
     {
@@ -35,7 +40,7 @@ public class CanvasControl : MonoBehaviour
         cImage.AddComponent<Image>().sprite = Resources.Load("Textures/TitleLogo_W_C_Screen", typeof(Sprite)) as Sprite;
         RectTransform rectImage = cImage.GetComponent<RectTransform>();
         rectImage.anchoredPosition = new Vector2();
-        
+
         //選択のテキスト
         GameObject cText = new GameObject();
         cText.name = "Text";
@@ -54,16 +59,18 @@ public class CanvasControl : MonoBehaviour
         return canvas;
     }
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start()
     {
         if (image == null)
         {
             image = canImage;
+            image.material.shader.name = "UI/Default";
         }
         if (text == null)
         {
             text = canText;
+//            text.material.shader = new Shader();
         }
         if (destItems == null)
         {
@@ -75,31 +82,37 @@ public class CanvasControl : MonoBehaviour
         }
         isFade = false;
     }
-	
-	// Update is called once per frame
-	void Update () {
-        if (isFade) Fader();
 
-        if(Input.GetKeyDown(KeyCode.Q))
-        {
-            AddDestItem(Enemy.CreateCharacter("a")as GameObject);
-        }
+    // Update is called once per frame
+    void Update()
+    {
+        if (isFade) Fader();
+        
         DispDestItem();
 
-        image.rectTransform.sizeDelta = new Vector2(Screen.width , Screen.height );
-        text.rectTransform.sizeDelta = new Vector2(Screen.width , Screen.height );
+        switch (mode)
+        {
+            case MODE.NONE:
+                break;
+            case MODE.TITLE:
+                break;
+            case MODE.GALLERY:
+                break;
+
+        }
+
+        image.rectTransform.sizeDelta = new Vector2(Screen.width, Screen.height);
+        text.rectTransform.sizeDelta = new Vector2(Screen.width, Screen.height);
         text.fontSize = (int)(Screen.width * 0.05f);
-
-
     }
 
     void Fader()
     {
-        timer += Time.deltaTime*fader;
+        timer += Time.deltaTime * fader;
         text.color = new Color(1, 1, 1, timer);
         image.color = new Color(1, 1, 1, timer);
 
-        if (timer > 1.0f||timer<0)
+        if (timer > 1.0f || timer < 0)
         {
             isFade = false;
             return;
@@ -141,6 +154,14 @@ public class CanvasControl : MonoBehaviour
         }
     }
 
+    public void ChangeGallery(int i)
+    {
+        DataBaseManager.OBJECT obj = DataBaseManager.GetEnemyNum(i);
+        text.text = obj.name+"\n";
+        text.text += obj.guid+"\n";
+        text.text += obj.eat;
+    }
+
     public void AddDestItem(GameObject g)
     {
         destItems.Add(g);
@@ -150,13 +171,22 @@ public class CanvasControl : MonoBehaviour
     {
         //float size = 1.0f;
         int count = 0;
-        foreach(GameObject g in destItems)
+        foreach (GameObject g in destItems)
         {
             g.transform.parent = this.transform;
-            g.transform.position = new Vector3(count,0,0);
+            g.transform.position = new Vector3(count, 0, 0);
             g.transform.Rotate(new Vector3(0, 1.0f, 0));
             count++;
         }
+    }public void HideImage()
+    {
+        if (image.enabled)
+        {
+            image.enabled = false;
+        }
+        else
+        {
+            image.enabled = true;
+        }
     }
-
 }

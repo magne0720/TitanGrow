@@ -32,7 +32,7 @@ public class Math
 の両方を満たせばよい。
 */
     //視覚方向から円錐上に見る
-    public static float SerchCone(Vector3 pos, Vector3 dir, float height, float range, Vector3 target)
+    public static float SearchCone(Vector3 pos, Vector3 dir, float height, float range, Vector3 target)
     {
         float dis = float.MaxValue;
         Vector3 moving = dir;

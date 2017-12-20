@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraControl : MonoBehaviour {
 
     const float CAM_Y_MAX = 260.0f;
-    const float CAM_Y_MIN = 180.0f;
+    const float CAM_Y_MIN = 181.0f;
     const float CAM_DISTANCE = 2.0f;
 
     public GameObject player; //player

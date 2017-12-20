@@ -20,6 +20,9 @@ public class DataBaseManager : MonoBehaviour {
 
     static OBJECT[] objectsData;
     public static Player player;
+    public static Castle HumanCastle;
+    public static Castle RobotCastle;
+
 
     // Use this for initialization
     void Start () {
@@ -89,11 +92,19 @@ public class DataBaseManager : MonoBehaviour {
                     objNames = new string[int.Parse(line.Substring(1, 3))];
                     break;
                 default:
-                    objNames[count] = line;
+                    objNames[count] = line.Replace('\r','\0');
+                    Debug.Log(line);
                     count++;
                     break;
             }
         }
+        //最後の行のみ'\r'が存在しないので1文字減っている
+        //'\0'を追加
+        objNames[count - 1] += '\0';
+        count = 0;
+        for(count=0;count<objNames.Length;count++)
+            objNames[count]=objNames[count].Substring(0, objNames[count].Length - 1);
+
         return objNames;
     }
 
@@ -125,7 +136,12 @@ public class DataBaseManager : MonoBehaviour {
         }
         //オブジェクト生成
         player=Player.CreatePlayer(objNames[0],objPos[0]).GetComponent<Player>();
-        GameObject g1=Castle.CreateCastle(objNames[1], objPos[1]);
+        GameObject g1 = Castle.CreateCastle(objNames[1], objPos[1]);
+        GameObject g2 = Castle.CreateCastle(objNames[2], objPos[2]);
+
+        HumanCastle = g1.GetComponent<Castle>();
+        RobotCastle = g2.GetComponent<Castle>();
+
     }
 
     public static OBJECT GetEnemyNum(int num)
@@ -168,7 +184,13 @@ public class DataBaseManager : MonoBehaviour {
                         enemy.scale = 1.0f;
                     }
                 }
-               GameObject g=Enemy.CreateEnemy(enemy);
+                else
+                {
+                    enemy.scale = 1.0f;
+                }
+
+                enemy.pos += offset;
+                GameObject g=Enemy.CreateEnemy(enemy);
             }
     }
     public static OBJECT GetObjectData(string path)
@@ -178,8 +200,9 @@ public class DataBaseManager : MonoBehaviour {
         foreach (OBJECT data in objectsData)
         {
             if (data.path != null)
-                if (data.path.Substring(0, 7) == path.Substring(0, 7))
+                if (data.path== path)
                 {
+                    Debug.Log(data.path + "," + path);
                     obj = data;
                 }
         }
@@ -192,5 +215,21 @@ public class DataBaseManager : MonoBehaviour {
     public static Player GetPlayer()
     {
         return player;
+    }
+    public static void SetHumanCastle(Castle c)
+    {
+        HumanCastle = c;
+    }
+    public static void SetRobotCastle(Castle c)
+    {
+        RobotCastle = c;
+    }
+    public static Vector3 GetHumanCastle()
+    {
+        return HumanCastle.transform.position;
+    }
+    public static Vector3 GetRobotCastle()
+    {
+        return RobotCastle.transform.position;
     }
 }

@@ -56,7 +56,7 @@ public class GameMode : MonoBehaviour {
 
         ObjectManager.StartUpData();
         DataBaseManager.SetUpObjectData();
-        //StageCreator.StartUp();
+        StageCreator.StartUp();
         //GrowPlant.CreateGrowPlant("nat_001",new Vector3(),5);
     }
 
@@ -116,7 +116,7 @@ public class GameMode : MonoBehaviour {
 
     void DispGallery()
     {
-        canvas.text.text = DataBaseManager.GetEnemyNum(galleryselect).guid;
+        canvas.ChangeGallery(galleryselect);
     }
 
     void TitleSelectInput()
@@ -159,6 +159,7 @@ public class GameMode : MonoBehaviour {
                         StartUp();
                         break;
                     case 1:
+                        canvas.HideImage();
                         GalleryStart();
                         break;
                     case 2:
@@ -199,6 +200,7 @@ public class GameMode : MonoBehaviour {
         if (Input.GetButtonDown("cross"))
         {
             mode = MODE.TITLE;
+            canvas.HideImage();
         }
     }
 

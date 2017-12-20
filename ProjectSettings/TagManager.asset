@@ -6,8 +6,8 @@ TagManager:
   tags:
   - Hand
   - Food
-  - ki
   - Wall
+  - Castle
   layers:
   - Default
   - TransparentFX

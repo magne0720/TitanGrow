@@ -8,19 +8,16 @@ using UnityEngine;
 //AIにも対応させるので、ここにはインターフェースの処理を書かないこと
 public class BaseCharacter : EatBase
 {
-    public int HP;
-    public float MySpeed;
-    public Vector3 MyPosition;
-    public Vector3 TargetPosition;
-    public Vector3 MyDirection;     //自身の向いている方向    
-    public float serchHeight = 0;//サーチ距離
-    public float serchRange = 0;//サーチ範囲
+    public float searchTimer = 0;//サーチ間隔
+    public float searchHeight = 0;//サーチ距離
+    public float searchRange = 0;//サーチ範囲
     public bool isFowardHit;
-    public List<GameObject> SerchObjects;
+    public List<GameObject> SearchObjects;
 
     public static GameObject CreateCharacter(string path,Vector3 pos = new Vector3())
     {
-        string temp=path.Substring(0, 7);
+        Debug.Log("pathname=" + path);
+        string temp = path.Replace('\r', '\0');
         GameObject g;
         try
         {
@@ -37,21 +34,21 @@ public class BaseCharacter : EatBase
     }
     public void Initialize()
     {
-        //if (rigid==null)
-        //{
-        //    rigid = gameObject.AddComponent<Rigidbody>();
-        //    gameObject.AddComponent<CapsuleCollider>().radius = 0.1f;
-        //    gameObject.GetComponent<CapsuleCollider>().center = new Vector3(0, 0.5f, 0);
-        //    //rigid.freezeRotation = true;
-        //}
-        serchHeight = 200.0f;
-        serchRange = 22.5f;
+        if (rigid == null)
+        {
+            rigid = gameObject.AddComponent<Rigidbody>();
+            gameObject.AddComponent<CapsuleCollider>().radius = 0.1f;
+            gameObject.GetComponent<CapsuleCollider>().center = new Vector3(0, 0.5f, 0);
+            rigid.freezeRotation = true;
+        }
+        searchHeight = 200.0f;
+        searchRange = 22.5f;
         SetSpeed(0.01f);
         //SetSpeed(transform.localScale.magnitude);
         MyDirection = transform.forward;
 
         //食べられたポイント
-        eatPoint = 200;
+        eatPoint = 3;
 
 
         //オブジェクトの追加
@@ -63,6 +60,7 @@ public class BaseCharacter : EatBase
         MyPosition = pos;
         MySpeed = speed;
         isFowardHit = false;
+        searchRange = 45.0f;
     }
 
     //Use this for initialization
@@ -167,7 +165,7 @@ public class BaseCharacter : EatBase
         SetTarget(vector*height);
     }
 
-    public void SerchEnemy(GameObject obj)
+    public void SearchEnemy(GameObject obj)
     {
         //敵がいる時
         if (obj != null)
@@ -187,13 +185,13 @@ public class BaseCharacter : EatBase
             //if (timer > 2)
             //{
             //    timer = 0;
-            //    //RotateY(1, serchHeight);
+            //    //RotateY(1, searchHeight);
             //    TargetPosition = HeadingCastle;
             //}
             int i = 0;
             float dis = 0;
-            float ans = serchHeight;
-            float temp_ans = serchHeight;
+            float ans = searchHeight;
+            float temp_ans = searchHeight;
 
             List<GameObject> objects = new List<GameObject>();
 
@@ -202,7 +200,7 @@ public class BaseCharacter : EatBase
                 {
 
                     //探す計算処理
-                    dis = Math.SerchCone(MyPosition, TargetPosition, serchHeight, serchRange, g.transform.position);
+                    dis = Math.SearchCone(MyPosition, TargetPosition, searchHeight, searchRange, g.transform.position);
                     //視界に見えているもの
                     if (ans >= dis)
                     {
@@ -222,14 +220,14 @@ public class BaseCharacter : EatBase
     }
 
 
-    public List<GameObject> SerchObject(List<GameObject> objects, string tag = "Enemy")
+    public List<GameObject> SearchObject(List<GameObject> objects, string tag = "Enemy")
     {
         if (objects == null) return null;
 
         List<GameObject> objs = new List<GameObject>();
         float dis = 0;
-        float ans = serchHeight;
-        float temp_ans = serchHeight;
+        float ans = searchHeight;
+        float temp_ans = searchHeight;
 
         isFowardHit = false;
 
@@ -246,13 +244,12 @@ public class BaseCharacter : EatBase
                     if (ans >= dis)
                     {
                         //目の前にいるか調べる
-                        if (Physics.Raycast(new Ray(transform.position, transform.forward),serchHeight/10))
+                        if (Physics.Raycast(new Ray(transform.position, transform.forward),searchHeight/10))
                          {
-                            Debug.Log("out");
                             isFowardHit = true;
                         }
                         //扇形に見る
-                        if (Math.OnDirectionFan(MyPosition,MyDirection, g.transform.position,serchRange))
+                        if (Math.OnDirectionFan(MyPosition,MyDirection, g.transform.position,searchRange))
                         {
                             objs.Add(g);
                         }
@@ -260,10 +257,10 @@ public class BaseCharacter : EatBase
                 }
             }
         }
-        SerchObjects = objs;
-        Debug.DrawRay(MyPosition, MyDirection * serchHeight, Color.red, 0.3f);
-        Debug.DrawRay(MyPosition, Math.getDirectionDegree(MyDirection, serchRange,serchHeight), Color.green, 0.3f);
-        Debug.DrawRay(MyPosition, Math.getDirectionDegree(MyDirection, -serchRange,serchHeight), Color.green, 0.3f);
+        SearchObjects = objs;
+        //Debug.DrawRay(MyPosition, MyDirection * searchHeight, Color.red, 0.3f);
+        //Debug.DrawRay(MyPosition, Math.getDirectionDegree(MyDirection, searchRange,searchHeight), Color.green, 0.3f);
+        //Debug.DrawRay(MyPosition, Math.getDirectionDegree(MyDirection, -searchRange,searchHeight), Color.green, 0.3f);
         return objs;
     }
 

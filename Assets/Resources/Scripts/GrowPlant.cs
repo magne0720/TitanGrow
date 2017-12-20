@@ -15,7 +15,8 @@ public class GrowPlant : BaseObject {
 
     public static GameObject CreateGrowPlant(string path, Vector3 pos = new Vector3(),int breed=0)
     {
-        string temp = path.Substring(0, 7);
+        string temp = path.Substring(0,path.Length);
+        Debug.Log("create="+path);
         GameObject g;
         try
         {
@@ -41,22 +42,25 @@ public class GrowPlant : BaseObject {
         OriginScale = transform.localScale;
         transform.localScale *= scale;
         breedName = name;
+
+        if (Random.Range(0, 100) >= 30 && !isBreed)
+        {
+            isBreed = true;
+            GameObject g = CreateGrowPlant(breedName, transform.position + Math.RotateY(new Vector3(0, 0, 1), Random.Range(0, 360), scale * 2 + 1), breedRange - 1);
+            g.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        Move();
         if (scale <= 1.0f)
         {
             // scale += Time.deltaTime * 0.01f;
             scale += Time.deltaTime;
             transform.localScale = OriginScale * (scale + 1);
-        }
-        if (Random.Range(0, 100) == 0 && !isBreed)
-        {
-            isBreed = true;
-            GameObject g = CreateGrowPlant(breedName, transform.position + Math.RotateY(new Vector3(0, 0, 1), Random.Range(0, 360), scale*2 + 1), breedRange - 1);
-            g.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
+
         }
     }
     //変化する確率

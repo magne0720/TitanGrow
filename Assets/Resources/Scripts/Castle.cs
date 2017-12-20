@@ -6,17 +6,13 @@ public class Castle : MonoBehaviour {
 
     //城の体力
     public int CastleHp = 1000;
-
-    //生成する兵士
-    public string soldier1;
-    public string soldier2;
-
+    
     //一度に生成する量
     private int soldier1Spawn = 5;
     private int soldier2Spawn = 3;
 
     //生成する間隔
-    private float Interval = 2.0f;
+    private float Interval = 60.0f;
 
     //時間
    public float SpawnTime;
@@ -31,7 +27,7 @@ public class Castle : MonoBehaviour {
     public static GameObject CreateCastle(string path, Vector3 pos = new Vector3())
     {
         Debug.Log(path + "," + pos.z);
-        string temp = path.Substring(0, 7);
+        string temp = path.Replace('\r', '\0');
         GameObject g;
         try
         {
@@ -51,10 +47,11 @@ public class Castle : MonoBehaviour {
 
     void Initialize()
     {
-
-
+        
         //オブジェクトの追加
         ObjectManager.AddObject(gameObject);
+
+        tag = "Castle";
     }
 
     // Use this for initialization
@@ -64,9 +61,6 @@ public class Castle : MonoBehaviour {
         SpawnTime = 0.0f;
         GoSortie = false;
 
-
-        soldier1 = "Prefabs/Enemy_CAL";
-        soldier2 = "Prefabs/Enemy_CAL";
     }
    
 	
@@ -92,51 +86,38 @@ public class Castle : MonoBehaviour {
 
         //    }
         //}
-
         
-
     }
 
     //兵士わくわくさん
     void Spawn()
     {
-
-
-        
-
-
         switch (iRandNum)
         {
             case 0:
-                DataBaseManager.SpawnEnemyWave("EnemyColumn");
                 Debug.Log("縦列");
+                DataBaseManager.SpawnEnemyWave("EnemyColumn",transform.position);
                 break;
 
             case 1:
-                DataBaseManager.SpawnEnemyWave("EnemyUnit");
                 Debug.Log("部隊");
+                DataBaseManager.SpawnEnemyWave("EnemyUnit", transform.position);
                 break;
             case 2:
-                DataBaseManager.SpawnEnemyWave("EnemyPlatoon");
                 Debug.Log("小隊");
+                DataBaseManager.SpawnEnemyWave("EnemyPlatoon", transform.position);
                 break;
             case 3:
-                DataBaseManager.SpawnEnemyWave("EnemyV");
                 Debug.Log("V字");
+                DataBaseManager.SpawnEnemyWave("EnemyV", transform.position);
                 break;
         }
-
-
-
-
-
-
-
+        
         if (CastleHp <= 80)
         {
 
-            DataBaseManager.SpawnEnemyWave("EnemyM");
-
+            Debug.Log("M");
+            DataBaseManager.SpawnEnemyWave("EnemyM", transform.position);
         }
 
         SpawnTime = 0;

@@ -25,9 +25,8 @@ public class Enemy : BaseCharacter
 
     public static GameObject CreateEnemy(string path="a")
     {
-        //GameObject g = CreateCharacter(path);
-        GameObject g = null;
-
+        GameObject g = CreateCharacter(path);
+        
         g.name = path;
         g.AddComponent<Enemy>();
 
@@ -57,17 +56,28 @@ public class Enemy : BaseCharacter
     void Start()
     {
         Initialize();
+        MySpeed = 4.0f;
         if(lastTarget==Vector3.zero)
         lastTarget = new Vector3(transform.position.x, transform.position.y, 2);
         timer = 0;
-        HeadingCastle = new Vector3(40, 0,40);
+        HeadingCastle = DataBaseManager.GetHumanCastle();
         MyPosition = transform.position;
     }
     // Update is called once per frame
     void Update()
     {
+        if (searchTimer < 1.0f)
+        {
+            searchTimer += Time.deltaTime;
+        }
+        else
+        {
+            ActionBrain();
+            searchTimer = 0;
+        }
+
+
         MyPosition = transform.position;
-        ActionBrain();
         if(battleEnemy!=null)
         SetTarget(battleEnemy.transform.position - transform.position);
       
@@ -100,8 +110,8 @@ public class Enemy : BaseCharacter
     {
         if (battleEnemy == null)
         {
-            SerchObject(ObjectManager.GameObjects,"Player");
-            foreach(GameObject g in SerchObjects)
+            SearchObject(ObjectManager.GameObjects,"Player");
+            foreach(GameObject g in SearchObjects)
             {
                 if (g.tag == "Player")
                 {
