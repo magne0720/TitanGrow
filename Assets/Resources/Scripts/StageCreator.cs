@@ -5,9 +5,9 @@ using UnityEngine;
 public class StageCreator : MonoBehaviour {
 
     //ステージの範囲
-    public const int STAGE_AREA = 50;
+    public const int STAGE_AREA = 250;
     //初期繁殖
-    public const int BREED_LIMIT = 50;
+    public const int BREED_LIMIT = 250; 
 
     static int[,] woodlist;
 
@@ -60,10 +60,10 @@ public class StageCreator : MonoBehaviour {
             {
                 if (BreedCount < BREED_LIMIT)//第１世代
                 {
-                    if (Random.Range(0, 100) >70 && woodlist[z, x] == 0)
+                    if (Random.Range(0, 100) ==0 && woodlist[z, x] == 0)
                         {
                             int rInst = Random.Range(0, ObjNames.Length);
-                            GameObject g = GrowPlant.CreateGrowPlant(ObjNames[rInst], new Vector3((x - STAGE_AREA / 2) * 10, 0, (z - STAGE_AREA / 2) * 10),8);
+                            GameObject g = GrowPlant.CreateGrowPlant(ObjNames[rInst], new Vector3((x - STAGE_AREA / 2) * 5, 0, (z - STAGE_AREA / 2) * 5),8);
                             woodlist[z, x] = rInst;
                             BreedCount++;
                         }

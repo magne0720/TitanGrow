@@ -50,6 +50,7 @@ public class BaseCharacter : EatBase
         //食べられたポイント
         eatPoint = 3;
 
+        transform.tag = "Object";
 
         //オブジェクトの追加
         ObjectManager.AddObject(gameObject);
@@ -99,8 +100,17 @@ public class BaseCharacter : EatBase
         }
         int hit = (isFowardHit) ? 0 : 1;
        Vector3 moving = TargetPosition - MyPosition;
-       if (Math.Length(moving) <= 0.002f) return;
-       moving.y = 0;
+        if (Math.Length(moving) <= 0.05f)
+        {
+            GetComponent<Animator>().SetFloat("walk", 0.0f);
+            return;
+        }
+        else
+        {
+            GetComponent<Animator>().SetFloat("walk", 1.0f);
+        }
+
+        moving.y = 0;
        moving.Normalize();
 
         MyPosition += moving * MySpeed * Time.deltaTime*hit;

@@ -1,24 +1,22 @@
 fileFormatVersion: 2
-guid: 062a04a77906afb4dab4bb7366fc9522
-timeCreated: 1512108237
+guid: 22dc4b0bac25ccb42be2a51459309cb9
+timeCreated: 1513843632
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: //RootNode
-    400000: //RootNode
-    2100000: PWL_5
-    2100002: PWL_1
-    2100004: PWL_4
-    2100006: PWL_7
-    2100008: PWL_6
-    2100010: PWL_3
-    2100012: PWL_2
-    2100014: PWL_9
-    2100016: PWL_8
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: PWL_Body
+    100000: "type_\u03B1Body"
+    100002: //RootNode
+    400000: "type_\u03B1Body"
+    400002: //RootNode
+    2100000: "type_\u03B201"
+    2100002: "type_\u03B202"
+    2100004: "type_\u03B204"
+    2100006: "type_\u03B205"
+    2100008: "type_\u03B203"
+    2300000: "type_\u03B1Body"
+    3300000: "type_\u03B1Body"
+    4300000: "type_\u03B1Body"
     9500000: //RootNode
   externalObjects: {}
   materials:

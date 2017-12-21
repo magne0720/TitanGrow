@@ -12,7 +12,7 @@ public class Castle : MonoBehaviour {
     private int soldier2Spawn = 3;
 
     //生成する間隔
-    private float Interval = 60.0f;
+    private float Interval = 40.0f;
 
     //時間
    public float SpawnTime;
@@ -23,6 +23,8 @@ public class Castle : MonoBehaviour {
     // public int SpawnRandom;
 
     int iRandNum;
+
+    private Vector3 offsetPosition;
 
     public static GameObject CreateCastle(string path, Vector3 pos = new Vector3())
     {
@@ -57,9 +59,11 @@ public class Castle : MonoBehaviour {
     // Use this for initialization
     void Start () {
         Initialize();
-        
-        SpawnTime = 0.0f;
+
+        SpawnTime = Interval;
         GoSortie = false;
+
+        offsetPosition = transform.position + new Vector3(0, 0, -150);
 
     }
    
@@ -96,20 +100,20 @@ public class Castle : MonoBehaviour {
         {
             case 0:
                 Debug.Log("縦列");
-                DataBaseManager.SpawnEnemyWave("EnemyColumn",transform.position);
+                DataBaseManager.SpawnEnemyWave("EnemyColumn",offsetPosition);
                 break;
 
             case 1:
                 Debug.Log("部隊");
-                DataBaseManager.SpawnEnemyWave("EnemyUnit", transform.position);
+                DataBaseManager.SpawnEnemyWave("EnemyUnit", offsetPosition);
                 break;
             case 2:
                 Debug.Log("小隊");
-                DataBaseManager.SpawnEnemyWave("EnemyPlatoon", transform.position);
+                DataBaseManager.SpawnEnemyWave("EnemyPlatoon", offsetPosition);
                 break;
             case 3:
                 Debug.Log("V字");
-                DataBaseManager.SpawnEnemyWave("EnemyV", transform.position);
+                DataBaseManager.SpawnEnemyWave("EnemyV", offsetPosition);
                 break;
         }
         
@@ -117,7 +121,7 @@ public class Castle : MonoBehaviour {
         {
 
             Debug.Log("M");
-            DataBaseManager.SpawnEnemyWave("EnemyM", transform.position);
+            DataBaseManager.SpawnEnemyWave("EnemyM", offsetPosition);
         }
 
         SpawnTime = 0;

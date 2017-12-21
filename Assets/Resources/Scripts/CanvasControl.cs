@@ -36,7 +36,6 @@ public class CanvasControl : MonoBehaviour
         GameObject cImage = new GameObject();
         cImage.name = "Image";
         cImage.transform.parent = canvas.transform;
-        cImage.transform.position = new Vector3(0, 0, 90);
         cImage.AddComponent<Image>().sprite = Resources.Load("Textures/TitleLogo_W_C_Screen", typeof(Sprite)) as Sprite;
         RectTransform rectImage = cImage.GetComponent<RectTransform>();
         rectImage.anchoredPosition = new Vector2();

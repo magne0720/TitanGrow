@@ -137,6 +137,7 @@ public class DataBaseManager : MonoBehaviour {
         //オブジェクト生成
         player=Player.CreatePlayer(objNames[0],objPos[0]).GetComponent<Player>();
         GameObject g1 = Castle.CreateCastle(objNames[1], objPos[1]);
+        g1.transform.forward=new Vector3(0,0,-1);
         GameObject g2 = Castle.CreateCastle(objNames[2], objPos[2]);
 
         HumanCastle = g1.GetComponent<Castle>();

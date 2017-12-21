@@ -33,9 +33,6 @@ public class Player : BaseCharacter
         }
         g.AddComponent<Player>();
         g.transform.position = pos;
-        g.transform.name = "Player";
-        g.transform.tag = "Player";
-
         return g;
     }
     // Use this for initialization
@@ -45,8 +42,8 @@ public class Player : BaseCharacter
         Initialize();
         //GetComponent<Rigidbody>().freezeRotation = true;
         catchObjects = new List<GameObject>();
-        this.transform.name = "Player";
-        this.transform.tag = "Player";
+        transform.name = "Player";
+        transform.tag = "Player";
         GetComponent<Animator>().runtimeAnimatorController =
             Resources.Load("Models/bigmen", typeof(RuntimeAnimatorController)) as RuntimeAnimatorController;
     }
@@ -67,8 +64,11 @@ public class Player : BaseCharacter
         //成長の制御
         Grow(FoodPoint);
             Move();
-        GetComponent<Animator>().SetFloat("walk",1.0f);
-
+      
+        foreach(GameObject g in SearchObjects)
+        {
+            //g.GetComponent<Renderer>().material.color = Color.red;
+        }
         //SetMass(transform.localScale.magnitude);
         //UnderGround();
         if (catchObjects.Count > 0)
@@ -81,16 +81,6 @@ public class Player : BaseCharacter
         }
     }
 
-    //タグがFoodなら当たったものをCatchにもっていく
-    void OnCollisionStay(Collision collision)
-    {
-        if (collision.transform.tag != "Untagged")
-        {
-            collision.transform.GetComponent<Rigidbody>().AddForce(transform.forward * CastAwaySpeed * transform.localScale.z);
-        }
-        transform.GetComponent<Rigidbody>().AddForce(-transform.forward);
-
-    }
     public void CatchAction()
     {
         if (catchObjects.Count > 0)
@@ -99,7 +89,7 @@ public class Player : BaseCharacter
         }
         else
         {
-            SearchObject(ObjectManager.GameObjects, "Untagged");
+            SearchObject(ObjectManager.GameObjects, "Object");
             Catch(SearchObjects);
         }
     }
@@ -122,7 +112,7 @@ public class Player : BaseCharacter
         if (objs.Count > 0)
             foreach (GameObject g in objs)
             {
-                if (g.transform.localScale.magnitude/2 < transform.localScale.magnitude)
+                if (g.transform.localScale.y/3< transform.localScale.y*2)
                     if (g.tag != "Player"&&g.tag!="Castle")
                     {
                         catchObjects.Add(g);
@@ -146,7 +136,7 @@ public class Player : BaseCharacter
             //つかんだものの衝突判定を戻す
             //g.GetComponent<Collider>().enabled = true;
             //自身のz軸方面に飛ばす
-            g.GetComponent<EatBase>().AddForce(transform.forward+new Vector3(0,100,0),transform.localScale.z);
+            g.GetComponent<EatBase>().AddForce(transform.forward,transform.localScale.z);
             //子から話す
             g.transform.parent = null;
          }
@@ -164,6 +154,7 @@ public class Player : BaseCharacter
             //子のあたり判定を戻す
             g.GetComponent<Collider>().enabled = true;
             g.transform.parent = null;
+            //g.GetComponent<Renderer>().material.color = Color.white;
         }
         //リストの初期化
         catchObjects.Clear();
@@ -218,12 +209,25 @@ public class Player : BaseCharacter
             searchHeight = 3.0f * transform.localScale.z;
 
             //大きさに比例してスピードが上がる
-            SetSpeed(transform.localScale.magnitude);
+            SetSpeed(transform.localScale.magnitude*1.4f);
+            
         }
     }
 
     public void GlowCount(int point)
     {
        
+    }
+
+    //タグがFoodなら当たったものをCatchにもっていく
+    void OnCollisionStay(Collision collision)
+    {
+        if (collision.transform.tag != "Untagged")
+        {
+            collision.transform.GetComponent<Rigidbody>().AddForce(transform.forward * CastAwaySpeed * transform.localScale.z);
+
+            transform.localScale += GrowRate;
+        }
+        transform.GetComponent<Rigidbody>().AddForce(-transform.forward);        
     }
 }

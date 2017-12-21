@@ -59,6 +59,8 @@ public class BaseObject : EatBase
         ObjectManager.AddObject(gameObject);
 
         MyPosition = transform.position;
+
+        transform.tag = "Object";
     }
     void OnCollisionEnter(Collision col)
     {

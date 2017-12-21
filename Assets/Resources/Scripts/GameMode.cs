@@ -218,7 +218,8 @@ public class GameMode : MonoBehaviour {
 
         controller.SetPlayer(player);
 
-        //４．オブジェクト情報
+        //４．オブジェクト初期化
+        ObjectManager.AllClear();
 
         //５．オブジェクト追加
         //CastleInstance();

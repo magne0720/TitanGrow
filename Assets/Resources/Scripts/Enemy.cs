@@ -57,6 +57,7 @@ public class Enemy : BaseCharacter
     {
         Initialize();
         MySpeed = 4.0f;
+        HP = 30;
         if(lastTarget==Vector3.zero)
         lastTarget = new Vector3(transform.position.x, transform.position.y, 2);
         timer = 0;
@@ -66,6 +67,10 @@ public class Enemy : BaseCharacter
     // Update is called once per frame
     void Update()
     {
+        if (HP < 0)
+        {
+            Destroy(gameObject);
+        }
         if (searchTimer < 1.0f)
         {
             searchTimer += Time.deltaTime;
@@ -78,9 +83,14 @@ public class Enemy : BaseCharacter
 
 
         MyPosition = transform.position;
-        if(battleEnemy!=null)
-        SetTarget(battleEnemy.transform.position - transform.position);
-      
+        if (battleEnemy != null)
+        {
+            SetTarget(battleEnemy.transform.position - transform.position);
+        }
+        else
+        {
+            SetTarget(new Vector3(0,0,-500));
+        }
         Move();
 
         UnderGround();

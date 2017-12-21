@@ -46,7 +46,7 @@ public class GrowPlant : BaseObject {
         if (Random.Range(0, 100) >= 30 && !isBreed)
         {
             isBreed = true;
-            GameObject g = CreateGrowPlant(breedName, transform.position + Math.RotateY(new Vector3(0, 0, 1), Random.Range(0, 360), scale * 2 + 1), breedRange - 1);
+            GameObject g = CreateGrowPlant(breedName, transform.position + Math.RotateY(new Vector3(0, 0, 1), Random.Range(0, 360),5), breedRange - 1);
             g.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
         }
     }
@@ -61,6 +61,11 @@ public class GrowPlant : BaseObject {
             scale += Time.deltaTime;
             transform.localScale = OriginScale * (scale + 1);
 
+            if (Random.Range(0, 100) == 100)
+            {
+                GameObject g = CreateGrowPlant(breedName, transform.position + Math.RotateY(new Vector3(0, 0, 1), Random.Range(0, 360), 5), breedRange - 1);
+                g.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
+            }
         }
     }
     //変化する確率
