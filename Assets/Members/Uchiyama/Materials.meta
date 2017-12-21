@@ -1,7 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 0d46e9bfb8648184e9bf5e32d93a5a78
 folderAsset: yes
 timeCreated: 1513141371
+=======
+guid: d5596d45c72fd60429d902f5b9965720
+folderAsset: yes
+timeCreated: 1512361813
+>>>>>>> origin/neoishihara
 licenseType: Free
 DefaultImporter:
   userData: 
