@@ -20,7 +20,6 @@ public class Enemy : BaseCharacter
     public Vector3 HeadingCastle;//向かう城
     public List<GameObject> Enemys;
     
-    public GameObject testObject = null;//テスト用オブジェクト
     private float timer = 0;
 
     public static GameObject CreateEnemy(string path="a")

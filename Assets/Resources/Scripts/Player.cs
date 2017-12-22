@@ -51,6 +51,8 @@ public class Player : BaseCharacter
     // Update is called once per frame
     override public void Update()
     {
+        if (HP < 0) Destroy(gameObject);
+
         if (Math.Length(TargetPosition - MyPosition) < 0.1f)
         {
             actiontimer += Time.deltaTime;
@@ -228,6 +230,7 @@ public class Player : BaseCharacter
 
             transform.localScale += GrowRate;
         }
-        transform.GetComponent<Rigidbody>().AddForce(-transform.forward);        
+        transform.GetComponent<Rigidbody>().AddForce(-transform.forward*2.0f);
+        HP--;        
     }
 }

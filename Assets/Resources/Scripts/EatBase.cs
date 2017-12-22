@@ -10,7 +10,6 @@ public class EatBase : MonoBehaviour {
     public Vector3 TargetPosition;
     public Vector3 MyDirection;     //自身の向いている方向    
     public int eatPoint;
-    public Rigidbody rigid;
     public Vector3 ForcePosition;
     public float force = 0;
 

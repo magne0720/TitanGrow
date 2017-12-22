@@ -48,12 +48,7 @@ public class BaseObject : EatBase
     {
         BoxCollider c = gameObject.AddComponent<BoxCollider>();
         c.center = new Vector3(0, 0.5f, 0);
-        if (rigid == null)
-        {
-            rigid = gameObject.AddComponent<Rigidbody>();
-            rigid.freezeRotation = true;
-            rigid.isKinematic = true;
-        }
+
 
         //オブジェクトの追加
         ObjectManager.AddObject(gameObject);

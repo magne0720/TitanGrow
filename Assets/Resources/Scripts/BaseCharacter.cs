@@ -34,19 +34,15 @@ public class BaseCharacter : EatBase
     }
     public void Initialize()
     {
-        if (rigid == null)
-        {
-            rigid = gameObject.AddComponent<Rigidbody>();
             gameObject.AddComponent<CapsuleCollider>().radius = 0.1f;
             gameObject.GetComponent<CapsuleCollider>().center = new Vector3(0, 0.5f, 0);
-            rigid.freezeRotation = true;
-        }
         searchHeight = 200.0f;
         searchRange = 22.5f;
         SetSpeed(0.01f);
         //SetSpeed(transform.localScale.magnitude);
         MyDirection = transform.forward;
 
+        HP = 300;
         //食べられたポイント
         eatPoint = 3;
 

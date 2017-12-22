@@ -23,6 +23,7 @@ public class Controller : MonoBehaviour {
     {
         if (isControll)
         {
+
             //カメラ操作
             float cameraX = Input.GetAxis("MouseX");
             float cameraY = Input.GetAxis("MouseY");
@@ -37,16 +38,17 @@ public class Controller : MonoBehaviour {
                 player.SetTarget(direction);
             }
             //食べる
-            if (Input.GetButtonDown("triangle")) player.GetComponent<Player>().Eat();
+            if (Input.GetButtonDown("triangle")||Input.GetMouseButtonDown(1))
+                player.GetComponent<Player>().Eat();
             //つかむ、投げる
-            if (Input.GetButtonDown("square")) player.GetComponent<Player>().CatchAction();
+            if (Input.GetButtonDown("square")||Input.GetMouseButtonDown(0))
+                player.GetComponent<Player>().CatchAction();
             //離す
-            if (Input.GetButtonDown("cross")) player.GetComponent<Player>().Release();
+            if (Input.GetButtonDown("cross")||Input.GetMouseButtonDown(3))
+                player.GetComponent<Player>().Release();
             //ズームインアウト
-            if (Input.GetButton("R1")) cCam.distance += 0.02f;
-            if (Input.GetButton("R2")) cCam.distance -= 0.02f;
-            //デバッグ用(成長抑制)
-            if (Input.GetButtonDown("L1")) player.FoodPoint++;
+            if (Input.GetButton("R1")) cCam.distance += 0.04f;
+            if (Input.GetButton("R2")) cCam.distance -= 0.04f;
         }
     }
     public void SetCamera(CameraControl c)
