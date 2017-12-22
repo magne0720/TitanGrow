@@ -14,6 +14,7 @@ public class Grabbed : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        //大きさ固定
         Vector3 lossScale = transform.lossyScale;
         Vector3 localScale = transform.localScale;
         transform.localScale = new Vector3(
