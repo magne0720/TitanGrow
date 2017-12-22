@@ -2,65 +2,84 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseObject : MonoBehaviour {
-    public GameObject Efect;
-    public GameObject Effect2;
-    public GameObject RockPiece;
-    public GameObject WoodPiece;
-    public string Type="";
-    public bool flg;
-    // Use this for initialization
-    void Start () {
-        flg = false;
+public class BaseObject : EatBase
+{
 
+    // Use this for initialization
+    void Start()
+    {
+        Initialize();
     }
 
     // Update is called once per frame
-    void Update () {
-        if (Input.GetMouseButtonDown(0))
-        {
-            flg = true;
-        }
+    void Update()
+    {
+        Move();
+    }
 
+
+         public void Move()
+    {
+        if (transform.parent != null)
+        {
+            return;
+        }
+        MyPosition = transform.position;
+
+        if (force > 0) force -= Time.deltaTime * 3.0f;
+        else if (force < 0) force = 0;
+        Vector3 moving = ForcePosition;
+        //moving.Normalize();
+
+        MyPosition += moving * force;
+
+        MyPosition.y = transform.position.y;
+        
+        if (Math.Length(moving) >= 1.0f)
+        {
+            Quaternion q = Quaternion.LookRotation(moving);
+            transform.rotation = q;
+        }
+        transform.position = MyPosition;
+
+    }
+
+   public void Initialize()
+    {
+        BoxCollider c = gameObject.AddComponent<BoxCollider>();
+        c.center = new Vector3(0, 0.5f, 0);
+
+
+        //オブジェクトの追加
+        ObjectManager.AddObject(gameObject);
+
+        MyPosition = transform.position;
+
+        transform.tag = "Object";
     }
     void OnCollisionEnter(Collision col)
     {
 
-        //gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
-        if (flg == true)
-        {
-            Efect.transform.position = gameObject.transform.position;
-            Instantiate(Efect);
-            Effect2.transform.position = gameObject.transform.position;
-            Instantiate(Effect2);
-            GameObject G=null;
-            if (Type == "wood")
-            {
-                G = WoodPiece;
-            }
-            else if(Type=="rock")
-            {
-                G = RockPiece;
-            }
-            G.transform.position = gameObject.transform.position;
-            Instantiate(G);
-            Destroy(gameObject);
-        }
     }
 
-    public static GameObject CreateObject(string path)
+    public static GameObject CreateObject(string path,Vector3 pos=new Vector3())
     {
-        GameObject baseObject;
+        //Debug.Log(path+","+pos.z);
+        string temp = path.Replace('\r', '\0');
+        GameObject g;
+        try
+        {
+            g = Instantiate(Resources.Load("Models/"+temp, typeof(GameObject))) as GameObject;
+        }
+        catch
+        {
+            //オブジェクトパスが見つからない場合
+            g = Instantiate(Resources.Load("Models/OUT_BOX", typeof(GameObject))) as GameObject;
+        }
+        g.AddComponent<BaseObject>();
+        g.name = temp;
+        g.transform.position = pos;
 
-        if (path == "a")
-        {
-            baseObject = Instantiate(Resources.Load("Prefabs/test", typeof(GameObject))) as GameObject;
-        }
-        else
-        {
-            baseObject = Instantiate(Resources.Load(path, typeof(GameObject))) as GameObject;
-        }
-        return baseObject;
+        return g;
     }
-
 }

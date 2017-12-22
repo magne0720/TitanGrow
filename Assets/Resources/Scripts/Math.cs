@@ -4,7 +4,7 @@ using UnityEngine;
 
 //計算用メソッド群
 
-public class Math   
+public class Math
 {
 
     // Use this for initialization
@@ -32,10 +32,10 @@ public class Math
 の両方を満たせばよい。
 */
     //視覚方向から円錐上に見る
-    public static float SerchCone(Vector3 pos, Vector3 dir, float height, float range, Vector3 target)
+    public static float SearchCone(Vector3 pos, Vector3 dir, float height, float range, Vector3 target)
     {
         float dis = float.MaxValue;
-        Vector3 moving = (dir - pos);
+        Vector3 moving = dir;
         float dot = Dot(target - pos, moving - pos);
         // 0≦(p-a)･(d-a)≦h^2 (･はベクトルの内積)
         if (0 <= dot && dot <= height * height)
@@ -98,7 +98,6 @@ public class Math
         //ラジアン = 度 × 円周率 ÷ 180
         return deg * Mathf.PI / 180;
     }
-
     //ラジアンをデグリに変換する(単位は度)
     public static float RagToDeg(float rag)
     {
@@ -106,7 +105,7 @@ public class Math
         return rag * 180 / Mathf.PI;
     }
     //中心から指定角回転させる
-    public static Vector3 RotateX(Vector3 target,float deg, float range = 1.0f)
+    public static Vector3 RotateX(Vector3 target, float deg, float range = 1.0f)
     {
         Vector3 vector = (target).normalized;
         //ラジアンに変換
@@ -134,7 +133,7 @@ public class Math
 
         return vector;
     }
-    public static Vector3 RotateZ(Vector3 target,float deg, float range = 1.0f)
+    public static Vector3 RotateZ(Vector3 target, float deg, float range = 1.0f)
     {
         Vector3 vector = (target).normalized;
         //ラジアンに変換
@@ -161,5 +160,57 @@ public class Math
         vector.y = ay * range;
 
         return vector;
+    }
+
+    //方向ベクトルから右方向に固有角度で自身の視認範囲のベクトルを取得する(XZ平面上)
+    public static Vector3 getDirectionDegree(Vector3 target, float deg, float range = 1.0f)
+    {
+        Vector3 vector = target.normalized;
+        //ラジアンに変換
+        float rag = DegToRag(deg);
+
+        float ax = vector.x * Mathf.Cos(rag) - vector.z * Mathf.Sin(rag);
+        float az = vector.x * Mathf.Sin(rag) + vector.z * Mathf.Cos(rag);
+
+        vector.x = ax * range;
+        vector.z = az * range;
+
+        return vector;
+    }
+    //右側から見て内側にあるか
+    public static bool OnDirectionRight(Vector3 pos,Vector3 dir,Vector3 target, float rightDeg)
+    {
+        //自身の向いている方向から右に視認範囲分回転
+        Vector3 to = getDirectionDegree(dir, rightDeg);
+        //敵の位置
+        Vector3 t = target-pos;
+
+        if (to.x * t.z - t.x * to.z < 0)
+        {
+            return true;
+        }
+        return false;
+    }
+    //右側から見て内側にあるか
+    public static bool OnDirectionLeft(Vector3 pos,Vector3 dir,Vector3 target, float leftDeg)
+    {
+        //自身の向いている方向から右に視認範囲分回転
+        Vector3 to = getDirectionDegree(dir, -leftDeg);
+        //敵の位置
+        Vector3 t = target-pos;
+
+        if (to.x * t.z - t.x * to.z > 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    //扇状に見る
+    public static bool OnDirectionFan(Vector3 pos, Vector3 dir, Vector3 target, float openDeg)
+    {
+        if (OnDirectionLeft(pos,dir, target, openDeg) && OnDirectionRight(pos,dir, target, openDeg))
+            return true;
+        return false;
     }
 }

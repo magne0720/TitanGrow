@@ -6,38 +6,58 @@ using UnityEngine;
 //これをアタッチすると以下の行動ができるようになる
 //「移動」「ジャンプ」
 //AIにも対応させるので、ここにはインターフェースの処理を書かないこと
-public class BaseCharacter : MonoBehaviour
+public class BaseCharacter : EatBase
 {
-    public int MyHitpoint;
-    public float MySpeed;
-    public Vector3 MyPosition;
-    public Vector3 TargetPosition;
-    public Vector3 MyDirection;     //自身の向いている方向    
-    public float serchHeight = 0;//サーチ距離
-    public float serchRange = 0;//サーチ範囲
-    public bool isGround;
-    Rigidbody rigid;
+    public float searchTimer = 0;//サーチ間隔
+    public float searchHeight = 0;//サーチ距離
+    public float searchRange = 0;//サーチ範囲
+    public bool isFowardHit;
+    public List<GameObject> SearchObjects;
 
-    public static GameObject CreateCharacter(string path)
+    public static GameObject CreateCharacter(string path,Vector3 pos = new Vector3())
     {
-        GameObject baseCharacter;
+        Debug.Log("pathname=" + path);
+        string temp = path.Replace('\r', '\0');
+        GameObject g;
+        try
+        {
+            g = Instantiate(Resources.Load("Models/" + temp, typeof(GameObject))) as GameObject;
+        }
+        catch
+        {
+            //オブジェクトパスが見つからない場合
+                g = Instantiate(Resources.Load("Models/OUT_BOX", typeof(GameObject))) as GameObject;
+          }
+        g.transform.position = pos;
 
-        if (path == "a")
-        {
-            baseCharacter = Instantiate(Resources.Load("Prefabs/test", typeof(GameObject)))as GameObject;
-        }
-        else
-        {
-            baseCharacter = Instantiate(Resources.Load(path, typeof(GameObject))) as GameObject;
-        }
-        return baseCharacter;
+        return g;
     }
     public void Initialize()
     {
-        if (rigid==null)
-        {
-            rigid = gameObject.AddComponent<Rigidbody>();
-        }
+            gameObject.AddComponent<CapsuleCollider>().radius = 0.1f;
+            gameObject.GetComponent<CapsuleCollider>().center = new Vector3(0, 0.5f, 0);
+        searchHeight = 200.0f;
+        searchRange = 22.5f;
+        SetSpeed(0.01f);
+        //SetSpeed(transform.localScale.magnitude);
+        MyDirection = transform.forward;
+
+        HP = 300;
+        //食べられたポイント
+        eatPoint = 3;
+
+        transform.tag = "Object";
+
+        //オブジェクトの追加
+        ObjectManager.AddObject(gameObject);
+
+    }
+    public void Initialize(Vector3 pos, float speed)
+    {
+        MyPosition = pos;
+        MySpeed = speed;
+        isFowardHit = false;
+        searchRange = 45.0f;
     }
 
     //Use this for initialization
@@ -48,19 +68,10 @@ public class BaseCharacter : MonoBehaviour
     // Update is called once per frame
     public virtual void Update()
     {
-        Move();
+            Move();
         //CheckGround();
-        if (isGround)
-        {
-
-        }
-        //LiveCheck();
     }
-    public void Initialize(Vector3 pos, float speed)
-    {
-        MyPosition = pos;
-        MySpeed = speed;
-    }
+  
     public void MoveRight()
     {
         TargetPosition.x += 1.0f;
@@ -79,24 +90,32 @@ public class BaseCharacter : MonoBehaviour
     }
     public void Move()
     {
+        if (transform.parent != null)
+        {
+            return;
+        }
+        int hit = (isFowardHit) ? 0 : 1;
        Vector3 moving = TargetPosition - MyPosition;
-       if (Math.Length(moving) <= 0.002f) return;
-       moving.y = 0;
+        if (Math.Length(moving) <= 0.05f)
+        {
+            GetComponent<Animator>().SetFloat("walk", 0.0f);
+            return;
+        }
+        else
+        {
+            GetComponent<Animator>().SetFloat("walk", 1.0f);
+        }
+
+        moving.y = 0;
        moving.Normalize();
 
-        MyPosition += moving * MySpeed * Time.deltaTime;
+        MyPosition += moving * MySpeed * Time.deltaTime*hit;
 
         MyPosition.y = transform.position.y;
 
-
-        if (isGround)
-        {
-            MyPosition.y -= 0.05f;
-        }
-
         transform.position = MyPosition;
 
-        //SetDirection(moving);
+        SetDirection(moving);
         if (Math.Length(moving) >= 1.0f)
         {
             Quaternion q = Quaternion.LookRotation(moving);
@@ -107,18 +126,18 @@ public class BaseCharacter : MonoBehaviour
 
     void Damage(int p)
     {
-        MyHitpoint -= p;
+        HP -= p;
     }
 
     void Death()
     {
-        MyHitpoint = 0;
+        HP = 0;
         Destroy(gameObject);
     }
 
     void LiveCheck()
     {
-        if (MyHitpoint <= 0)
+        if (HP <= 0)
             Death();
     }
 
@@ -130,7 +149,6 @@ public class BaseCharacter : MonoBehaviour
     {
         return TargetPosition;
     }
-
     public void SetDirection(Vector3 v)
     {
         MyDirection = v;
@@ -153,7 +171,7 @@ public class BaseCharacter : MonoBehaviour
         SetTarget(vector*height);
     }
 
-    public void SerchEnemy(GameObject obj)
+    public void SearchEnemy(GameObject obj)
     {
         //敵がいる時
         if (obj != null)
@@ -173,22 +191,22 @@ public class BaseCharacter : MonoBehaviour
             //if (timer > 2)
             //{
             //    timer = 0;
-            //    //RotateY(1, serchHeight);
+            //    //RotateY(1, searchHeight);
             //    TargetPosition = HeadingCastle;
             //}
             int i = 0;
             float dis = 0;
-            float ans = serchHeight;
-            float temp_ans = serchHeight;
+            float ans = searchHeight;
+            float temp_ans = searchHeight;
 
             List<GameObject> objects = new List<GameObject>();
 
             if (objects.Count > 0)
                 foreach (GameObject g in objects)
                 {
-                    g.GetComponent<Renderer>().material.color = Color.white;
+
                     //探す計算処理
-                    dis = Math.SerchCone(MyPosition, TargetPosition, serchHeight, serchRange, g.transform.position);
+                    dis = Math.SearchCone(MyPosition, TargetPosition, searchHeight, searchRange, g.transform.position);
                     //視界に見えているもの
                     if (ans >= dis)
                     {
@@ -207,6 +225,50 @@ public class BaseCharacter : MonoBehaviour
         }
     }
 
+
+    public List<GameObject> SearchObject(List<GameObject> objects, string tag = "Enemy")
+    {
+        if (objects == null) return null;
+
+        List<GameObject> objs = new List<GameObject>();
+        float dis = 0;
+        float ans = searchHeight;
+        float temp_ans = searchHeight;
+
+        isFowardHit = false;
+
+        foreach (GameObject g in objects)
+        {
+            //同期中に削除されたものは見ない
+            if (g != null)
+            {
+                if (g.tag == tag)
+                {
+                    //探す計算処理
+                    dis = Math.Length(g.transform.position - transform.position);
+                    //視界に見えているもの
+                    if (ans >= dis)
+                    {
+                        //目の前にいるか調べる
+                        if (Physics.Raycast(new Ray(transform.position, transform.forward),searchHeight/10))
+                         {
+                            isFowardHit = true;
+                        }
+                        //扇形に見る
+                        if (Math.OnDirectionFan(MyPosition,MyDirection, g.transform.position,searchRange))
+                        {
+                            objs.Add(g);
+                        }
+                    }
+                }
+            }
+        }
+        SearchObjects = objs;
+        //Debug.DrawRay(MyPosition, MyDirection * searchHeight, Color.red, 0.3f);
+        //Debug.DrawRay(MyPosition, Math.getDirectionDegree(MyDirection, searchRange,searchHeight), Color.green, 0.3f);
+        //Debug.DrawRay(MyPosition, Math.getDirectionDegree(MyDirection, -searchRange,searchHeight), Color.green, 0.3f);
+        return objs;
+    }
 
     void OnCollisionEnter(Collision c)
     {
@@ -231,6 +293,13 @@ public class BaseCharacter : MonoBehaviour
     }
     public void SetMass(float s)
     {
-        rigid.mass = s;
+       // rigid.mass = s;
+    }
+    public void UnderGround()
+    {
+        if (transform.position.y < -1)
+        {
+            transform.position = new Vector3(transform.position.x,1,transform.position.z);
+        }
     }
 }

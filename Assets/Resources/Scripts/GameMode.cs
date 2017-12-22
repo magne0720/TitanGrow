@@ -20,14 +20,14 @@ public class GameMode : MonoBehaviour {
 
     public enum MODE
     {
-        TITLE=0,GAME,OPTION,NUM
+        TITLE=0,GAME, GALLERY, OPTION,NUM
     };
     MODE mode;
-    int titleselect;
+    int titleselect, galleryselect;
+    float selectGravity;
     bool isArrowed;
 
     public CameraControl cam;
-    public ObjectManager Objects;
     public Player player;
     public Controller controller;
     public CanvasControl canvas;
@@ -37,8 +37,6 @@ public class GameMode : MonoBehaviour {
     void Start ()
     {
         isArrowed = false;
-
-        Objects = gameObject.AddComponent<ObjectManager>();
 
         mode = MODE.TITLE;
         titleselect = 0;
@@ -50,10 +48,16 @@ public class GameMode : MonoBehaviour {
 
         if (controller == null)
         {
-            controller = this.gameObject.AddComponent<Controller>();
-            controller.camera = cam.GetComponent<CameraControl>();
-
+            GameObject CO = new GameObject();
+            CO.name = "Controller";
+            controller = CO.gameObject.AddComponent<Controller>();
+            controller.SetCamera(cam.GetComponent<CameraControl>());
         }
+
+        ObjectManager.StartUpData();
+        DataBaseManager.SetUpObjectData();
+        StageCreator.StartUp();
+        //GrowPlant.CreateGrowPlant("nat_001",new Vector3(),5);
     }
 
     // Update is called once per frame
@@ -63,18 +67,22 @@ public class GameMode : MonoBehaviour {
 
     void Game()
     {
-        DispTitle();
         switch (mode)
         {
             case MODE.TITLE:
                 TitleSelectInput();
+                DispTitle();
                 break;
             case MODE.GAME:
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKeyDown(KeyCode.Space)||Input.GetButtonDown("circle"))
                 {
                         GameEnd();
                         canvas.FadeOut();
                 }
+                break;
+            case MODE.GALLERY:
+                GallerySelectInput();
+                DispGallery();
                 break;
             case MODE.OPTION:
                 break;
@@ -105,36 +113,94 @@ public class GameMode : MonoBehaviour {
         }
         //DispCanvas(true);
     }
+
+    void DispGallery()
+    {
+        canvas.ChangeGallery(galleryselect);
+    }
+
     void TitleSelectInput()
     {
         int axis =(int)Input.GetAxis("LRArrow")+(int)Input.GetAxis("Horizontal");
         //左右移動
         if (axis != 0)
         {
+            selectGravity += Time.deltaTime;
             if (!isArrowed)
             {
+                Debug.Log("select=" + selectGravity);
                 //-1で左、1で右
-              titleselect+=(int)axis;
-                if (titleselect < TS_MIN) titleselect = TS_MIN;
-                if (titleselect > TS_MAX) titleselect = TS_MAX;
+                titleselect += (int)axis;
                 isArrowed = true;
             }
+            //一定秒後にめっちゃ早く選ぶ
+            if (selectGravity > 0.5f)
+            {
+                Debug.Log("gravity");
+                titleselect += (int)axis;
+            }
+            if (titleselect < TS_MIN) titleselect = TS_MIN;
+            if (titleselect > TS_MAX) titleselect = TS_MAX;
         }
         else
         {
             isArrowed = false;
+            selectGravity = 0;
         }
         //選択
-        if (Input.GetButtonDown("circle"))
+        if (Input.GetButtonDown("circle") || Input.GetKeyDown(KeyCode.Space))
         {
             if (mode == MODE.TITLE)
             {
-                if (titleselect == 0)
+                switch (titleselect)
                 {
-                    canvas.FadeIn();
-                    StartUp();
+                    case 0:
+                        canvas.FadeIn();
+                        StartUp();
+                        break;
+                    case 1:
+                        canvas.HideImage();
+                        GalleryStart();
+                        break;
+                    case 2:
+                        break;
+                    default:
+                        break;
                 }
             }
+        }
+    }
+    void GallerySelectInput()
+    {
+        int size = DataBaseManager.GetObjectLength();
+        float axis = (int)Input.GetAxis("LRArrow") + (int)Input.GetAxis("Horizontal");
+        //左右移動
+        if (axis != 0)
+        {
+            selectGravity += Time.deltaTime;
+            if (!isArrowed)
+            {
+                //-1で左、1で右
+                galleryselect += (int)axis;
+                isArrowed = true;
+            }
+            //1秒後にめっちゃ早く選ぶ
+            if (selectGravity > 0.5f)
+            {
+                galleryselect += (int)axis;
+            }
+            if (galleryselect < 0) galleryselect = 0;
+            if (galleryselect >= size) galleryselect = size - 1;
+        }
+        else
+        {
+            isArrowed = false;
+            selectGravity = 0;
+        }
+        if (Input.GetButtonDown("cross"))
+        {
+            mode = MODE.TITLE;
+            canvas.HideImage();
         }
     }
 
@@ -143,25 +209,20 @@ public class GameMode : MonoBehaviour {
         mode = MODE.GAME;
         //ゲームの立ち上げ(ゲームプレイ時)
         //カメラの設定
+        cam.Initialize();
 
-        //CollisionManagerの生成
-        if (Objects == null)
-        {
-            Objects = this.gameObject.AddComponent<ObjectManager>();
-        }
         //３．ゲーム設定
         //playerの生成
-            player = BaseCharacter.CreateCharacter("a").AddComponent<Player>();
-            player.tag = "Player";
-            Objects.AddObject(player.transform.gameObject);
+        DataBaseManager.SetUpStartData();
+        player = DataBaseManager.GetPlayer();
 
+        controller.SetPlayer(player);
 
-        controller.player = player;
-            controller.camera.player = player.gameObject;
-
-        //４．オブジェクト情報
+        //４．オブジェクト初期化
+        ObjectManager.AllClear();
 
         //５．オブジェクト追加
+        //CastleInstance();
         ObjectInstance();
 
         //６．ゲーム開始
@@ -171,6 +232,7 @@ public class GameMode : MonoBehaviour {
     void GameStart()
     {
         mode = MODE.GAME;
+        controller.SetControll(true);
     }
 
     void GameEnd()
@@ -178,22 +240,33 @@ public class GameMode : MonoBehaviour {
         mode = MODE.TITLE;
         controller.player = null;
         player = null;
-        Objects.AllClear();
+        controller.SetControll(false);
+        ObjectManager.AllClear();
+        StageCreator.StartUp();
     }
 
     void GameStop()
     {
 
     }
+
+    void GalleryStart()
+    {
+        mode = MODE.GALLERY;
+    }
+
+    void CastleInstance()
+    {
+        GameObject g = Instantiate(Resources.Load("Models/cat_001", typeof(GameObject)) as GameObject);
+        g.name = "castle";
+        g.transform.position = new Vector3(100, 0, 0);
+        g.transform.localScale *= 0.05f;
+        g.AddComponent<Castle>();
+    }
+
     void ObjectInstance()
     {
-        for(int i = 0; i < 100; i++)
-        {
-            Enemy g = BaseCharacter.CreateCharacter("Prefabs/test").AddComponent<Enemy>();
-            g.transform.position = Math.RotateY(new Vector3(0, 0, 1), i*10, i*20);
-            g.transform.localScale = new Vector3(i*2, i*2,i*2);
-            g.SetEnemy(player.gameObject);
-            Objects.AddObject(g.gameObject);
-        }
+        StageCreator.StartUp();
+        //DataBaseManager.SpawnEnemyWave("EnemyPos");
     }
 }

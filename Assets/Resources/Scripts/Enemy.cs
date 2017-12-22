@@ -20,61 +20,79 @@ public class Enemy : BaseCharacter
     public Vector3 HeadingCastle;//向かう城
     public List<GameObject> Enemys;
     
-    public GameObject testObject = null;//テスト用オブジェクト
     private float timer = 0;
 
-    public static GameObject Create(string path="Prefabs/test")
+    public static GameObject CreateEnemy(string path="a")
     {
-        GameObject g;
-        if (path == "a")
-        {
-             g = Instantiate(Resources.Load("Prefabs/test", typeof(GameObject))) as GameObject;
-        }
-        else
-        {
-             g = Instantiate(Resources.Load(path, typeof(GameObject))) as GameObject;
-        }
+        GameObject g = CreateCharacter(path);
+        
+        g.name = path;
+        g.AddComponent<Enemy>();
+
 
         return g;
     } 
-    
+    public static GameObject CreateEnemy(DataBaseManager.OBJECT data)
+    {
+        GameObject g = CreateCharacter(data.path);
+        g.name = data.name;
+        g.transform.position = data.pos;
+        g.transform.localScale *= data.scale;
+        g.AddComponent<Enemy>();
+
+        return g;
+    }
     static Enemy Create(string path, Vector3 lastPos)
     {
         Enemy e = new Enemy();
-
-        //e.MyModel = Resources.Load(path) as GameObject;
+        
         e.lastTarget = lastPos;
+
 
         return e;
     }
-
     // Use this for initialization
     void Start()
     {
         Initialize();
+        MySpeed = 4.0f;
+        HP = 30;
         if(lastTarget==Vector3.zero)
         lastTarget = new Vector3(transform.position.x, transform.position.y, 2);
-        //MyPosition = transform.position;
-        //SetTarget(lastTarget);
-        //serchHeight = 25.0f;
-        //serchRange = 120.0f;
         timer = 0;
-        //MySpeed = 3.0f;
-        HeadingCastle = new Vector3(40, 0,40);
-        MySpeed = transform.localScale.z*4.0f;
-        GetComponent<Rigidbody>().isKinematic = true;
+        HeadingCastle = DataBaseManager.GetHumanCastle();
         MyPosition = transform.position;
-
-        SetTarget(battleEnemy.transform.position);
     }
     // Update is called once per frame
     void Update()
     {
-        SetTarget(battleEnemy.transform.position - MyPosition);
+        if (HP < 0)
+        {
+            Destroy(gameObject);
+        }
+        if (searchTimer < 1.0f)
+        {
+            searchTimer += Time.deltaTime;
+        }
+        else
+        {
+            ActionBrain();
+            searchTimer = 0;
+        }
 
-        SetMass(transform.localScale.magnitude);
 
+        MyPosition = transform.position;
+        if (battleEnemy != null)
+        {
+            SetTarget(battleEnemy.transform.position - transform.position);
+        }
+        else
+        {
+            SetTarget(new Vector3(0,0,-500));
+        }
         Move();
+
+        UnderGround();
     }
     //襲う敵の設定
     void SetEnemy(int i)
@@ -84,14 +102,11 @@ public class Enemy : BaseCharacter
         //SetTarget(Enemys[i].transform.position);
     }
     //敵を探す
-
     public void SetEnemy(GameObject g)
     {
         battleEnemy = g;
         //SetTarget(Enemys[i].transform.position);
     }
-
-
     private void SetSerchHeight(float d)
     {
         //serchHeight = d;
@@ -99,5 +114,23 @@ public class Enemy : BaseCharacter
     private void SetSerchRange(float d)
     {
         //serchRange = d;
+    }
+    void ActionBrain()
+    {
+        if (battleEnemy == null)
+        {
+            SearchObject(ObjectManager.GameObjects,"Player");
+            foreach(GameObject g in SearchObjects)
+            {
+                if (g.tag == "Player")
+                {
+                    SetEnemy(g);
+                }
+            }
+        }
+        else
+        {
+
+        }
     }
 }

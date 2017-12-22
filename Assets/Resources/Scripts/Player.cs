@@ -12,63 +12,87 @@ public class Player : BaseCharacter
     public int FoodPoint;                                       //食ったものポイント 
     public float CastAwaySpeed = 1250.0f;                   //投げた時のスピード
     public float GrowTime = 0.0f;                                //成長が止まっている時間
-    public Vector3 GrowRate = new Vector3(0.05f, 0.05f, 0.05f);  //大きさの倍率
+    public Vector3 GrowRate = new Vector3(0.001f, 0.001f, 0.001f);  //大きさの倍率
 
-    public static GameObject Create(string path)
+    private float actiontimer = 0;//待機モーションフラグ
+
+    public static GameObject CreatePlayer(string path,Vector3 pos=new Vector3())
     {
         GameObject g;
 
-        if (path == "a")
+        path.Replace('\r', '\0');
+        try
         {
-            g = Instantiate(Resources.Load("Prefabs/test", typeof(GameObject))) as GameObject;
+            g = Instantiate(Resources.Load("Models/" + path, typeof(GameObject))) as GameObject;
         }
-        else
+        catch
         {
-            g = Resources.Load(path) as GameObject;
+            //オブジェクトパスが見つからない場合
+            g = Instantiate(Resources.Load("Models/DummyPre", typeof(GameObject))) as GameObject;
+            Debug.Log("Object Null");
         }
+        g.AddComponent<Player>();
+        g.transform.position = pos;
         return g;
     }
     // Use this for initialization
     override public void Start()
     {
+        actiontimer = 0;
         Initialize();
-        this.transform.tag = "Player";
-        GetComponent<Rigidbody>().isKinematic = true;
+        //GetComponent<Rigidbody>().freezeRotation = true;
+        catchObjects = new List<GameObject>();
+        transform.name = "Player";
+        transform.tag = "Player";
+        GetComponent<Animator>().runtimeAnimatorController =
+            Resources.Load("Models/bigmen", typeof(RuntimeAnimatorController)) as RuntimeAnimatorController;
     }
 
     // Update is called once per frame
     override public void Update()
     {
-        //投げる
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            CastAway();
-        }
+        if (HP < 0) Destroy(gameObject);
 
-        //離す
-        if (Input.GetKeyDown(KeyCode.Y))
+        if (Math.Length(TargetPosition - MyPosition) < 0.1f)
         {
-            Release();
+            actiontimer += Time.deltaTime;
+            if (actiontimer >= 7.0f)
+            {
+                actiontimer = 0;
+                GetComponent<Animator>().SetTrigger("waitaction");
+            }
         }
-
-        //食べる
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Eat();
-        }
-
-        Move();
+        //MyPosition = transform.position;
         //成長の制御
         Grow(FoodPoint);
-        SetMass(transform.localScale.magnitude);
+            Move();
+      
+        foreach(GameObject g in SearchObjects)
+        {
+            //g.GetComponent<Renderer>().material.color = Color.red;
+        }
+        //SetMass(transform.localScale.magnitude);
+        //UnderGround();
+        if (catchObjects.Count > 0)
+        {
+            foreach (GameObject g in catchObjects)
+            {
+                //g.GetComponent<Rigidbody>().isKinematic = false;
+                g.transform.position = transform.forward * transform.localScale.z + transform.position;
+            }
+        }
     }
 
-    //タグがFoodなら当たったものをCatchにもっていく
-    void OnCollisionEnter(Collision collision)
+    public void CatchAction()
     {
-        if (collision.gameObject.tag == "Food")
+        if (catchObjects.Count > 0)
         {
-            Catch(collision.transform.gameObject);
+                CastAway();          
+        }
+        else
+        {
+            SearchObject(ObjectManager.GameObjects, "Object");
+            Catch(SearchObjects);
         }
     }
 
@@ -78,9 +102,32 @@ public class Player : BaseCharacter
         //つかんだもの情報
         catchObjects.Add(g);
         //子にする
-        g.transform.parent = this.transform;
+        //g.transform.parent = this.transform;
         //子のあたり判定を消す
-        g.GetComponent<Collider>().enabled = false;
+        //g.GetComponent<Collider>().enabled = false;
+    }
+    //つかむ
+    public void Catch(List<GameObject> objs)
+    {
+        catchObjects.Clear();
+        //つかんだもの情報
+        if (objs.Count > 0)
+            foreach (GameObject g in objs)
+            {
+                if (g.transform.localScale.y/3< transform.localScale.y*2)
+                    if (g.tag != "Player"&&g.tag!="Castle")
+                    {
+                        catchObjects.Add(g);
+                        //子にする
+                        g.transform.parent = this.transform;
+                        //子のあたり判定を消す
+                        //g.GetComponent<Collider>().enabled = false;
+                        //デバッグ用
+                        //g.GetComponent<Renderer>().material.color = Color.black;
+                        // アニメーターで動かす
+                        GetComponent<Animator>().SetTrigger("catch");
+                    }
+            }
     }
 
     //投げる
@@ -89,13 +136,16 @@ public class Player : BaseCharacter
         foreach (GameObject g in catchObjects)
         {
             //つかんだものの衝突判定を戻す
-            g.GetComponent<Collider>().enabled = true;
+            //g.GetComponent<Collider>().enabled = true;
             //自身のz軸方面に飛ばす
-            g.GetComponent<Rigidbody>().AddForce(transform.forward * CastAwaySpeed);
+            g.GetComponent<EatBase>().AddForce(transform.forward,transform.localScale.z);
+            //子から話す
             g.transform.parent = null;
-        }
+         }
         //リストの初期化
         catchObjects.Clear();
+        // アニメーターで動かす
+        GetComponent<Animator>().SetTrigger("castaway");
     }
 
     //離す
@@ -106,47 +156,40 @@ public class Player : BaseCharacter
             //子のあたり判定を戻す
             g.GetComponent<Collider>().enabled = true;
             g.transform.parent = null;
+            //g.GetComponent<Renderer>().material.color = Color.white;
         }
         //リストの初期化
         catchObjects.Clear();
+        // アニメーターで動かす
+        GetComponent<Animator>().SetTrigger("release");
     }
 
     //食べる
     public void Eat()
     {
+        List<GameObject> eats=new List<GameObject>();
+
         foreach (GameObject g in catchObjects)
         {
             //ポイントを得る処理
-            EatPoint(g, FoodPoint);
+            EatPoint(g.GetComponent<EatBase>());
 
             //食べたものを消す処理
-            DestroyObject(g);
-
+            ObjectManager.removeObject(g);
+            Destroy(g);
+            
         }
         //リストの初期化
         catchObjects.Clear();
-
+        // アニメーターで動かす
+        GetComponent<Animator>().SetTrigger("eat");
     }
 
     //食べた時のポイントを追加する
-    public void EatPoint(GameObject g, int point)
+    public void EatPoint(EatBase e)
     {
-
-        //Ainimalが含まれている文字列
-        if (g.name.IndexOf("Animal") >= 0)
-        {
-            FoodPoint += 4;
-            GlowCount(FoodPoint);
-
-        }
-        //Humanが含まれている文字列
-        if (g.name.IndexOf("Human") >= 0)
-        {
-            FoodPoint += 2;
-            GlowCount(FoodPoint);
-        }
+        FoodPoint += e.eatPoint;
     }
-
     //自身の成長
     public void Grow(int point)
     {
@@ -158,18 +201,36 @@ public class Player : BaseCharacter
                 GrowTime = 0;
                 FoodPoint--;
             }
-            transform.localScale -= GrowRate;
+            return;
         }
+        else
+        {
+            //大きくなる
+            transform.localScale += GrowRate;
 
-        //大きくなる
-        transform.localScale += GrowRate;
+            searchHeight = 3.0f * transform.localScale.z;
 
-        //大きさに比例してスピードが上がる
-        SetSpeed(transform.localScale.magnitude);
+            //大きさに比例してスピードが上がる
+            SetSpeed(transform.localScale.magnitude*3.0f);
+            
+        }
     }
 
     public void GlowCount(int point)
     {
        
+    }
+
+    //タグがFoodなら当たったものをCatchにもっていく
+    void OnCollisionStay(Collision collision)
+    {
+        if (collision.transform.tag != "Untagged")
+        {
+            collision.transform.GetComponent<Rigidbody>().AddForce(transform.forward * CastAwaySpeed * transform.localScale.z);
+
+            transform.localScale += GrowRate;
+        }
+        transform.GetComponent<Rigidbody>().AddForce(-transform.forward*2.0f);
+        HP--;        
     }
 }

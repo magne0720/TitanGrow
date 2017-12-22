@@ -3,72 +3,65 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Controller : MonoBehaviour {
-
-    private float movement = 3.0f;
+    
+    const float controlsensivity = 0.01f;
+    const float camerasensivity = 0.01f;
     private float rotateSpeed = 2.0f;
-    float moveX = 0f, moveZ = 0f;
-    public float controlsensivity = 0.01f;
-    public float camerasensivity = 0.01f;
 
-    CharacterController controller;
-    public CameraControl camera;
+    CharacterController cCon;
+    CameraControl cCam;
 
     public Player player;
-    public Vector3 control;
-    
+    private bool isControll;
 
     void Start()
     {
-        controller = GetComponent<CharacterController>();
+        cCon = GetComponent<CharacterController>();
     }
 
     void Update()
     {
-        float cameraX = Input.GetAxis("MouseX")/25;
-        float cameraY = Input.GetAxis("MouseY")/25;
-        camera.InputJoystick(cameraX, cameraY);
-        Vector3 abc = new Vector3(cameraX, cameraY, 0);
-        if (abc.magnitude > camerasensivity)
+        if (isControll)
         {
 
+            //カメラ操作
+            float cameraX = Input.GetAxis("MouseX");
+            float cameraY = Input.GetAxis("MouseY");
+            cCam.InputJoystick(cameraX, cameraY);
+            //プレイヤー移動
+            float moveX = Input.GetAxis("Horizontal");
+            float moveZ = Input.GetAxis("Vertical");
+            Vector3 direction = new Vector3(moveX, 0, moveZ);
+            direction = Math.RotateY(direction, cCam.direction.x);
+            if (direction.magnitude > controlsensivity)
+            {
+                player.SetTarget(direction);
+            }
+            //食べる
+            if (Input.GetButtonDown("triangle")||Input.GetMouseButtonDown(1))
+                player.GetComponent<Player>().Eat();
+            //つかむ、投げる
+            if (Input.GetButtonDown("square")||Input.GetMouseButtonDown(0))
+                player.GetComponent<Player>().CatchAction();
+            //離す
+            if (Input.GetButtonDown("cross")||Input.GetMouseButtonDown(3))
+                player.GetComponent<Player>().Release();
+            //ズームインアウト
+            if (Input.GetButton("R1")) cCam.distance += 0.04f;
+            if (Input.GetButton("R2")) cCam.distance -= 0.04f;
         }
-        //Debug.Log(cameraX+","+cameraY);
-        moveX = Input.GetAxis("Horizontal");
-        moveZ = Input.GetAxis("Vertical");
-        Vector3 direction = new Vector3(moveX, 0, moveZ);
-        direction = Math.RotateY(direction,camera.direction.x);
-       if (direction.magnitude > controlsensivity)
-        {
-            player.TargetPosition = direction+player.MyPosition;
-            player.SetTarget(direction);
-            control = direction;
-        }
-        if (Input.GetButtonDown("triangle"))
-        {
-
-            Debug.Log("ok");
-            
-        }
-        if (Input.GetButtonDown("square"))
-        {
-
-            Debug.Log("卍");
-
-        }
-
-        if (Input.GetButtonDown("cross"))
-        {
-
-            Debug.Log("unch");
-
-        }
-
-        if (Input.GetButtonDown("circle"))
-        {
-
-            Debug.Log("ばななぁ");
-
-        }
-
+    }
+    public void SetCamera(CameraControl c)
+    {
+        cCam = c;
+    }
+    public void SetPlayer(Player p)
+    {
+        player = p;
+        cCam.player = p.gameObject;
+    }
+    public void SetControll(bool  isOK=true)
+    {
+        isControll = isOK;
     }
 }
