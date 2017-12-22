@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapCamera : MonoBehaviour {
+public class MiniMapManager : MonoBehaviour {
     public Transform target;
-    public  float _height = 0f;
-
+    public float _height = 0f;
+    public Camera camera;
     void Start()
     {
     }
 
     void Update()
     {
+
         StartCoroutine(UpdatePosition());
 
     }
