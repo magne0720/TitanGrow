@@ -1,9 +1,9 @@
 ﻿#count（敵の数） 種類　
 #種類　x y z 
 #小隊
-ene_001 0 0 6
-ene_001 -1.5 0 3
-ene_001 1.5 0 3
-ene_001 0 0 0
-ene_001 3 0 0
-ene_001 -3 0 0
+segway_one_001 0 0 10
+segway_one_002 -8.5 0 7
+segway_one_002 8.5 0 7
+segway_one_003 0 0 0
+segway_one_003 11 0 0
+segway_one_003 -11 0 0

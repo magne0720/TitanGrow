@@ -1,6 +1,6 @@
 ﻿#Mの字
-ene_001 0 0 0
-ene_001 8 0 0
-ene_001 -8 0 0
-ene_001 4 0 -5
-ene_001 -4 0 -5
+segway_003 0 0 0
+segway_002 12 0 0
+segway_002 -12 0 0
+segway_001 8 0 -9
+segway_001 -8 0 -9

@@ -16,17 +16,18 @@ public class BaseCharacter : EatBase
 
     public static GameObject CreateCharacter(string path,Vector3 pos = new Vector3())
     {
-        Debug.Log("pathname=" + path);
-        string temp = path.Replace('\r', '\0');
         GameObject g;
         try
         {
+            Debug.Log("pathname=" + path);
+            string temp = path.Replace('\r', '\0');
             g = Instantiate(Resources.Load("Models/" + temp, typeof(GameObject))) as GameObject;
         }
         catch
         {
+            Debug.Log("notpath=" + path);
             //オブジェクトパスが見つからない場合
-                g = Instantiate(Resources.Load("Models/OUT_BOX", typeof(GameObject))) as GameObject;
+            g = Instantiate(Resources.Load("Models/OUT_BOX", typeof(GameObject))) as GameObject;
           }
         g.transform.position = pos;
 
