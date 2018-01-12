@@ -58,6 +58,28 @@ public class Math
     //面と球
 
     //面とカプセル
+    
+    //円と点
+    public static bool OnSricleAndPoint(Vector3 sirclePos, float range,Vector3 point)
+    {
+        Vector3 p = point - sirclePos;
+        if(Mathf.Pow(p.x,2)+Mathf.Pow(p.y,2)+Mathf.Pow(p.z,2)<=range* range)
+        {
+            return true;
+        }
+        return false;
+    }
+
+     //円と円
+     public static bool OnSircleAndSircle(Vector3 posA,float rangeA,Vector3 posB,float rangeB)
+    {
+        Vector3 p = posB-posA;
+        if (Mathf.Pow(p.x, 2) + Mathf.Pow(p.y, 2) + Mathf.Pow(p.z, 2) <= Mathf.Pow(rangeA + rangeB,2))
+        {
+            return true;
+        }
+            return false;
+    }
 
     //内積
     public static float Dot(Vector3 a, Vector3 b)

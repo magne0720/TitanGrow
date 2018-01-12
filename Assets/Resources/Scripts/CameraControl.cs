@@ -26,6 +26,7 @@ public class CameraControl : MonoBehaviour {
         {
             controlCamera = GetComponent<Camera>();
         }
+        SetCameraFar(200000);
     }
 
     // Update is called once per frame
@@ -46,7 +47,6 @@ public class CameraControl : MonoBehaviour {
             {
                 SetCameraFar(5.0f);
             }
-            SetCameraFar(player.transform.localScale.z * 100);
 
             //playerの移動量分、カメラも移動
             transform.position = new Vector3(player.transform.position.z,0,player.transform.position.z);
@@ -99,7 +99,7 @@ public class CameraControl : MonoBehaviour {
             float angZ = Math.Rotate(Vector3.left, direction.x, CAM_DISTANCE * distance * player.transform.localScale.z).x;
             transform.position = new Vector3(angX, angY, angZ) + new Vector3(player.transform.position.x,0,player.transform.position.z);
 
-            transform.LookAt(new Vector3(player.transform.position.x,player.transform.localScale.y,player.transform.position.z));
+            transform.LookAt(new Vector3(player.transform.position.x,player.transform.localScale.y*2.5f,player.transform.position.z));
         }
     }
     void SetDistance(float s)
