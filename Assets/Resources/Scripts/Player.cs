@@ -211,7 +211,7 @@ public class Player : BaseCharacter
             searchHeight = 3.0f * transform.localScale.z;
 
             //大きさに比例してスピードが上がる
-            SetSpeed(transform.localScale.magnitude*3.5f);
+            SetSpeed(transform.localScale.magnitude*6.0f);
             
         }
     }

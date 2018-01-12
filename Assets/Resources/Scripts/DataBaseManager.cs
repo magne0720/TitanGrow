@@ -49,7 +49,7 @@ public class DataBaseManager : MonoBehaviour {
     }
     public static void SetUpObjectData()
     {
-        string temp = Resources.Load("Others/AboutData", typeof(TextAsset)).ToString();
+        string temp = Resources.Load("Others/EnemyData", typeof(TextAsset)).ToString();
         int count = 0;
         //行分け
         string[] lineText = temp.Split('\n');

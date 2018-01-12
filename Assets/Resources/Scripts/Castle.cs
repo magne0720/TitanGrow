@@ -12,7 +12,7 @@ public class Castle : MonoBehaviour {
     private int soldier2Spawn = 3;
 
     //生成する間隔
-    private float Interval = 40.0f;
+    private float Interval = 30.0f;
 
     //時間
    public float SpawnTime;
