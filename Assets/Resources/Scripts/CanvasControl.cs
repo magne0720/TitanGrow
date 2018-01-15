@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// ゲームUIを表示するクラス
+/// 現状はタイトル画面のみ
+/// </summary>
 public class CanvasControl : MonoBehaviour
 {
     static Image canImage;

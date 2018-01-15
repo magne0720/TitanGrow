@@ -8,11 +8,16 @@ using UnityEngine;
 //AIにも対応させるので、ここにはインターフェースの処理を書かないこと
 public class BaseCharacter : EatBase
 {
-    public float searchTimer = 0;//サーチ間隔
-    public float searchHeight = 0;//サーチ距離
-    public float searchRange = 0;//サーチ範囲
-    public bool isFowardHit;
-    public List<GameObject> SearchObjects;
+    protected float searchTimer = 0;//サーチ間隔
+    protected float searchHeight = 0;//サーチ距離
+    protected float searchRange = 0;//サーチ範囲
+    protected bool isFowardHit;
+    protected List<GameObject> SearchObjects;
+    protected enum STATUS
+    {
+        WAIT = 0, WALK, DEATH, CATCH, THROW_IN,THROW_OUT, EAT
+    };
+    protected STATUS myStatus;
 
     public static GameObject CreateCharacter(string path,Vector3 pos = new Vector3())
     {
@@ -295,6 +300,10 @@ public class BaseCharacter : EatBase
     public void SetMass(float s)
     {
        // rigid.mass = s;
+    }
+    protected void SetStatus(STATUS s)
+    {
+        myStatus = s;
     }
     public void UnderGround()
     {

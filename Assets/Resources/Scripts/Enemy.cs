@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// プレイヤーを阻むキャラクターの基底クラス
+/// 指定した場所に移動する
+/// プレイヤーを見つけ次第追いかけてくる
+/// </summary>
 public class Enemy : BaseCharacter
 {
 
@@ -56,7 +61,7 @@ public class Enemy : BaseCharacter
     {
         Initialize();
         MySpeed = 4.0f;
-        HP = 30;
+        HP = 15;
         if(lastTarget==Vector3.zero)
         lastTarget = new Vector3(transform.position.x, transform.position.y, 2);
         timer = 0;
@@ -76,12 +81,12 @@ public class Enemy : BaseCharacter
         }
         else
         {
+            HP--;
             ActionBrain();
             searchTimer = 0;
         }
 
 
-        MyPosition = transform.position;
         if (battleEnemy != null)
         {
             SetTarget(battleEnemy.transform.position - transform.position);
@@ -91,8 +96,9 @@ public class Enemy : BaseCharacter
             SetTarget(new Vector3(0,0,-500));
         }
         Move();
+        MyPosition = transform.position;
 
-        UnderGround();
+        //UnderGround();
     }
     //襲う敵の設定
     void SetEnemy(int i)

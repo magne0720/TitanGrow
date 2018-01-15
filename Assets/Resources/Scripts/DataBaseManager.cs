@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// データベースの読み込みを行うクラス
+/// </summary>
 public class DataBaseManager : MonoBehaviour {
 
     public struct OBJECT

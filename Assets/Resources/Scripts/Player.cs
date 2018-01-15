@@ -9,12 +9,17 @@ public class Player : BaseCharacter
 {
     public List<GameObject> catchObjects;                        //つかんだものリスト
 
-    public int FoodPoint;                                       //食ったものポイント 
-    public float CastAwaySpeed = 1250.0f;                   //投げた時のスピード
-    public float GrowTime = 0.0f;                                //成長が止まっている時間
-    public Vector3 GrowRate = new Vector3(0.001f, 0.001f, 0.001f);  //大きさの倍率
+    private int FoodPoint;                                       //食ったものポイント 
+    private float CastAwaySpeed = 1250.0f;                   //投げた時のスピード
+    private float GrowTime = 0.0f;                                //成長が止まっている時間
+    private Vector3 GrowRate = new Vector3(0.001f, 0.001f, 0.001f);  //大きさの倍率
 
     private float actiontimer = 0;//待機モーションフラグ
+
+    private const float TIME_ACTION_CATCH = 1.0f;
+    private const float TIME_ACTION_THROW_IN = 1.0f;
+    private const float TIME_ACTION_THROW_OUT = 1.0f;
+    private const float TIME_ACTION_EAT = 1.0f;
 
     public static GameObject CreatePlayer(string path,Vector3 pos=new Vector3())
     {
@@ -38,6 +43,7 @@ public class Player : BaseCharacter
     // Use this for initialization
     override public void Start()
     {
+        SetStatus(STATUS.WAIT);
         actiontimer = 0;
         Initialize();
         //GetComponent<Rigidbody>().freezeRotation = true;
@@ -53,18 +59,70 @@ public class Player : BaseCharacter
     {
         if (HP < 0) Destroy(gameObject);
 
-        if (Math.Length(TargetPosition - MyPosition) < 0.1f)
+        actiontimer += Time.deltaTime;
+        switch (myStatus)
         {
-            actiontimer += Time.deltaTime;
-            if (actiontimer >= 7.0f)
-            {
+            case STATUS.WAIT:
                 actiontimer = 0;
-                GetComponent<Animator>().SetTrigger("waitaction");
-            }
-        }
+                break;
+            case STATUS.WALK:
+                actiontimer = 0;
+                break;
+            case STATUS.DEATH:
+                if (actiontimer > 5.0f)
+                {
+                    Debug.Log("<color=red>STATUS-DEATH</color>");
+                }
+                break;
+            case STATUS.CATCH:
+                if (actiontimer > TIME_ACTION_CATCH)
+                {
+                    Debug.Log("<color=red>STATUS-CATCH</color>");
+                    SetStatus(STATUS.WAIT);
+                }
+                break;
+            case STATUS.THROW_IN:
+                if (actiontimer > TIME_ACTION_THROW_IN)
+                {
+                    Debug.Log("<color=red>STATUS-THROW_IN</color>");
+                    SetStatus(STATUS.WAIT);
+                }
+                break;
+            case STATUS.THROW_OUT:
+                if (actiontimer > TIME_ACTION_THROW_OUT)
+                {
+                    Debug.Log("<color=red>STATUS-THROW_OUT</color>");
+                    SetStatus(STATUS.WAIT);
+                }
+                break;
+            case STATUS.EAT:
+                TargetPosition = Vector3.zero;
+                if (actiontimer > TIME_ACTION_EAT)
+                {
+                    Debug.Log("<color=red>STATUS-EAT</color>");
+                    SetStatus(STATUS.WAIT);
+                }
+                break;
+            default:
+                break;
+        };
+
+
+        ////屈伸アクション
+        //if (Math.Length(TargetPosition - MyPosition) < 0.1f)
+        //{
+        //    actiontimer += Time.deltaTime;
+        //    if (actiontimer >= 7.0f)
+        //    {
+        //        actiontimer = 0;
+        //        GetComponent<Animator>().SetTrigger("waitaction");
+        //    }
+        //}
         //MyPosition = transform.position;
         //成長の制御
         Grow(FoodPoint);
+
+        if (myStatus == STATUS.WAIT || myStatus == STATUS.WALK)
             Move();
       
         foreach(GameObject g in SearchObjects)
@@ -99,6 +157,8 @@ public class Player : BaseCharacter
     //つかむ
     public void Catch(GameObject g)
     {
+        SetStatus(STATUS.CATCH);
+
         //つかんだもの情報
         catchObjects.Add(g);
         //子にする
@@ -109,6 +169,8 @@ public class Player : BaseCharacter
     //つかむ
     public void Catch(List<GameObject> objs)
     {
+        SetStatus(STATUS.CATCH);
+
         catchObjects.Clear();
         //つかんだもの情報
         if (objs.Count > 0)
@@ -133,6 +195,8 @@ public class Player : BaseCharacter
     //投げる
     public void CastAway()
     {
+        SetStatus(STATUS.THROW_IN);
+
         foreach (GameObject g in catchObjects)
         {
             //つかんだものの衝突判定を戻す
@@ -151,6 +215,8 @@ public class Player : BaseCharacter
     //離す
     public void Release()
     {
+        SetStatus(STATUS.THROW_OUT);
+
         foreach (GameObject g in catchObjects)
         {
             //子のあたり判定を戻す
@@ -167,7 +233,7 @@ public class Player : BaseCharacter
     //食べる
     public void Eat()
     {
-        List<GameObject> eats=new List<GameObject>();
+        SetStatus(STATUS.EAT);
 
         foreach (GameObject g in catchObjects)
         {
@@ -177,7 +243,6 @@ public class Player : BaseCharacter
             //食べたものを消す処理
             ObjectManager.removeObject(g);
             Destroy(g);
-            
         }
         //リストの初期化
         catchObjects.Clear();
@@ -188,7 +253,7 @@ public class Player : BaseCharacter
     //食べた時のポイントを追加する
     public void EatPoint(EatBase e)
     {
-        FoodPoint += e.eatPoint;
+        FoodPoint += e.GetEatPoint();
     }
     //自身の成長
     public void Grow(int point)

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 配置される二つの城の基底
+/// </summary>
 public class Castle : MonoBehaviour {
 
     //城の体力

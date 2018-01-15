@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 登場するモノのクラス
+/// </summary>
 public class BaseObject : EatBase
 {
 
