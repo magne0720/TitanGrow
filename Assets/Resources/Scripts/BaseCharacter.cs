@@ -24,7 +24,7 @@ public class BaseCharacter : EatBase
         GameObject g;
         try
         {
-            Debug.Log("pathname=" + path);
+            //Debug.Log("pathname=" + path);
             string temp = path.Replace('\r', '\0');
             g = Instantiate(Resources.Load("Models/" + temp, typeof(GameObject))) as GameObject;
         }
@@ -36,14 +36,17 @@ public class BaseCharacter : EatBase
           }
         g.transform.position = pos;
 
+        g.gameObject.layer = 8;
+
         return g;
     }
     public void Initialize()
     {
-            gameObject.AddComponent<CapsuleCollider>().radius = 0.1f;
-            gameObject.GetComponent<CapsuleCollider>().center = new Vector3(0, 0.5f, 0);
+        gameObject.AddComponent<Rigidbody>();
+        gameObject.AddComponent<BoxCollider>();
+        gameObject.GetComponent<BoxCollider>().center = new Vector3(0, 0.5f, 0);
         searchHeight = 200.0f;
-        searchRange = 22.5f;
+        searchRange = 45.0f;
         SetSpeed(0.01f);
         //SetSpeed(transform.localScale.magnitude);
         MyDirection = transform.forward;
@@ -53,6 +56,8 @@ public class BaseCharacter : EatBase
         eatPoint = 3;
 
         transform.tag = "Object";
+
+        gameObject.layer = 8;
 
         //オブジェクトの追加
         ObjectManager.AddObject(gameObject);
@@ -232,7 +237,7 @@ public class BaseCharacter : EatBase
     }
 
 
-    public List<GameObject> SearchObject(List<GameObject> objects, string tag = "Enemy")
+    public List<GameObject> SearchObject(List<GameObject> objects, string tag = "untagged")
     {
         if (objects == null) return null;
 
@@ -270,9 +275,9 @@ public class BaseCharacter : EatBase
             }
         }
         SearchObjects = objs;
-        //Debug.DrawRay(MyPosition, MyDirection * searchHeight, Color.red, 0.3f);
-        //Debug.DrawRay(MyPosition, Math.getDirectionDegree(MyDirection, searchRange,searchHeight), Color.green, 0.3f);
-        //Debug.DrawRay(MyPosition, Math.getDirectionDegree(MyDirection, -searchRange,searchHeight), Color.green, 0.3f);
+        Debug.DrawRay(MyPosition, MyDirection * searchHeight, Color.red, 0.3f);
+        Debug.DrawRay(MyPosition, Math.getDirectionDegree(MyDirection, searchRange,searchHeight), Color.green, 0.3f);
+        Debug.DrawRay(MyPosition, Math.getDirectionDegree(MyDirection, -searchRange,searchHeight), Color.green, 0.3f);
         return objs;
     }
 

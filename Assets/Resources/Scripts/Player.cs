@@ -43,22 +43,46 @@ public class Player : BaseCharacter
     // Use this for initialization
     override public void Start()
     {
+
+        catchObjects = new List<GameObject>();
         SetStatus(STATUS.WAIT);
         actiontimer = 0;
         Initialize();
         //GetComponent<Rigidbody>().freezeRotation = true;
-        catchObjects = new List<GameObject>();
         transform.name = "Player";
         transform.tag = "Player";
         GetComponent<Animator>().runtimeAnimatorController =
             Resources.Load("Models/bigmen", typeof(RuntimeAnimatorController)) as RuntimeAnimatorController;
+
+        gameObject.layer = 8;
+
+        try
+        {
+            foreach (GameObject g in gameObject.GetComponentsInChildren<GameObject>())
+            {
+                g.gameObject.layer = 8;
+            }
+        }
+        catch { }
+
+
+        transform.localScale /= 100.0f;
     }
 
     // Update is called once per frame
     override public void Update()
     {
-        if (HP < 0) Destroy(gameObject);
-
+        searchTimer += Time.deltaTime;
+        if (searchTimer >= 0.1f)
+        {
+            SearchObject(ObjectManager.GameObjects, "Object");
+            searchTimer = 0.0f;
+        }
+        if (HP < 0)
+        {
+            Debug.Log("DEATH");
+            SetStatus(STATUS.DEATH);
+        }
         actiontimer += Time.deltaTime;
         switch (myStatus)
         {
@@ -125,10 +149,10 @@ public class Player : BaseCharacter
         if (myStatus == STATUS.WAIT || myStatus == STATUS.WALK)
             Move();
       
-        foreach(GameObject g in SearchObjects)
-        {
+        //foreach(GameObject g in SearchObjects)
+       // {
             //g.GetComponent<Renderer>().material.color = Color.red;
-        }
+        //}
         //SetMass(transform.localScale.magnitude);
         //UnderGround();
         if (catchObjects.Count > 0)
@@ -149,7 +173,7 @@ public class Player : BaseCharacter
         }
         else
         {
-            SearchObject(ObjectManager.GameObjects, "Object");
+            
             Catch(SearchObjects);
         }
     }
@@ -296,6 +320,6 @@ public class Player : BaseCharacter
             transform.localScale += GrowRate;
         }
         transform.GetComponent<Rigidbody>().AddForce(-transform.forward*2.0f);
-        HP--;        
+        //HP--;        
     }
 }

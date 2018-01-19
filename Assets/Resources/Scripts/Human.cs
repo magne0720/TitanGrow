@@ -7,8 +7,21 @@ public class Human : BaseCharacter
     private float speed = 4.0f;
     private Vector3 targetPosition;
     private float moveTime;
+
+    public static GameObject CreateHuman(DataBaseManager.OBJECT data,Vector3 pos=new Vector3())
+    {
+        GameObject g = CreateCharacter(data.path);
+        g.name = data.name;
+        g.transform.position = pos;
+        if (data.scale <= 0) data.scale = 1;
+        g.transform.localScale *= data.scale;
+        g.AddComponent<Human>();
+
+        return g;
+    }
     private void Start()
     {
+        Initialize();
         targetPosition = GetRandomPosition();
         moveTime = Random.Range(1,5);
     }

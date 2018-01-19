@@ -31,6 +31,8 @@ public class GameMode : MonoBehaviour {
     public Player player;
     public Controller controller;
     public CanvasControl canvas;
+    public Camera miniCam;
+    public MiniMap miniMap;
 
     const float playerspeed = 4.5f;
     // Use this for initialization
@@ -63,6 +65,11 @@ public class GameMode : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         Game();
+
+        if (Input.GetKey(KeyCode.N))
+        {
+            Human.CreateHuman(DataBaseManager.GetObjectData("hum_002"));
+        }
 	}
 
     void Game()
@@ -224,6 +231,12 @@ public class GameMode : MonoBehaviour {
         //５．オブジェクト追加
         //CastleInstance();
         ObjectInstance();
+
+        //ミニマップ
+        GameObject mini = new GameObject();
+        miniCam = mini.AddComponent<Camera>();
+        miniMap = mini.gameObject.AddComponent<MiniMap>();
+        miniMap.Initialize(player,miniCam);
 
         //６．ゲーム開始
         GameStart();

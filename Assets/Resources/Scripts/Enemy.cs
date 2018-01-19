@@ -24,7 +24,8 @@ public class Enemy : BaseCharacter
     public GameObject battleEnemy;//今から戦いに行く敵
     public Vector3 HeadingCastle;//向かう城
     public List<GameObject> Enemys;
-    
+    public Material material;
+
     private float timer = 0;
 
     public static GameObject CreateEnemy(string path="a")
@@ -37,11 +38,11 @@ public class Enemy : BaseCharacter
 
         return g;
     } 
-    public static GameObject CreateEnemy(DataBaseManager.OBJECT data)
+    public static GameObject CreateEnemy(DataBaseManager.OBJECT data,Vector3 pos=new Vector3())
     {
         GameObject g = CreateCharacter(data.path);
         g.name = data.name;
-        g.transform.position = data.pos;
+        g.transform.position = pos;
         g.transform.localScale *= data.scale;
         g.AddComponent<Enemy>();
 
@@ -56,17 +57,27 @@ public class Enemy : BaseCharacter
 
         return e;
     }
+
+    void OnRenderImage(RenderTexture src, RenderTexture dest)
+    {
+        Graphics.Blit(src, dest, material);
+    }
+
     // Use this for initialization
     void Start()
     {
         Initialize();
-        MySpeed = 4.0f;
+        MySpeed = transform.localScale.magnitude*5.5f;
         HP = 15;
         if(lastTarget==Vector3.zero)
         lastTarget = new Vector3(transform.position.x, transform.position.y, 2);
         timer = 0;
         HeadingCastle = DataBaseManager.GetHumanCastle();
         MyPosition = transform.position;
+
+        material = Resources.Load("Textures/X-Ray") as Material;
+
+
     }
     // Update is called once per frame
     void Update()
@@ -75,7 +86,7 @@ public class Enemy : BaseCharacter
         {
             Destroy(gameObject);
         }
-        if (searchTimer < 1.0f)
+        if (searchTimer < 5.0f)
         {
             searchTimer += Time.deltaTime;
         }

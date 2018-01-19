@@ -49,6 +49,8 @@ public class BaseObject : EatBase
 
    public void Initialize()
     {
+        gameObject.AddComponent<Rigidbody>();
+
         BoxCollider c = gameObject.AddComponent<BoxCollider>();
         c.center = new Vector3(0, 0.5f, 0);
 
@@ -59,6 +61,16 @@ public class BaseObject : EatBase
         MyPosition = transform.position;
 
         transform.tag = "Object";
+
+        try
+        {
+            foreach (GameObject g in gameObject.GetComponentsInChildren<GameObject>())
+            {
+                g.gameObject.layer = 8;
+            }
+        }
+        catch { }
+        gameObject.layer = 8;
     }
     void OnCollisionEnter(Collision col)
     {

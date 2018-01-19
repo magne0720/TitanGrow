@@ -1,29 +1,39 @@
-﻿牛	cre	家畜畜生	cre_001	cre_001	
-鳥	cre	家畜畜生	cre_002	cre_002	
-豚	cre	家畜畜生	cre_003	cre_003	
-犬	cre	家畜畜生	cre_004	cre_004	
-馬	cre	家畜畜生	cre_005	cre_005	
-TYPE:α	rob	ロボットの中でも穏やかなタイプ	rob_001		
-TYPE:β	rob	ロボットの中でも呑気なタイプ	rob_002		
-TYPE:γ	rob	ロボットの中でも特に短気なタイプ	rob_003		
-TYPE:卍	rob	戦闘思考なロボット	rob_004		
-TYPE:R-black	rob	丸形お掃除ロボットその1	rob_005		
-TYPE:R-pink	rob	丸形お掃除ロボットその2	rob_006		
-村人(men)	hum	人間側の男性	hum_001		
-村人(women)	hum	人間側の女性	hum_002	hum_001	hum_002
-村長	hum	人間側の村の村長	hum_003		
-兵士	hum	人間側の兵士。王子(主人公)の護衛	hum_004		
-ただの木	nat	自然に生えている木	nat_001	nat_001	
-ばななの木	nat	ばななぁの生っている木	nat_002	nat_002	nat_003
-リンゴの木	nat	リンゴの生っている木	nat_003	nat_003	
-落ちてるばななの皮	nat	ばななの皮。誰かが捨てたのだろう。	nat_004	nat_004	
-花	nat	自然に咲いてる花。	nat_005	nat_005	
-草	nat	雑草	nat_006	nat_006	
-ジャイアント・キャベンディッシュ	nat	フィリピン産の高級バナーナ。	nat_007	nat_007	
-北蕉（ほくしょう）	nat	台湾バナナ。	nat_008	nat_008	
-三尺バナナ	nat	小さめのジャイアント・キャベンディッシュ	nat_009	nat_009	
-島バナナ	nat	島に生えているばなな。	nat_010	nat_010	
-モンキーバナナ	nat	小さめのバナナ。	nat_011	nat_011	
-調理用バナナ	nat	調理に使うバナナ。	nat_012	nat_012	
-モラード	nat	赤みがかかったばなな、通称「レッドバナナ」	nat_013	nat_013	
-敵	ene	敵	ene_001
+﻿A	牛	cow	cow_001	家畜畜生	cre_001																				
+A	鳥	chick	chick_001	家畜畜生	cre_002																				
+A	豚	pig	pig_001	家畜畜生	cre_003																				
+A	羊	sheep	sheep_001	家畜畜生	cre_004																				
+A	村人(men)	hum	hum_001	人間側の男性																					
+A	村人(women)	hum	hum_002	人間側の女性	hum_001	hum_002																			
+A	村長	hum	hum_003	人間側の村の村長																					
+A	兵士	hum	hum_004	人間側の兵士。王子(主人公)の護衛																					
+B	TYPE:α	TYPE_α	TYPE_α_001	ロボットの中でも穏やかなタイプ																					
+B	TYPE:β	TYPE_β	TYPE_β_001	ロボットの中でも呑気なタイプ																					
+B	TYPE:γ	TYPE_γ	TYPE_γ_001	ロボットの中でも特に短気なタイプ																					
+B	TYPE:卍	TYPE_卍	TYPE_卍_001	戦闘思考なロボット																					
+B	TYPE:R-black	rob	rob_001	丸形お掃除ロボットその1																					
+B	TYPE:R-pink	rob	rob_002	丸形お掃除ロボットその2																					
+B	ジャック1	jack	jack_001	大型一輪バイクの使い手ロボット																					
+B	ジャック2	jack	jack_002	大型一輪バイクの使い手ロボット																					
+B	ジャック3	jack	jack_003	大型一輪バイクの使い手ロボット																					
+B	セグウェイ1	segway	segway_001	小型二輪バイクの使い手ロボット																					
+B	セグウェイ2	segway	segway_002	小型二輪バイクの使い手ロボット																					
+B	セグウェイ3	segway	segway_003	小型二輪バイクの使い手ロボット																					
+B	新型セグウェイ1	segway_one	segway_one_001	小型一輪バイクの使い手ロボット																					
+B	新型セグウェイ2	segway_one	segway_one_002	小型一輪バイクの使い手ロボット																					
+B	新型セグウェイ3	segway_one	segway_one_003	小型一輪バイクの使い手ロボット																					
+B	逆襲のタマちゃん	Xphere	Xphere_001	赤い玉ちゃん																					
+B	量産型タマちゃん	Xphere	Xphere_002	緑の玉																					
+B	水性のタマちゃん	Xphere	Xphere_003	水色の玉																					
+C	ポンポンの木	nat	nat_001	ポンポンが生える木。かたい。	nat_001																				
+C	ポンポンヤング	nat	nat_002	ポンポンがまだ若い時の木、かたい。	nat_002	nat_003																			
+C	針葉樹林	nat	nat_003	寒い地域によく植えられる木	nat_003																				
+C	落ちてるばななの皮	nat	nat_004	ばななの皮。誰かが捨てたのだろう。	nat_004																				
+C	花	nat	nat_005	自然に咲いてる花。	nat_005																				
+C	草	nat	nat_006	雑草	nat_006																				
+C	ジャイアント・キャベンディッシュ	nat	nat_007	フィリピン産の高級バナーナ。	nat_007																				
+C	北蕉（ほくしょう）	nat	nat_008	台湾バナナ。	nat_008																				
+C	三尺バナナ	nat	nat_009	小さめのジャイアント・キャベンディッシュ	nat_009																				
+C	島バナナ	nat	nat_010	島に生えているばなな。	nat_010																				
+C	モンキーバナナ	nat	nat_011	小さめのバナナ。	nat_011																				
+C	調理用バナナ	nat	nat_012	調理に使うバナナ。	nat_012																				
+C	モラード	nat	nat_013	赤みがかかったばなな、通称「レッドバナナ」	nat_013																				

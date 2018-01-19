@@ -9,6 +9,7 @@ public class DataBaseManager : MonoBehaviour {
 
     public struct OBJECT
     {
+        public string type;//タイプ
         public string name;//名前
         public string path;//モデルのパス
         public string cate;//カテゴリ
@@ -23,8 +24,8 @@ public class DataBaseManager : MonoBehaviour {
 
     static OBJECT[] objectsData;
     public static Player player;
-    public static Castle HumanCastle;
-    public static Castle RobotCastle;
+    public static Castle humanCastle;
+    public static Castle robotCastle;
 
 
     // Use this for initialization
@@ -66,12 +67,13 @@ public class DataBaseManager : MonoBehaviour {
             {
                 //タブ区切り(.TSV) 
                 string[] dataText = line.Split('\t');
-                objectsData[count].name = dataText[0];
-                objectsData[count].cate = dataText[1];
-                objectsData[count].guid = dataText[2];
+                objectsData[count].type = dataText[0];
+                objectsData[count].name = dataText[1];
+                objectsData[count].cate = dataText[2];
                 objectsData[count].path = dataText[3];
-                if (dataText.Length >= 5) objectsData[count].breedA = dataText[4];
-                if (dataText.Length >= 6) objectsData[count].breedA = dataText[5];
+                objectsData[count].guid = dataText[4];
+                if (dataText.Length >= 5) objectsData[count].breedA = dataText[5];
+                if (dataText.Length >= 6) objectsData[count].breedA = dataText[6];
                 count++;
             }
     }
@@ -96,7 +98,7 @@ public class DataBaseManager : MonoBehaviour {
                     break;
                 default:
                     objNames[count] = line.Replace('\r','\0');
-                    Debug.Log(line);
+                    //Debug.Log(line);
                     count++;
                     break;
             }
@@ -139,12 +141,14 @@ public class DataBaseManager : MonoBehaviour {
         }
         //オブジェクト生成
         player=Player.CreatePlayer(objNames[0],objPos[0]).GetComponent<Player>();
-        GameObject g1 = Castle.CreateCastle(objNames[1], objPos[1]);
+        //ロボット城
+        GameObject g1 = RobotCastle.CreateRobotCastle(objNames[1], objPos[1]);
         g1.transform.forward=new Vector3(0,0,-1);
-        GameObject g2 = Castle.CreateCastle(objNames[2], objPos[2]);
+        //人類城
+        GameObject g2 = HumanCastle.CreateHumanCastle(objNames[2], objPos[2]);
 
-        HumanCastle = g1.GetComponent<Castle>();
-        RobotCastle = g2.GetComponent<Castle>();
+        humanCastle = g1.GetComponent<Castle>();
+        robotCastle = g2.GetComponent<Castle>();
 
     }
 
@@ -156,7 +160,7 @@ public class DataBaseManager : MonoBehaviour {
     {
         Enemy.CreateEnemy(path);
     }
-    public static void SpawnEnemyWave(string path,Vector3 offset=new Vector3())
+    public static void SpawnWave(string path,Vector3 offset=new Vector3())
     {
         OBJECT enemy = new OBJECT();
 
@@ -194,8 +198,26 @@ public class DataBaseManager : MonoBehaviour {
                 }
 
                 enemy.pos += offset;
-                GameObject g=Enemy.CreateEnemy(enemy);
+                CreateObjectType(enemy);
             }
+    }
+    //検出したタイプによって生成を変更させる
+    public static void CreateObjectType(OBJECT data)
+    {
+        switch (data.type)
+        {
+            case "A"://危害加えない
+                Human.CreateHuman(data);
+                break;
+            case "B"://敵
+                Enemy.CreateEnemy(data);
+                break;
+            case "C"://静止
+                BaseObject.CreateObject(data.path);
+                break;
+            default:
+                break;
+        }
     }
     public static OBJECT GetObjectData(string path)
     {
@@ -222,18 +244,18 @@ public class DataBaseManager : MonoBehaviour {
     }
     public static void SetHumanCastle(Castle c)
     {
-        HumanCastle = c;
+        humanCastle = c;
     }
     public static void SetRobotCastle(Castle c)
     {
-        RobotCastle = c;
+        robotCastle = c;
     }
     public static Vector3 GetHumanCastle()
     {
-        return HumanCastle.transform.position;
+        return humanCastle.transform.position;
     }
     public static Vector3 GetRobotCastle()
     {
-        return RobotCastle.transform.position;
+        return robotCastle.transform.position;
     }
 }

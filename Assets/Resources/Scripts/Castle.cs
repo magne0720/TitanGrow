@@ -8,30 +8,20 @@ using UnityEngine;
 public class Castle : MonoBehaviour {
 
     //城の体力
-    public int CastleHp = 1000;
-    
-    //一度に生成する量
-    private int soldier1Spawn = 5;
-    private int soldier2Spawn = 3;
-
+    public int CastleHp;
     //生成する間隔
-    private float Interval = 30.0f;
-
-    //時間
-   public float SpawnTime;
+    protected float Interval;
+    //計測時間
+   protected float SpawnTime;
+    //出撃場所
+    protected Vector3 offsetPosition;
 
     //兵士出撃のトリガー
     public bool GoSortie;
 
-    // public int SpawnRandom;
-
-    int iRandNum;
-
-    private Vector3 offsetPosition;
-
-    public static GameObject CreateCastle(string path, Vector3 pos = new Vector3())
+    public  static GameObject CreateCastle(string path, Vector3 pos = new Vector3())
     {
-        Debug.Log(path + "," + pos.z);
+        //Debug.Log(path + "," + pos.z);
         string temp = path.Replace('\r', '\0');
         GameObject g;
         try
@@ -49,24 +39,27 @@ public class Castle : MonoBehaviour {
 
         return g;
     }
-
-    void Initialize()
+    /// <summary>
+    /// 体力、生成時間、生成場所を指定する
+    /// </summary>
+    /// <param name="hp"></param>
+    /// <param name="fInterval"></param>
+    /// <param name="spawnOffset"></param>
+    public void Initialize(int hp,float fInterval,Vector3 spawnOffset)
     {
-        
         //オブジェクトの追加
         ObjectManager.AddObject(gameObject);
-
         tag = "Castle";
+
+        CastleHp = hp;
+        Interval = fInterval;
+        offsetPosition = transform.position+ spawnOffset;
     }
 
     // Use this for initialization
     void Start () {
-        Initialize();
-
-        SpawnTime = Interval;
+        
         GoSortie = false;
-
-        offsetPosition = transform.position + new Vector3(0, 0, -150);
 
     }
    
@@ -85,11 +78,7 @@ public class Castle : MonoBehaviour {
         //    {
                 SpawnTime += Time.deltaTime;
 
-                if (SpawnTime >= Interval)
-                {
-                    iRandNum=Random.Range(0, 4);
-                    Spawn();
-                }
+              
 
         //    }
         //}
@@ -97,38 +86,8 @@ public class Castle : MonoBehaviour {
     }
 
     //兵士わくわくさん
-    void Spawn()
+    public virtual void Spawn()
     {
-        switch (iRandNum)
-        {
-            case 0:
-                Debug.Log("縦列");
-                DataBaseManager.SpawnEnemyWave("EnemyColumn",offsetPosition);
-                break;
-
-            case 1:
-                Debug.Log("部隊");
-                DataBaseManager.SpawnEnemyWave("EnemyUnit", offsetPosition);
-                break;
-            case 2:
-                Debug.Log("小隊");
-                DataBaseManager.SpawnEnemyWave("EnemyPlatoon", offsetPosition);
-                break;
-            case 3:
-                Debug.Log("V字");
-                DataBaseManager.SpawnEnemyWave("EnemyV", offsetPosition);
-                break;
-        }
-        
-        if (CastleHp <= 80)
-        {
-
-            Debug.Log("M");
-            DataBaseManager.SpawnEnemyWave("EnemyM", offsetPosition);
-        }
-
-        SpawnTime = 0;
-        GoSortie = false;
 
     }
 }

@@ -60,13 +60,13 @@ public class StageCreator : MonoBehaviour {
             {
                 if (BreedCount < BREED_LIMIT)//第１世代
                 {
-                    if (Random.Range(0, 100) ==0 && woodlist[z, x] == 0)
-                        {
-                            int rInst = Random.Range(0, ObjNames.Length);
-                            GameObject g = GrowPlant.CreateGrowPlant(ObjNames[rInst], new Vector3((x - STAGE_AREA / 2) * 5, 0, (z - STAGE_AREA / 2) * 5),8);
-                            woodlist[z, x] = rInst;
-                            BreedCount++;
-                        }
+                    if (Random.Range(0, 100) == 0 && woodlist[z, x] == 0)
+                    {
+                        int rInst = Random.Range(0, ObjNames.Length);
+                        GameObject g = GrowPlant.CreateGrowPlant(ObjNames[rInst], new Vector3((x - STAGE_AREA / 2) * 5, 0, (z - STAGE_AREA / 2) * 5), 8);
+                        woodlist[z, x] = rInst;
+                        BreedCount++;
+                    }
                 }
             }
         }

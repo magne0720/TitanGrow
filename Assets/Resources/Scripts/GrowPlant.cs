@@ -49,6 +49,14 @@ public class GrowPlant : BaseObject {
             GameObject g = CreateGrowPlant(breedName, transform.position + Math.RotateY(new Vector3(0, 0, 1), Random.Range(0, 360),5), breedRange - 1);
             g.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
         }
+        try
+        {
+            foreach (GameObject g in gameObject.GetComponentsInChildren<GameObject>())
+            {
+                g.gameObject.layer = 8;
+            }
+        }
+        catch { }
     }
 
     // Update is called once per frame
