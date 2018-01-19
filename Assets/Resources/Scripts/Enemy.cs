@@ -58,10 +58,10 @@ public class Enemy : BaseCharacter
         return e;
     }
 
-    void OnRenderImage(RenderTexture src, RenderTexture dest)
-    {
-        Graphics.Blit(src, dest, material);
-    }
+    //void OnRenderImage(RenderTexture src, RenderTexture dest)
+    //{
+    //    Graphics.Blit(src, dest, material);
+    //}
 
     // Use this for initialization
     void Start()
@@ -75,7 +75,7 @@ public class Enemy : BaseCharacter
         HeadingCastle = DataBaseManager.GetHumanCastle();
         MyPosition = transform.position;
 
-        material = Resources.Load("Textures/X-Ray") as Material;
+        material = Resources.Load("Textures/HideOnly") as Material;
 
 
     }

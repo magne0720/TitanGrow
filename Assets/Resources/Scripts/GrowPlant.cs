@@ -43,12 +43,12 @@ public class GrowPlant : BaseObject {
         transform.localScale *= scale;
         breedName = name;
 
-        if (Random.Range(0, 100) >= 30 && !isBreed)
-        {
-            isBreed = true;
-            GameObject g = CreateGrowPlant(breedName, transform.position + Math.RotateY(new Vector3(0, 0, 1), Random.Range(0, 360),5), breedRange - 1);
-            g.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
-        }
+        //if (Random.Range(0, 100) >= 30 && !isBreed)
+        //{
+        //    isBreed = true;
+        //    GameObject g = CreateGrowPlant(breedName, transform.position + Math.RotateY(new Vector3(0, 0, 1), Random.Range(0, 360),5), breedRange + 1);
+        //    g.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
+        //}
         try
         {
             foreach (GameObject g in gameObject.GetComponentsInChildren<GameObject>())
@@ -63,18 +63,29 @@ public class GrowPlant : BaseObject {
     void Update()
     {
         Move();
-        if (scale <= 1.0f)
+        if (scale < 1.0f)
         {
             // scale += Time.deltaTime * 0.01f;
             scale += Time.deltaTime;
             transform.localScale = OriginScale * (scale + 1);
 
-            if (Random.Range(0, 100) == 100)
-            {
-                GameObject g = CreateGrowPlant(breedName, transform.position + Math.RotateY(new Vector3(0, 0, 1), Random.Range(0, 360), 5), breedRange - 1);
-                g.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
-            }
+            //if (Random.Range(0, 100) >= 30 && !isBreed){
+            //    if (Random.Range(0, 100) == 100)
+            //    {
+            //        GameObject g = CreateGrowPlant(breedName, transform.position + Math.RotateY(new Vector3(0, 0, 1), Random.Range(0, 360), 5), breedRange - 1);
+            //        g.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
+            //    }
+            //}
         }
+        //else if (scale >= 1.0f && !isBreed)
+        //{
+        //    if (Random.Range(0, 100) >= 30 && !isBreed)
+        //    {
+        //        isBreed = true;
+        //        GameObject g = CreateGrowPlant(breedName, transform.position + Math.RotateY(new Vector3(0, 0, 1), Random.Range(0, 360), 5), breedRange + 1);
+        //        g.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
+        //    }
+        //}
     }
     //変化する確率
     void BreedMutation()

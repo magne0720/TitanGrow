@@ -143,9 +143,11 @@ public class DataBaseManager : MonoBehaviour {
         player=Player.CreatePlayer(objNames[0],objPos[0]).GetComponent<Player>();
         //ロボット城
         GameObject g1 = RobotCastle.CreateRobotCastle(objNames[1], objPos[1]);
-        g1.transform.forward=new Vector3(0,0,-1);
         //人類城
         GameObject g2 = HumanCastle.CreateHumanCastle(objNames[2], objPos[2]);
+
+        g1.transform.LookAt(g2.transform);
+        g2.transform.LookAt(g1.transform);
 
         humanCastle = g1.GetComponent<Castle>();
         robotCastle = g2.GetComponent<Castle>();

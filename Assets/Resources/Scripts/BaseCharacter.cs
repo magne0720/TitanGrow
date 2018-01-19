@@ -59,6 +59,15 @@ public class BaseCharacter : EatBase
 
         gameObject.layer = 8;
 
+        try
+        {
+            foreach (MeshRenderer g in GetComponentsInChildren<MeshRenderer>())
+            {
+//                g.materials.SetValue(Resources.Load("Textures/HideOnly") as Material,g.materials.Length);
+            }
+        }
+        catch { }
+
         //オブジェクトの追加
         ObjectManager.AddObject(gameObject);
 
@@ -275,9 +284,9 @@ public class BaseCharacter : EatBase
             }
         }
         SearchObjects = objs;
-        Debug.DrawRay(MyPosition, MyDirection * searchHeight, Color.red, 0.3f);
-        Debug.DrawRay(MyPosition, Math.getDirectionDegree(MyDirection, searchRange,searchHeight), Color.green, 0.3f);
-        Debug.DrawRay(MyPosition, Math.getDirectionDegree(MyDirection, -searchRange,searchHeight), Color.green, 0.3f);
+        Debug.DrawRay(MyPosition, MyDirection * searchHeight, Color.red, 1.0f);
+        Debug.DrawRay(MyPosition, Math.getDirectionDegree(MyDirection, searchRange,searchHeight), Color.green, 1.0f);
+        Debug.DrawRay(MyPosition, Math.getDirectionDegree(MyDirection, -searchRange,searchHeight), Color.green, 1.0f);
         return objs;
     }
 
