@@ -1,25 +1,73 @@
 fileFormatVersion: 2
-guid: 4960a1db69884154e983142951fb36c8
-timeCreated: 1510637886
+guid: ab92621dfdc744e4491efd256933c8fb
+timeCreated: 1515993693
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: Cylinder001
-    100002: //RootNode
-    100004: Sphere005
-    400000: Cylinder001
-    400002: //RootNode
-    400004: Sphere005
-    2100000: 'Material #26'
-    2100002: 'Material #24'
-    2300000: Cylinder001
-    2300002: Sphere005
-    3300000: Cylinder001
-    3300002: Sphere005
-    4300000: Cylinder001
-    4300002: Sphere005
+    100000: Bone001
+    100002: Bone002
+    100004: Bone003
+    100006: Bone004
+    100008: Bone005
+    100010: Bone006
+    100012: Bone007
+    100014: Bone008
+    100016: Bone009
+    100018: Bone010
+    100020: Bone011
+    100022: Bone012
+    100024: Bone013
+    100026: Bone014
+    100028: Bone015
+    100030: Bone016
+    100032: Bone017
+    100034: Bone018
+    100036: Bone019
+    100038: Box003
+    100040: Box005
+    100042: Box006
+    100044: Dummy001
+    100046: //RootNode
+    400000: Bone001
+    400002: Bone002
+    400004: Bone003
+    400006: Bone004
+    400008: Bone005
+    400010: Bone006
+    400012: Bone007
+    400014: Bone008
+    400016: Bone009
+    400018: Bone010
+    400020: Bone011
+    400022: Bone012
+    400024: Bone013
+    400026: Bone014
+    400028: Bone015
+    400030: Bone016
+    400032: Bone017
+    400034: Bone018
+    400036: Bone019
+    400038: Box003
+    400040: Box005
+    400042: Box006
+    400044: Dummy001
+    400046: //RootNode
+    2100000: Man_202
+    2100002: Man_201
+    2100004: Man_204
+    2100006: Man_205
+    2100008: 'Material #9'
+    2100010: 'Material #4'
+    2100012: Man_203
+    4300000: Box003
+    4300002: Box005
+    4300004: Box006
+    7400000: Take 001
     9500000: //RootNode
+    13700000: Box003
+    13700002: Box005
+    13700004: Box006
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -50,7 +98,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 8
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importVisibility: 1
