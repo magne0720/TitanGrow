@@ -15,13 +15,18 @@ public class StageCreator : MonoBehaviour {
     public static float Area_B = 0;
     //上限
     public static int BREED_MAX=10;
-    
+
     //二つの城の位置
-    public static Vector3 AreaPos_A;
-    public static Vector3 AreaPos_B;
+    public static Vector3 HumCastle;
+    public static Vector3 RobCastle;
     
     public static string[] ObjNames;
 
+    public static void Initialize()
+    {
+        HumCastle = DataBaseManager.GetHumanCastle();
+        RobCastle = DataBaseManager.GetRobotCastle();
+    }
     public static void StartUp()
     {
         int BreedCount = 0;
@@ -37,16 +42,16 @@ public class StageCreator : MonoBehaviour {
             for (int yz = 0; yz < STAGE_AREA; yz++)
             {
                 woodlist[xz, yz] = 0;
-                if (xz < AreaPos_A.x + (Area_A / 2) && xz > AreaPos_A.x - (Area_A / 2))
+                if (xz < HumCastle.x + (Area_A / 2) && xz > HumCastle.x - (Area_A / 2))
                 {
-                    if (yz < AreaPos_A.z + (Area_A / 2) && yz > AreaPos_A.z - (Area_A / 2))
+                    if (yz < HumCastle.z + (Area_A / 2) && yz > HumCastle.z - (Area_A / 2))
                     {
                         woodlist[xz, yz] = -1;
                     }
                 }
                 //B国の範囲内には生成しない
                 Vec3 = new Vector3(xz, 0, yz);
-                if (Math.Length(AreaPos_B - Vec3) < Area_B)
+                if (Math.Length(RobCastle - Vec3) < Area_B)
                 {
                     woodlist[xz, yz] = -1;
                 }

@@ -15,6 +15,8 @@ public class Castle : MonoBehaviour {
    protected float SpawnTime;
     //出撃場所
     protected Vector3 offsetPosition;
+    //出撃範囲
+    protected float spawnRange;
 
     //兵士出撃のトリガー
     public bool GoSortie;
@@ -45,7 +47,7 @@ public class Castle : MonoBehaviour {
     /// <param name="hp"></param>
     /// <param name="fInterval"></param>
     /// <param name="spawnOffset"></param>
-    public void Initialize(int hp,float fInterval,Vector3 spawnOffset)
+    public void Initialize(int hp,float fInterval,float fRange)
     {
         //オブジェクトの追加
         ObjectManager.AddObject(gameObject);
@@ -53,7 +55,8 @@ public class Castle : MonoBehaviour {
 
         CastleHp = hp;
         Interval = fInterval;
-        offsetPosition = transform.position+ spawnOffset;
+        spawnRange = fRange;
+        offsetPosition = transform.position;
     }
 
     // Use this for initialization

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: b6c4d1a75ec1c5a43ba72507d7816049
-timeCreated: 1513927392
+guid: 635fb9dacfc461349893cd6183bf5607
+timeCreated: 1516330901
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -38,6 +38,7 @@ ModelImporter:
     4300004: chick_Body
     4300006: chick_Head
     7400000: wark
+    7400002: catch
     9500000: //RootNode
     13700000: chickLeg_L
     13700002: chickLeg_R
@@ -73,6 +74,34 @@ ModelImporter:
       takeName: wark
       firstFrame: 0
       lastFrame: 49
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: catch
+      takeName: catch
+      firstFrame: 50
+      lastFrame: 99
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

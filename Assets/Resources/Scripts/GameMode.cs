@@ -58,7 +58,8 @@ public class GameMode : MonoBehaviour {
 
         ObjectManager.StartUpData();
         DataBaseManager.SetUpObjectData();
-        StageCreator.StartUp();
+        StageCreator.Initialize();
+        ObjectInstance();
         //GrowPlant.CreateGrowPlant("nat_001",new Vector3(),5);
     }
 
@@ -68,7 +69,7 @@ public class GameMode : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.N))
         {
-            Human.CreateHuman(DataBaseManager.GetObjectData("hum_002"));
+            Human.CreateHuman(DataBaseManager.GetObjectData("hum_001"));
         }
 	}
 
@@ -229,8 +230,9 @@ public class GameMode : MonoBehaviour {
         ObjectManager.AllClear();
 
         //５．オブジェクト追加
-        //CastleInstance();
-        ObjectInstance();
+        //CastleInstance();//使用しない
+
+        //ObjectInstance();
 
         //ミニマップ
         GameObject mini = new GameObject();
@@ -255,7 +257,7 @@ public class GameMode : MonoBehaviour {
         player = null;
         controller.SetControll(false);
         ObjectManager.AllClear();
-        StageCreator.StartUp();
+        ObjectInstance();
     }
 
     void GameStop()
@@ -280,6 +282,5 @@ public class GameMode : MonoBehaviour {
     void ObjectInstance()
     {
         StageCreator.StartUp();
-        //DataBaseManager.SpawnEnemyWave("EnemyPos");
     }
 }

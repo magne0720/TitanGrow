@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: ef278abef8896d3468a9c119824d6fb8
-timeCreated: 1513843671
+guid: f39c1d4a9429eb94cbc4273d338f44cc
+timeCreated: 1516070425
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -53,17 +53,13 @@ ModelImporter:
     400042: Box006
     400044: Dummy001
     400046: //RootNode
-    2100000: Man_202
-    2100002: Man_201
-    2100004: Man_204
-    2100006: Man_205
-    2100008: 'Material #9'
-    2100010: 'Material #4'
-    2100012: Man_203
-    4300000: Box003
+    2100000: Wo203
+    2100002: Wo_101
+    2100004: Wo202
+    2100006: Wo201
+    4300000: Box006
     4300002: Box005
-    4300004: Box006
-    7400000: Take 001
+    4300004: Box003
     9500000: //RootNode
     13700000: Box003
     13700002: Box005

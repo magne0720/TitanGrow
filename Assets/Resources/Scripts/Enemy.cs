@@ -34,15 +34,14 @@ public class Enemy : BaseCharacter
         
         g.name = path;
         g.AddComponent<Enemy>();
-
-
+        
         return g;
     } 
     public static GameObject CreateEnemy(DataBaseManager.OBJECT data,Vector3 pos=new Vector3())
     {
         GameObject g = CreateCharacter(data.path);
         g.name = data.name;
-        g.transform.position = pos;
+        g.transform.position = data.pos;
         g.transform.localScale *= data.scale;
         g.AddComponent<Enemy>();
 
@@ -64,24 +63,27 @@ public class Enemy : BaseCharacter
     //}
 
     // Use this for initialization
-    void Start()
+    public override void Start()
     {
         Initialize();
         MySpeed = transform.localScale.magnitude*5.5f;
         HP = 15;
         if(lastTarget==Vector3.zero)
-        lastTarget = new Vector3(transform.position.x, transform.position.y, 2);
+        lastTarget = new Vector3();
         timer = 0;
         HeadingCastle = DataBaseManager.GetHumanCastle();
         MyPosition = transform.position;
 
         material = Resources.Load("Textures/HideOnly") as Material;
-
-
     }
     // Update is called once per frame
-    void Update()
+    public override void Update()
     {
+        if (myStatus == STATUS.FIND)
+        {
+            MyPosition.y = searchTimer;
+        }
+
         if (HP < 0)
         {
             Destroy(gameObject);
@@ -96,15 +98,14 @@ public class Enemy : BaseCharacter
             ActionBrain();
             searchTimer = 0;
         }
-
-
+        
         if (battleEnemy != null)
         {
-            SetTarget(battleEnemy.transform.position - transform.position);
+            SetTargetBy(battleEnemy.transform.position - transform.position);
         }
         else
         {
-            SetTarget(new Vector3(0,0,-500));
+            SetTargetTo(new Vector3(0,0,0));
         }
         Move();
         MyPosition = transform.position;
@@ -121,6 +122,7 @@ public class Enemy : BaseCharacter
     //敵を探す
     public void SetEnemy(GameObject g)
     {
+        SetStatus(STATUS.FIND);
         battleEnemy = g;
         //SetTarget(Enemys[i].transform.position);
     }
@@ -148,6 +150,13 @@ public class Enemy : BaseCharacter
         else
         {
 
+        }
+    }
+    void OnCollisionEnter(Collision c)
+    {
+        if (c.gameObject.tag == "Player")
+        {
+            AddForce(c.transform.position - transform.position,10);
         }
     }
 }

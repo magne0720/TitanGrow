@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 9bf46ca77cca07243a63c659958c8cc5
-timeCreated: 1513927391
+guid: 54fb2eeb682c3f94f82644391a110f97
+timeCreated: 1516324847
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -13,9 +13,10 @@ ModelImporter:
     100010: Bone006
     100012: Bone007
     100014: Bone008
-    100016: //RootNode
-    100018: cow
-    100020: cowB
+    100016: Bone009
+    100018: Bone010
+    100020: //RootNode
+    100022: cowB
     400000: Bone001
     400002: Bone002
     400004: Bone003
@@ -24,9 +25,10 @@ ModelImporter:
     400010: Bone006
     400012: Bone007
     400014: Bone008
-    400016: //RootNode
-    400018: cow
-    400020: cowB
+    400016: Bone009
+    400018: Bone010
+    400020: //RootNode
+    400022: cowB
     2100000: cow_01
     2100002: cow_03
     2100004: cow_02

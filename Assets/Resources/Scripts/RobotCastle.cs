@@ -5,6 +5,7 @@ using UnityEngine;
 public class RobotCastle : Castle {
     
     private int iRandNum;
+    private Vector3 playerPosition;
 
 
     public static GameObject CreateRobotCastle(string path, Vector3 pos = new Vector3())
@@ -29,7 +30,7 @@ public class RobotCastle : Castle {
     }
     // Use this for initialization
     void Start () {
-        Initialize(1000,20.0f,new Vector3(0,0,-500));
+        Initialize(1000,5.0f,20.0f);
 	}
 	
 	// Update is called once per frame
@@ -50,7 +51,6 @@ public class RobotCastle : Castle {
                 Debug.Log("縦列");
                 DataBaseManager.SpawnWave("EnemyColumn", offsetPosition);
                 break;
-
             case 1:
                 Debug.Log("部隊");
                 DataBaseManager.SpawnWave("EnemyUnit", offsetPosition);
@@ -67,7 +67,6 @@ public class RobotCastle : Castle {
 
         if (CastleHp <= 80)
         {
-
             Debug.Log("M");
             DataBaseManager.SpawnWave("EnemyM", offsetPosition);
         }

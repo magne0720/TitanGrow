@@ -2,10 +2,10 @@
 A	鳥	chick	chick_001	家畜畜生	cre_002																				
 A	豚	pig	pig_001	家畜畜生	cre_003																				
 A	羊	sheep	sheep_001	家畜畜生	cre_004																				
-A	村人(men)	hum	hum_001	人間側の男性																					
-A	村人(women)	hum	hum_002	人間側の女性	hum_001	hum_002																			
-A	村長	hum	hum_003	人間側の村の村長																					
-A	兵士	hum	hum_004	人間側の兵士。王子(主人公)の護衛																					
+A	村人(men)	man	man_001	人間側の男性																					
+A	村人(women)	woman	woman_001	人間側の女性	hum_001	hum_002																			
+A	村長	hum	hum_001	人間側の村の村長																					
+A	兵士	hum	hum_002	人間側の兵士。王子(主人公)の護衛																					
 B	TYPE:α	TYPE_α	TYPE_α_001	ロボットの中でも穏やかなタイプ																					
 B	TYPE:β	TYPE_β	TYPE_β_001	ロボットの中でも呑気なタイプ																					
 B	TYPE:γ	TYPE_γ	TYPE_γ_001	ロボットの中でも特に短気なタイプ																					

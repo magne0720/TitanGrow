@@ -42,7 +42,7 @@ public class Controller : MonoBehaviour {
 
             if (direction.magnitude > controlsensivity)
             {
-                player.SetTarget(direction);
+                player.SetTargetBy(direction);
             }
             //食べる
             if (Input.GetButtonDown("triangle") || Input.GetMouseButtonDown(1))

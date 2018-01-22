@@ -19,36 +19,12 @@ public class BaseObject : EatBase
     {
         Move();
     }
-
-
-         public void Move()
+   public override void Initialize()
     {
-        if (transform.parent != null)
-        {
-            return;
-        }
+        ForcePosition = new Vector3();
         MyPosition = transform.position;
-
-        if (force > 0) force -= Time.deltaTime * 3.0f;
-        else if (force < 0) force = 0;
-        Vector3 moving = ForcePosition;
-        //moving.Normalize();
-
-        MyPosition += moving * force;
-
-        MyPosition.y = transform.position.y;
+        TargetPosition = MyPosition;
         
-        if (Math.Length(moving) >= 1.0f)
-        {
-            Quaternion q = Quaternion.LookRotation(moving);
-            transform.rotation = q;
-        }
-        transform.position = MyPosition;
-
-    }
-
-   public void Initialize()
-    {
         gameObject.AddComponent<Rigidbody>();
 
         BoxCollider c = gameObject.AddComponent<BoxCollider>();
@@ -58,19 +34,14 @@ public class BaseObject : EatBase
         //オブジェクトの追加
         ObjectManager.AddObject(gameObject);
 
-        MyPosition = transform.position;
 
         transform.tag = "Object";
 
-        try
+
+        foreach (Transform t in this.transform)
         {
-            foreach (GameObject g in gameObject.GetComponentsInChildren<GameObject>())
-            {
-                g.gameObject.layer = 8;
-            }
+            t.gameObject.layer = 8;
         }
-        catch { }
-        gameObject.layer = 8;
     }
     void OnCollisionEnter(Collision col)
     {

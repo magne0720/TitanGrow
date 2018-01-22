@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 2550ffdf13c261148a8798835b25badf
-timeCreated: 1513927391
+guid: ade11914932e61c4997f24d02cd582f1
+timeCreated: 1516252983
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -13,9 +13,10 @@ ModelImporter:
     100010: Bone006
     100012: Bone007
     100014: Bone008
-    100016: //RootNode
-    100018: pig
-    100020: pigB
+    100016: Bone009
+    100018: Bone010
+    100020: //RootNode
+    100022: pigB
     400000: Bone001
     400002: Bone002
     400004: Bone003
@@ -24,13 +25,15 @@ ModelImporter:
     400010: Bone006
     400012: Bone007
     400014: Bone008
-    400016: //RootNode
-    400018: pig
-    400020: pigB
+    400016: Bone009
+    400018: Bone010
+    400020: //RootNode
+    400022: pigB
     2100000: pig_01
     2100002: pig_02
     4300000: pigB
     7400000: wark
+    7400002: catch
     9500000: //RootNode
     13700000: pigB
   externalObjects: {}
@@ -59,39 +62,11 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations:
-    - serializedVersion: 16
-      name: wark
-      takeName: wark
-      firstFrame: 0
-      lastFrame: 49
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+    clipAnimations: []
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 100
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importVisibility: 1

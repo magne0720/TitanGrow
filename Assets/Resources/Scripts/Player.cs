@@ -51,7 +51,7 @@ public class Player : BaseCharacter
         //GetComponent<Rigidbody>().freezeRotation = true;
         transform.name = "Player";
         transform.tag = "Player";
-        GetComponent<Animator>().runtimeAnimatorController =
+        anim.runtimeAnimatorController =
             Resources.Load("Models/bigmen", typeof(RuntimeAnimatorController)) as RuntimeAnimatorController;
 
         gameObject.layer = 8;
@@ -84,6 +84,7 @@ public class Player : BaseCharacter
             SetStatus(STATUS.DEATH);
         }
         actiontimer += Time.deltaTime;
+
         switch (myStatus)
         {
             case STATUS.WAIT:
@@ -160,7 +161,7 @@ public class Player : BaseCharacter
             foreach (GameObject g in catchObjects)
             {
                 //g.GetComponent<Rigidbody>().isKinematic = false;
-                g.transform.position = transform.forward * transform.localScale.z + transform.position;
+                g.transform.position = transform.forward * transform.localScale.z + transform.position+new Vector3(0,10,0);
             }
         }
     }
@@ -173,7 +174,6 @@ public class Player : BaseCharacter
         }
         else
         {
-            
             Catch(SearchObjects);
         }
     }
@@ -193,27 +193,30 @@ public class Player : BaseCharacter
     //つかむ
     public void Catch(List<GameObject> objs)
     {
-        SetStatus(STATUS.CATCH);
 
         catchObjects.Clear();
         //つかんだもの情報
         if (objs.Count > 0)
+        {
+            SetStatus(STATUS.CATCH);
+
             foreach (GameObject g in objs)
             {
-                if (g.transform.localScale.y/3< transform.localScale.y*2)
-                    if (g.tag != "Player"&&g.tag!="Castle")
+              //  if (g.transform.localScale.y / 3 < transform.localScale.y * 2)
+                    if (g.tag != "Player" && g.tag != "Castle")
                     {
                         catchObjects.Add(g);
                         //子にする
-                        g.transform.parent = this.transform;
+                        //g.transform.parent = this.transform;
                         //子のあたり判定を消す
                         //g.GetComponent<Collider>().enabled = false;
                         //デバッグ用
                         //g.GetComponent<Renderer>().material.color = Color.black;
                         // アニメーターで動かす
-                        GetComponent<Animator>().SetTrigger("catch");
+                        anim.SetTrigger("catch");
                     }
             }
+        }
     }
 
     //投げる
@@ -228,12 +231,13 @@ public class Player : BaseCharacter
             //自身のz軸方面に飛ばす
             g.GetComponent<EatBase>().AddForce(transform.forward,transform.localScale.z);
             //子から話す
-            g.transform.parent = null;
+            //g.transform.parent = null;
          }
         //リストの初期化
         catchObjects.Clear();
         // アニメーターで動かす
-        GetComponent<Animator>().SetTrigger("castaway");
+        anim.SetTrigger("castaway");
+
     }
 
     //離す
@@ -251,7 +255,7 @@ public class Player : BaseCharacter
         //リストの初期化
         catchObjects.Clear();
         // アニメーターで動かす
-        GetComponent<Animator>().SetTrigger("release");
+        anim.SetTrigger("release");
     }
 
     //食べる
@@ -271,7 +275,7 @@ public class Player : BaseCharacter
         //リストの初期化
         catchObjects.Clear();
         // アニメーターで動かす
-        GetComponent<Animator>().SetTrigger("eat");
+        anim.SetTrigger("eat");
     }
 
     //食べた時のポイントを追加する
@@ -297,7 +301,7 @@ public class Player : BaseCharacter
             //大きくなる
             transform.localScale += GrowRate;
 
-            searchHeight = 3.0f * transform.localScale.z;
+            searchHeight = 10.0f * transform.localScale.z;
 
             //大きさに比例してスピードが上がる
             SetSpeed(transform.localScale.magnitude*6.0f);

@@ -8,6 +8,7 @@ using UnityEngine;
 //AIにも対応させるので、ここにはインターフェースの処理を書かないこと
 public class BaseCharacter : EatBase
 {
+    public float MySpeed;
     protected float searchTimer = 0;//サーチ間隔
     protected float searchHeight = 0;//サーチ距離
     protected float searchRange = 0;//サーチ範囲
@@ -15,9 +16,10 @@ public class BaseCharacter : EatBase
     protected List<GameObject> SearchObjects;
     protected enum STATUS
     {
-        WAIT = 0, WALK, DEATH, CATCH, THROW_IN,THROW_OUT, EAT
+        WAIT = 0, WALK, DEATH, CATCH, THROW_IN,THROW_OUT, EAT,FIND
     };
     protected STATUS myStatus;
+    public GameObject DeathObj;
 
     public static GameObject CreateCharacter(string path,Vector3 pos = new Vector3())
     {
@@ -40,9 +42,12 @@ public class BaseCharacter : EatBase
 
         return g;
     }
-    public void Initialize()
+    public override void Initialize()
     {
-        gameObject.AddComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
+        anim.applyRootMotion = true;
+
+        gameObject.AddComponent<Rigidbody>().freezeRotation=true;
         gameObject.AddComponent<BoxCollider>();
         gameObject.GetComponent<BoxCollider>().center = new Vector3(0, 0.5f, 0);
         searchHeight = 200.0f;
@@ -57,13 +62,19 @@ public class BaseCharacter : EatBase
 
         transform.tag = "Object";
 
-        gameObject.layer = 8;
+        foreach (Transform t in this.transform)
+        {
+            t.gameObject.layer = 8;
+        }
 
         try
         {
             foreach (MeshRenderer g in GetComponentsInChildren<MeshRenderer>())
             {
-//                g.materials.SetValue(Resources.Load("Textures/HideOnly") as Material,g.materials.Length);
+                g.sharedMaterials = new Material[]
+                {
+                    g.sharedMaterial,Resources.Load("Textures/HideOnly")as Material
+                };
             }
         }
         catch { }
@@ -108,41 +119,47 @@ public class BaseCharacter : EatBase
     {
         TargetPosition.z -= 1.0f;
     }
-    public void Move()
-    {
-        if (transform.parent != null)
-        {
-            return;
-        }
-        int hit = (isFowardHit) ? 0 : 1;
-       Vector3 moving = TargetPosition - MyPosition;
-        if (Math.Length(moving) <= 0.05f)
-        {
-            GetComponent<Animator>().SetFloat("walk", 0.0f);
-            return;
-        }
-        else
-        {
-            GetComponent<Animator>().SetFloat("walk", 1.0f);
-        }
+    //public void Move()
+    //{
+    //    if (transform.parent != null)
+    //    {
+    //        return;
+    //    }
+    //    if (force > 0) force -= Time.deltaTime * 20.0f;
+    //    else if (force < 0) force = 0;
+    //    Vector3 moving = (ForcePosition * force) + TargetPosition - MyPosition;
+    //    //Vector3 moving = TargetPosition - MyPosition;
 
-        moving.y = 0;
-       moving.Normalize();
+    //    //高さを変更しないため(移動ベクトルはXZ平面なので無意味？) 
+    //    moving.y = 0;
 
-        MyPosition += moving * MySpeed * Time.deltaTime*hit;
+    //    moving.Normalize();
 
-        MyPosition.y = transform.position.y;
+    //    MyPosition += moving * MySpeed * Time.deltaTime;
+    //    //MyPosition += moving * MySpeed * Time.deltaTime + ForcePosition;
 
-        transform.position = MyPosition;
+    //    //MyPosition.y = transform.position.y;
 
-        SetDirection(moving);
-        if (Math.Length(moving) >= 1.0f)
-        {
-            Quaternion q = Quaternion.LookRotation(moving);
-            transform.rotation = q;
-        }
-        TargetPosition = MyPosition;
-    }
+    //    transform.position = MyPosition;
+
+    //    SetDirection(moving);//必要ない？
+    //    if (Math.Length(moving) >= 1.0f)
+    //    {
+    //        Quaternion q = Quaternion.LookRotation(moving);
+    //        transform.rotation = q;
+    //    }
+    //    TargetPosition = MyPosition;
+
+    //    if (Math.Length(moving) <= 0.05f)
+    //    {
+    //        anim.SetFloat("walk", 0.0f);
+    //        return;
+    //    }
+    //    else
+    //    {
+    //        anim.SetFloat("walk", 1.0f);
+    //    }
+    //}
 
     void Damage(int p)
     {
@@ -152,7 +169,8 @@ public class BaseCharacter : EatBase
     void Death()
     {
         HP = 0;
-        Destroy(gameObject);
+        //Instantiate(DeathObj);
+        Destroy(gameObject,5);
     }
 
     void LiveCheck()
@@ -161,18 +179,24 @@ public class BaseCharacter : EatBase
             Death();
     }
 
-    public void SetTarget(Vector3 target)
+    /// <summary>
+    /// 相対座標で移動する
+    /// 自分の位置からどれだけ移動するか
+    /// </summary>
+    /// <param name="target"></param>
+    public void SetTargetBy(Vector3 target)
     {
-        TargetPosition = target+MyPosition;
+        TargetPosition = target + MyPosition;
+    }
+    public void SetTargetTo(Vector3 target)
+    {
+        TargetPosition = target;
     }
     public Vector3 GetTarget()
     {
         return TargetPosition;
     }
-    public void SetDirection(Vector3 v)
-    {
-        MyDirection = v;
-    }
+
 
     //Y軸基点で回転(正数で左回転？)
     public void RotateY(float deg,float height=1)
@@ -188,7 +212,7 @@ public class BaseCharacter : EatBase
         vector.z = az;
 
        // SetDirection(vector+transform.position);
-        SetTarget(vector*height);
+        SetTargetBy(vector*height);
     }
 
     public void SearchEnemy(GameObject obj)
@@ -317,6 +341,7 @@ public class BaseCharacter : EatBase
     }
     protected void SetStatus(STATUS s)
     {
+        if(myStatus==STATUS.WAIT||myStatus==STATUS.WALK)
         myStatus = s;
     }
     public void UnderGround()

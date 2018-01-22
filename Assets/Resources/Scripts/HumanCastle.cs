@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HumanCastle : Castle {
 
+    Vector3[] CreatePositions;
 
 
     public static GameObject CreateHumanCastle(string path, Vector3 pos = new Vector3())
@@ -28,7 +29,9 @@ public class HumanCastle : Castle {
     }
     // Use this for initialization
     void Start () {
-        Initialize(100,50.0f,new Vector3(0,0,150));
+        Initialize(100,50.0f,30);
+
+
 	}
 	
 	// Update is called once per frame
@@ -47,5 +50,29 @@ public class HumanCastle : Castle {
 
         SpawnTime = 0;
         GoSortie = false;
+    }
+
+    void InitSpawnPosition()
+    {
+        string temp = Resources.Load("Others/EnemyData", typeof(TextAsset)).ToString();
+        int count = 0;
+        //行分け
+        string[] lineText = temp.Split('\n');
+        CreatePositions = new Vector3[lineText.Length];
+        foreach (string line in lineText)
+            if (line.StartsWith("#"))
+            {
+                //コメントアウトの部分なので何もしない
+            }
+            else
+            {
+                //タブ区切り(.TSV) 
+                string[] dataText = line.Split('\t');
+                float x = float.Parse(dataText[0]);
+                float y = float.Parse(dataText[1]);
+                float z = float.Parse(dataText[2]);
+                CreatePositions[count] = new Vector3(x, y, z);
+                count++;
+            }
     }
 }

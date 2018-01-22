@@ -151,7 +151,6 @@ public class DataBaseManager : MonoBehaviour {
 
         humanCastle = g1.GetComponent<Castle>();
         robotCastle = g2.GetComponent<Castle>();
-
     }
 
     public static OBJECT GetEnemyNum(int num)
