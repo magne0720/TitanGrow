@@ -43,6 +43,7 @@ public class Player : BaseCharacter
     // Use this for initialization
     override public void Start()
     {
+        isLand = true;
 
         catchObjects = new List<GameObject>();
         SetStatus(STATUS.WAIT);
@@ -72,6 +73,12 @@ public class Player : BaseCharacter
     // Update is called once per frame
     override public void Update()
     {
+        //Debug
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            AddForce(new Vector3(0, 100, 100),1.0f);
+        }
+
         searchTimer += Time.deltaTime;
         if (searchTimer >= 0.1f)
         {
@@ -148,7 +155,7 @@ public class Player : BaseCharacter
         Grow(FoodPoint);
 
         if (myStatus == STATUS.WAIT || myStatus == STATUS.WALK)
-            Move();
+            Move(MySpeed);
       
         //foreach(GameObject g in SearchObjects)
        // {
@@ -161,7 +168,7 @@ public class Player : BaseCharacter
             foreach (GameObject g in catchObjects)
             {
                 //g.GetComponent<Rigidbody>().isKinematic = false;
-                g.transform.position = transform.forward * transform.localScale.z + transform.position+new Vector3(0,10,0);
+                g.transform.position = transform.forward * transform.localScale.z + transform.position+new Vector3(0,10,3);
             }
         }
     }
@@ -229,7 +236,7 @@ public class Player : BaseCharacter
             //つかんだものの衝突判定を戻す
             //g.GetComponent<Collider>().enabled = true;
             //自身のz軸方面に飛ばす
-            g.GetComponent<EatBase>().AddForce(transform.forward,transform.localScale.z);
+            g.GetComponent<EatBase>().AddForce(transform.forward,transform.localScale.z*20);
             //子から話す
             //g.transform.parent = null;
          }
@@ -261,7 +268,14 @@ public class Player : BaseCharacter
     //食べる
     public void Eat()
     {
-        SetStatus(STATUS.EAT);
+        if (catchObjects.Count != 0)
+        {
+            SetStatus(STATUS.EAT);
+        }
+        else
+        {
+            return;
+        }
 
         foreach (GameObject g in catchObjects)
         {
@@ -325,5 +339,19 @@ public class Player : BaseCharacter
         }
         transform.GetComponent<Rigidbody>().AddForce(-transform.forward*2.0f);
         //HP--;        
+    }
+    public void OnCollisionEnter(Collision c)
+    {
+        if (c.transform.tag == "Ground")
+        {
+            isLand = true;
+        }
+    }
+    public void OnCollisionExit(Collision c)
+    {
+        if (c.transform.tag == "Ground")
+        {
+            isLand = false;
+        }
     }
 }

@@ -73,6 +73,7 @@ public class Enemy : BaseCharacter
         timer = 0;
         HeadingCastle = DataBaseManager.GetHumanCastle();
         MyPosition = transform.position;
+        SetTargetTo(new Vector3());
 
         material = Resources.Load("Textures/HideOnly") as Material;
     }
@@ -102,12 +103,18 @@ public class Enemy : BaseCharacter
         if (battleEnemy != null)
         {
             SetTargetBy(battleEnemy.transform.position - transform.position);
+
+            //if (Math.OnSricleAndPoint(MyPosition, 10.0f, battleEnemy.transform.position))
+            //{
+            //    return;
+            //}
         }
         else
         {
-            SetTargetTo(new Vector3(0,0,0));
+            SetTargetTo(new Vector3(500,0,0));
         }
-        Move();
+        Move(MySpeed);
+
         MyPosition = transform.position;
 
         //UnderGround();

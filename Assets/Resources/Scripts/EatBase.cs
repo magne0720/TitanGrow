@@ -10,12 +10,13 @@ using UnityEngine;
 public class EatBase : MonoBehaviour {
 
     protected int HP;
-    protected Vector3 MyPosition;
-    protected Vector3 TargetPosition;
+    public Vector3 MyPosition;
+    public Vector3 TargetPosition;
     protected Vector3 MyDirection;     //自身の向いている方向    
     protected int eatPoint;
-    protected Vector3 ForcePosition;
-    protected float force = 0;
+    public Vector3 ForcePosition;
+    public float force = 0, gravity = 0;
+    public bool isLand;
 
     protected Animator anim;
 
@@ -47,42 +48,56 @@ public class EatBase : MonoBehaviour {
         force = 0;
     }
 
-    public void Move()
+    //移動
+    public void Move(float speed = 0)
     {
-        if (transform.parent != null)
+        //飛ばされの減衰
+        if (force > 0) force -= Time.deltaTime * 1.0f;
+        else if (force < 0)
         {
-            return;
+            force = 0;
+            ForcePosition = Vector3.zero;
         }
-        MyPosition = transform.position;
+        //飛ばされている場合
+        gameObject.transform.Translate(ForcePosition * force * Time.deltaTime);
 
-        if (force > 0) force -=  Time.deltaTime*20.0f;
-        else if (force < 0) force = 0;
-        Vector3 moving = (ForcePosition*force)+TargetPosition-MyPosition;
-        MyPosition += moving  * Time.deltaTime;
-
-        //moving.Normalize();
-
-        //MyPosition += moving;
-
-        //MyPosition.y = transform.position.y;
-        
-        SetDirection(moving);//必要ない？
+        Vector3 moving = TargetPosition - MyPosition;
+        moving.Normalize();
+        //通常移動
+        gameObject.transform.Translate(moving* speed * Time.deltaTime);
+        SetDirection(new Vector3(moving.x,0,moving.z));//必要ない？
         if (Math.Length(moving) >= 1.0f)
         {
             Quaternion q = Quaternion.LookRotation(moving);
             transform.rotation = q;
         }
-        transform.position = MyPosition;
+        //Gravity();
 
-        if(anim!=null)
-        if (Math.Length(moving) <= 0.05f)
+
+    }
+    public void Gravity()
+    {
+
+
+        if (!isLand)
         {
-            anim.SetFloat("walk", 0.0f);
-            return;
+            gravity += Time.deltaTime;
+
+            MyPosition.y -= gravity;
         }
-        else
+    }
+    public void OnCollisionEnter(Collision c)
+    {
+        if (c.transform.tag == "Ground")
         {
-            anim.SetFloat("walk", 1.0f);
+            isLand = true;
+        }
+    }
+    public void OnCollisionExit(Collision c)
+    {
+        if (c.transform.tag == "Ground")
+        {
+            isLand = false;
         }
     }
 }

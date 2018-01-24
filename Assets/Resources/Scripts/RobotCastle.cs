@@ -30,7 +30,7 @@ public class RobotCastle : Castle {
     }
     // Use this for initialization
     void Start () {
-        Initialize(1000,5.0f,20.0f);
+        Initialize(1000,15.0f,20.0f);
 	}
 	
 	// Update is called once per frame

@@ -14,11 +14,11 @@ public class BaseCharacter : EatBase
     protected float searchRange = 0;//サーチ範囲
     protected bool isFowardHit;
     protected List<GameObject> SearchObjects;
-    protected enum STATUS
+    public enum STATUS
     {
         WAIT = 0, WALK, DEATH, CATCH, THROW_IN,THROW_OUT, EAT,FIND
     };
-    protected STATUS myStatus;
+    public STATUS myStatus;
     public GameObject DeathObj;
 
     public static GameObject CreateCharacter(string path,Vector3 pos = new Vector3())
@@ -102,23 +102,7 @@ public class BaseCharacter : EatBase
             Move();
         //CheckGround();
     }
-  
-    public void MoveRight()
-    {
-        TargetPosition.x += 1.0f;
-    }
-    public void MoveLeft()
-    {
-        TargetPosition.x -= 1.0f;
-    }
-    public void MoveFront()
-    {
-        TargetPosition.z += 1.0f;
-    }
-    public void MoveBack()
-    {
-        TargetPosition.z -= 1.0f;
-    }
+
     //public void Move()
     //{
     //    if (transform.parent != null)
@@ -161,6 +145,27 @@ public class BaseCharacter : EatBase
     //    }
     //}
 
+        void MoveCheck()
+    {
+        if (Math.Length(TargetPosition - MyPosition) < 0.2f)
+        {
+            Debug.Log("stop");
+            SetStatus(STATUS.WAIT);
+        }
+        //自身から移動しているかどうか
+        if (Math.Length(TargetPosition - MyPosition) <= 0.1f)
+        {
+            //移動はしていない
+            anim.SetFloat("walk", 0.0f);
+            return;
+        }
+        else
+        {
+            //移動する
+            anim.SetFloat("walk", 1.0f);
+        }
+    }
+
     void Damage(int p)
     {
         HP -= p;
@@ -196,7 +201,6 @@ public class BaseCharacter : EatBase
     {
         return TargetPosition;
     }
-
 
     //Y軸基点で回転(正数で左回転？)
     public void RotateY(float deg,float height=1)
@@ -248,7 +252,6 @@ public class BaseCharacter : EatBase
             if (objects.Count > 0)
                 foreach (GameObject g in objects)
                 {
-
                     //探す計算処理
                     dis = Math.SearchCone(MyPosition, TargetPosition, searchHeight, searchRange, g.transform.position);
                     //視界に見えているもの
@@ -268,8 +271,6 @@ public class BaseCharacter : EatBase
                 }
         }
     }
-
-
     public List<GameObject> SearchObject(List<GameObject> objects, string tag = "untagged")
     {
         if (objects == null) return null;
@@ -341,7 +342,6 @@ public class BaseCharacter : EatBase
     }
     protected void SetStatus(STATUS s)
     {
-        if(myStatus==STATUS.WAIT||myStatus==STATUS.WALK)
         myStatus = s;
     }
     public void UnderGround()

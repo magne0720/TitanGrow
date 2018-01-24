@@ -74,6 +74,7 @@ public class CanvasControl : MonoBehaviour
         {
             text = canText;
             text.color = new Color(255.0f/255.0f,0.0f/255.0f,128.0f/255.0f,1.0f);
+            //text.material = Resources.Load("Shaders/X-Ray") as Material;
 //            text.material.shader = new Shader();
         }
         if (destItems == null)

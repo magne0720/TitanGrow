@@ -43,10 +43,8 @@ public class Human : BaseCharacter
         {
             moveTime = MoveTime();
             targetPosition = GetRandomPosition();
-            Debug.Log(targetPosition);
+            //Debug.Log(targetPosition);
         }
-
-
     }
 
     public Vector3 GetRandomPosition()
@@ -70,6 +68,4 @@ public class Human : BaseCharacter
             Debug.Log(targetPosition);
         }
     }
-
-
 }

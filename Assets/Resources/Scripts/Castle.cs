@@ -10,7 +10,7 @@ public class Castle : MonoBehaviour {
     //城の体力
     public int CastleHp;
     //生成する間隔
-    protected float Interval;
+    public float Interval;
     //計測時間
    protected float SpawnTime;
     //出撃場所

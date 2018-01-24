@@ -253,10 +253,12 @@ public class DataBaseManager : MonoBehaviour {
     }
     public static Vector3 GetHumanCastle()
     {
+        if (humanCastle == null) return new Vector3();
         return humanCastle.transform.position;
     }
     public static Vector3 GetRobotCastle()
     {
+        if (robotCastle == null) return new Vector3();
         return robotCastle.transform.position;
     }
 }

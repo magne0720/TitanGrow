@@ -19,12 +19,12 @@ public class BaseObject : EatBase
     {
         Move();
     }
-   public override void Initialize()
+    public override void Initialize()
     {
         ForcePosition = new Vector3();
         MyPosition = transform.position;
         TargetPosition = MyPosition;
-        
+
         gameObject.AddComponent<Rigidbody>();
 
         BoxCollider c = gameObject.AddComponent<BoxCollider>();
@@ -42,7 +42,15 @@ public class BaseObject : EatBase
         {
             t.gameObject.layer = 8;
         }
-    }
+        //透過マテリアルを追加
+        foreach (MeshRenderer g in GetComponentsInChildren<MeshRenderer>())
+        {
+            g.sharedMaterials = new Material[]
+            {
+                    g.sharedMaterial,Resources.Load("Shaders/HideOnly")as Material
+            };
+        }
+    } 
     void OnCollisionEnter(Collision col)
     {
 

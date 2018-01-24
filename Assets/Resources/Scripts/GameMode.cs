@@ -46,6 +46,7 @@ public class GameMode : MonoBehaviour {
         if (cam == null)
         {
             cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraControl>();
+            cam.gameObject.AddComponent<ChangeShader>();
         }
 
         if (controller == null)
@@ -248,6 +249,7 @@ public class GameMode : MonoBehaviour {
     {
         mode = MODE.GAME;
         controller.SetControll(true);
+        cam.GetComponent<ChangeShader>().StartShader(1);
     }
 
     void GameEnd()
