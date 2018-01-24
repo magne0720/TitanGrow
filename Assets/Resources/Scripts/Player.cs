@@ -156,10 +156,19 @@ public class Player : BaseCharacter
 
         if (myStatus == STATUS.WAIT || myStatus == STATUS.WALK)
             Move(MySpeed);
-      
+
+        if (Math.Length(TargetPosition) >= 0.01f)
+        {
+            anim.SetFloat("walk", 1.0f);
+        }
+        else
+        {
+            anim.SetFloat("walk", 0.0f);
+        }
+
         //foreach(GameObject g in SearchObjects)
-       // {
-            //g.GetComponent<Renderer>().material.color = Color.red;
+        // {
+        //g.GetComponent<Renderer>().material.color = Color.red;
         //}
         //SetMass(transform.localScale.magnitude);
         //UnderGround();

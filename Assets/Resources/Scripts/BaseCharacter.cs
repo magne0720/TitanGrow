@@ -103,49 +103,51 @@ public class BaseCharacter : EatBase
         //CheckGround();
     }
 
-    //public void Move()
-    //{
-    //    if (transform.parent != null)
-    //    {
-    //        return;
-    //    }
-    //    if (force > 0) force -= Time.deltaTime * 20.0f;
-    //    else if (force < 0) force = 0;
-    //    Vector3 moving = (ForcePosition * force) + TargetPosition - MyPosition;
-    //    //Vector3 moving = TargetPosition - MyPosition;
+    public void Move()
+    {
+        if (transform.parent != null)
+        {
+            return;
+        }
+        if (force > 0) force -= Time.deltaTime * 20.0f;
+        else if (force < 0) force = 0;
+        Vector3 moving = (ForcePosition * force) + TargetPosition - MyPosition;
+        //Vector3 moving = TargetPosition - MyPosition;
 
-    //    //高さを変更しないため(移動ベクトルはXZ平面なので無意味？) 
-    //    moving.y = 0;
+        //高さを変更しないため(移動ベクトルはXZ平面なので無意味？) 
+        moving.y = 0;
 
-    //    moving.Normalize();
+        moving.Normalize();
 
-    //    MyPosition += moving * MySpeed * Time.deltaTime;
-    //    //MyPosition += moving * MySpeed * Time.deltaTime + ForcePosition;
+        transform.Translate(moving * MySpeed * Time.deltaTime);
 
-    //    //MyPosition.y = transform.position.y;
+        //MyPosition += moving * MySpeed * Time.deltaTime;
+        //MyPosition += moving * MySpeed * Time.deltaTime + ForcePosition;
 
-    //    transform.position = MyPosition;
+        //MyPosition.y = transform.position.y;
 
-    //    SetDirection(moving);//必要ない？
-    //    if (Math.Length(moving) >= 1.0f)
-    //    {
-    //        Quaternion q = Quaternion.LookRotation(moving);
-    //        transform.rotation = q;
-    //    }
-    //    TargetPosition = MyPosition;
+        //transform.position = MyPosition;
 
-    //    if (Math.Length(moving) <= 0.05f)
-    //    {
-    //        anim.SetFloat("walk", 0.0f);
-    //        return;
-    //    }
-    //    else
-    //    {
-    //        anim.SetFloat("walk", 1.0f);
-    //    }
-    //}
+        SetDirection(moving);//必要ない？
+        if (Math.Length(moving) >= 1.0f)
+        {
+            Quaternion q = Quaternion.LookRotation(moving);
+            transform.rotation = q;
+        }
+        TargetPosition = MyPosition;
 
-        void MoveCheck()
+        if (Math.Length(moving) <= 0.05f)
+        {
+            anim.SetFloat("walk", 0.0f);
+            return;
+        }
+        else
+        {
+            anim.SetFloat("walk", 1.0f);
+        }
+    }
+
+    void MoveCheck()
     {
         if (Math.Length(TargetPosition - MyPosition) < 0.2f)
         {

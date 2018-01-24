@@ -233,7 +233,7 @@ public class GameMode : MonoBehaviour {
         //５．オブジェクト追加
         //CastleInstance();//使用しない
 
-        //ObjectInstance();
+        ObjectInstance();
 
         //ミニマップ
         GameObject mini = new GameObject();

@@ -51,33 +51,39 @@ public class EatBase : MonoBehaviour {
     //移動
     public void Move(float speed = 0)
     {
+        //MyPosition = transform.position;
         //飛ばされの減衰
         if (force > 0) force -= Time.deltaTime * 1.0f;
-        else if (force < 0)
-        {
-            force = 0;
-            ForcePosition = Vector3.zero;
-        }
+        else if (force < 0) force = 0;
         //飛ばされている場合
-        gameObject.transform.Translate(ForcePosition * force * Time.deltaTime);
+        MyPosition += ForcePosition * force * Time.deltaTime;
 
-        Vector3 moving = TargetPosition - MyPosition;
+        Vector3 moving = TargetPosition;
+        if (Math.Length(moving) < 0.1f)
+        {
+            speed = 0;
+        }
         moving.Normalize();
         //通常移動
-        gameObject.transform.Translate(moving* speed * Time.deltaTime);
+        MyPosition += moving * speed * Time.deltaTime;
         SetDirection(new Vector3(moving.x,0,moving.z));//必要ない？
         if (Math.Length(moving) >= 1.0f)
         {
-            Quaternion q = Quaternion.LookRotation(moving);
+            Quaternion q = Quaternion.LookRotation(new Vector3(moving.x,0,moving.z));
             transform.rotation = q;
         }
         //Gravity();
 
+        transform.position = MyPosition;
 
     }
     public void Gravity()
     {
-
+        if (MyPosition.y < 0)
+        {
+            MyPosition.y = 0;
+            isLand = true;
+        }
 
         if (!isLand)
         {

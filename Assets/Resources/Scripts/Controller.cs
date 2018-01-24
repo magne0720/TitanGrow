@@ -32,18 +32,15 @@ public class Controller : MonoBehaviour {
         float moveX = Input.GetAxis("Horizontal");
         float moveZ = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(moveX, 0, moveZ);
-        direction = Math.RotateY(direction, cCam.direction.x);
-        target += direction;
+        target = Math.RotateY(direction, cCam.direction.x);
 
         //プレイヤー情報があるとき
         if (isControll)
         {
-            target = player.transform.position;
-
             if (direction.magnitude > controlsensivity)
             {
-                player.SetTargetBy(direction);
             }
+                player.SetTargetTo(target);
             //食べる
             if (Input.GetButtonDown("triangle") || Input.GetMouseButtonDown(1))
                 player.Eat();
