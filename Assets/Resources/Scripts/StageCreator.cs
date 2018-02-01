@@ -5,30 +5,34 @@ using UnityEngine;
 public class StageCreator : MonoBehaviour {
 
     //ステージの範囲
-    public const int STAGE_AREA = 250;
+    public const int STAGE_AREA = 500;
     //初期繁殖
-    public const int BREED_LIMIT = 250; 
+    public const int BREED_LIMIT = 450; 
 
     static int[,] woodlist;
 
-    public static float Area_A = 0;
-    public static float Area_B = 0;
+    public static float Area_A = 48;
+    public static float Area_B = 48;
     //上限
     public static int BREED_MAX=10;
 
     //二つの城の位置
     public static Vector3 HumCastle;
     public static Vector3 RobCastle;
+
+    //offset
+    public static Vector3 offsetPos;
     
     public static string[] ObjNames;
 
-    public static void Initialize()
+    public void Initialize()
     {
         HumCastle = DataBaseManager.GetHumanCastle();
         RobCastle = DataBaseManager.GetRobotCastle();
     }
-    public static void StartUp()
+    public void StartUp()
     {
+        offsetPos = new Vector3(-1000, 0,-1000);
         int BreedCount = 0;
         Vector3 Vec3 = new Vector3();
         woodlist = new int[STAGE_AREA, STAGE_AREA];
@@ -46,7 +50,7 @@ public class StageCreator : MonoBehaviour {
                 {
                     if (yz < HumCastle.z + (Area_A / 2) && yz > HumCastle.z - (Area_A / 2))
                     {
-                        woodlist[xz, yz] = -1;
+                       // woodlist[xz, yz] = -1;
                     }
                 }
                 //B国の範囲内には生成しない
@@ -68,7 +72,7 @@ public class StageCreator : MonoBehaviour {
                     if (Random.Range(0, 100) == 0 && woodlist[z, x] == 0)
                     {
                         int rInst = Random.Range(0, ObjNames.Length);
-                        GameObject g = GrowPlant.CreateGrowPlant(ObjNames[rInst], new Vector3((x - STAGE_AREA / 2) * 5, 0, (z - STAGE_AREA / 2) * 5), 8);
+                        GameObject g = GrowPlant.CreateGrowPlant(ObjNames[rInst], new Vector3(x*5,0,z*20)+offsetPos, 20);
                         woodlist[z, x] = rInst;
                         BreedCount++;
                     }

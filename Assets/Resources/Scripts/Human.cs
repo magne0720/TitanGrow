@@ -19,7 +19,7 @@ public class Human : BaseCharacter
 
         return g;
     }
-    private void Start()
+    public override void Start()
     {
         Initialize();
         targetPosition = GetRandomPosition();
@@ -27,8 +27,15 @@ public class Human : BaseCharacter
     }
 
     // Update is called once per frame
-    void Update()
+    public override void Update()
     {
+        if (transform.position.y <= -5)
+            HP = 0;
+
+        if (HP <= 0)
+        {
+            Destroy(gameObject);
+        }
         moveTime -= Time.deltaTime;
         //moveTimeが0以上なら行動する
         if (moveTime > 0)

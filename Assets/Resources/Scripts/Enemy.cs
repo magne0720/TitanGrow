@@ -66,7 +66,7 @@ public class Enemy : BaseCharacter
     public override void Start()
     {
         Initialize();
-        MySpeed = transform.localScale.magnitude*5.5f;
+        MySpeed = transform.localScale.magnitude;
         HP = 15;
         if(lastTarget==Vector3.zero)
         lastTarget = new Vector3();
@@ -84,8 +84,10 @@ public class Enemy : BaseCharacter
         {
             MyPosition.y = searchTimer;
         }
+        if (transform.position.y <= -5)
+            HP = 0;
 
-        if (HP < 0)
+        if (HP <= 0)
         {
             Destroy(gameObject);
         }
@@ -113,9 +115,8 @@ public class Enemy : BaseCharacter
         {
             SetTargetTo(new Vector3(500,0,0));
         }
-        Move(MySpeed);
-
-        MyPosition = transform.position;
+        TargetPosition.Normalize();
+        Move(MySpeed);        
 
         //UnderGround();
     }

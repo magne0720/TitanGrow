@@ -14,7 +14,7 @@ public class Castle : MonoBehaviour {
     //計測時間
    protected float SpawnTime;
     //出撃場所
-    protected Vector3 offsetPosition;
+    public   Vector3 offsetPosition;
     //出撃範囲
     protected float spawnRange;
 
@@ -28,7 +28,7 @@ public class Castle : MonoBehaviour {
         GameObject g;
         try
         {
-            g = Instantiate(Resources.Load("Models/" + temp, typeof(GameObject))) as GameObject;
+            g = Instantiate(Resources.Load("Prefabs/" + temp, typeof(GameObject))) as GameObject;
         }
         catch
         {
@@ -50,13 +50,13 @@ public class Castle : MonoBehaviour {
     public void Initialize(int hp,float fInterval,float fRange)
     {
         //オブジェクトの追加
-        ObjectManager.AddObject(gameObject);
+        //ObjectManager.AddObject(gameObject);
         tag = "Castle";
 
         CastleHp = hp;
         Interval = fInterval;
         spawnRange = fRange;
-        offsetPosition = transform.position;
+        offsetPosition = transform.position+transform.forward*50.0f;
     }
 
     // Use this for initialization

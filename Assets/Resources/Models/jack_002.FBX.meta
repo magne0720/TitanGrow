@@ -33,12 +33,37 @@ ModelImporter:
     4300004: SegRLeg_L
     4300006: SegRLeg_R
     9500000: //RootNode
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: jack_201
+    second: {fileID: 2100000, guid: f0d9c9b2e6b57ed428ef375db812fad3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: jack_202
+    second: {fileID: 2100000, guid: c9f32ff36132ee24695822150a7fe50f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: jack_203
+    second: {fileID: 2100000, guid: a135e2f8132ebcf4693137dcdc2dcb76, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: jack_204
+    second: {fileID: 2100000, guid: 6332b8c4de96e784bbfa8d80f7b93d6c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: jack_205
+    second: {fileID: 2100000, guid: 38ed63638e0479e458a6b90efdd1f680, type: 2}
   materials:
     importMaterials: 1
-    materialName: 0
+    materialName: 1
     materialSearch: 1
-    materialLocation: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -63,7 +88,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 3
     meshCompression: 0
     addColliders: 0
     importVisibility: 1

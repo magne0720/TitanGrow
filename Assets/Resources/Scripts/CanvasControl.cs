@@ -139,24 +139,25 @@ public class CanvasControl : MonoBehaviour
 
     public void ChangeText(int i)
     {
-        switch (i)
-        {
-            case 0:
-                text.text = "→Start  　Gallery  　Option";
-                break;
-            case 1:
-                text.text = "　Start  →Gallery  　Option";
-                break;
-            case 2:
-                text.text = "　Start  　Gallery  →Option";
-                break;
-            case 3:
-                text.text = "　Start  　Gallery  　Option";
-                break;
-            default:
-                text.text = "　Start  　Gallery  　Option";
-                break;
-        }
+        //switch (i)
+        //{
+        //    case 0:
+        //        text.text = "→Start  　Gallery  　Option";
+        //        break;
+        //    case 1:
+        //        text.text = "　Start  →Gallery  　Option";
+        //        break;
+        //    case 2:
+        //        text.text = "　Start  　Gallery  →Option";
+        //        break;
+        //    case 3:
+        //        text.text = "　Start  　Gallery  　Option";
+        //        break;
+        //    default:
+        //        text.text = "　Start  　Gallery  　Option";
+        //        break;
+        //}
+        text.text = "→”O”Button Start";
     }
 
     public void ChangeGallery(int i)

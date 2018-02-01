@@ -113,6 +113,7 @@ public class DataBaseManager : MonoBehaviour {
         return objNames;
     }
 
+    //初期リスポーン
     public static void SetUpStartData()
     {
         string temp = Resources.Load("Others/GameStartData", typeof(TextAsset)).ToString();
@@ -141,16 +142,16 @@ public class DataBaseManager : MonoBehaviour {
         }
         //オブジェクト生成
         player=Player.CreatePlayer(objNames[0],objPos[0]).GetComponent<Player>();
-        //ロボット城
-        GameObject g1 = RobotCastle.CreateRobotCastle(objNames[1], objPos[1]);
-        //人類城
-        GameObject g2 = HumanCastle.CreateHumanCastle(objNames[2], objPos[2]);
+        ////ロボット城
+        //GameObject g1 = RobotCastle.CreateRobotCastle(objNames[1], objPos[1]);
+        ////人類城
+        //GameObject g2 = HumanCastle.CreateHumanCastle(objNames[2], objPos[2]);
 
-        g1.transform.LookAt(g2.transform);
-        g2.transform.LookAt(g1.transform);
+        //g1.transform.LookAt(g2.transform);
+        //g2.transform.LookAt(g1.transform);
 
-        humanCastle = g1.GetComponent<Castle>();
-        robotCastle = g2.GetComponent<Castle>();
+        //humanCastle = g1.GetComponent<Castle>();
+        //robotCastle = g2.GetComponent<Castle>();
     }
 
     public static OBJECT GetEnemyNum(int num)
@@ -179,9 +180,9 @@ public class DataBaseManager : MonoBehaviour {
                 //敵の数
                 //敵の種類　ｘ　ｙ　Z    scale(記述なしで１)
                 enemy = GetObjectData(dataText[0]);
-                enemy.pos.x = float.Parse(dataText[1]);
+                enemy.pos.x = float.Parse(dataText[1])*10;
                 enemy.pos.y = float.Parse(dataText[2]);
-                enemy.pos.z = float.Parse(dataText[3]);
+                enemy.pos.z = float.Parse(dataText[3])*10;
                 if (dataText.Length >= 5)
                 {
                     //enemy.scale = float.Parse(dataText[4]);これではいけない
@@ -190,7 +191,7 @@ public class DataBaseManager : MonoBehaviour {
                     if(!float.TryParse(dataText[4],out enemy.scale))
                     {
                         //空白があったら大体スケールの変更はないので等倍
-                        enemy.scale = 1.0f;
+                        enemy.scale = 3.0f;
                     }
                 }
                 else
@@ -199,6 +200,7 @@ public class DataBaseManager : MonoBehaviour {
                 }
 
                 enemy.pos += offset;
+                Debug.Log(enemy.pos);
                 CreateObjectType(enemy);
             }
     }

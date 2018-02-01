@@ -30,7 +30,9 @@ public class RobotCastle : Castle {
     }
     // Use this for initialization
     void Start () {
-        Initialize(1000,15.0f,20.0f);
+        Initialize(2000,12.0f,20.0f);
+        offsetPosition = new Vector3(100,0,0)+transform.position;
+
 	}
 	
 	// Update is called once per frame
@@ -48,31 +50,35 @@ public class RobotCastle : Castle {
         switch (iRandNum)
         {
             case 0:
-                Debug.Log("縦列");
+                //Debug.Log("縦列");
                 DataBaseManager.SpawnWave("EnemyColumn", offsetPosition);
                 break;
             case 1:
-                Debug.Log("部隊");
+               // Debug.Log("部隊");
                 DataBaseManager.SpawnWave("EnemyUnit", offsetPosition);
                 break;
             case 2:
-                Debug.Log("小隊");
+                //Debug.Log("小隊");
                 DataBaseManager.SpawnWave("EnemyPlatoon", offsetPosition);
                 break;
             case 3:
-                Debug.Log("V字");
+               // Debug.Log("V字");
                 DataBaseManager.SpawnWave("EnemyV", offsetPosition);
                 break;
         }
 
         if (CastleHp <= 80)
         {
-            Debug.Log("M");
+           // Debug.Log("M");
             DataBaseManager.SpawnWave("EnemyM", offsetPosition);
         }
 
         SpawnTime = 0;
         GoSortie = false;
 
+    }
+    void OnCollisionEnter(Collision c)
+    {
+        CastleHp--;
     }
 }

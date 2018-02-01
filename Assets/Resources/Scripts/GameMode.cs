@@ -22,7 +22,7 @@ public class GameMode : MonoBehaviour {
     {
         TITLE=0,GAME, GALLERY, OPTION,NUM
     };
-    MODE mode;
+    public MODE mode;
     int titleselect, galleryselect;
     float selectGravity;
     bool isArrowed;
@@ -33,6 +33,10 @@ public class GameMode : MonoBehaviour {
     public CanvasControl canvas;
     public Camera miniCam;
     public MiniMap miniMap;
+    public StageCreator stage;
+
+    public HumanCastle humCastle;
+    public RobotCastle robCastle;
 
     const float playerspeed = 4.5f;
     // Use this for initialization
@@ -56,22 +60,25 @@ public class GameMode : MonoBehaviour {
             controller = CO.gameObject.AddComponent<Controller>();
             controller.SetCamera(cam.GetComponent<CameraControl>());
         }
+        if (stage == null)
+        {
+            stage = FindObjectOfType<StageCreator>();
+        }
 
         ObjectManager.StartUpData();
         DataBaseManager.SetUpObjectData();
-        StageCreator.Initialize();
+        stage.Initialize();
         ObjectInstance();
         //GrowPlant.CreateGrowPlant("nat_001",new Vector3(),5);
+
+        //Sound
+
+
     }
 
     // Update is called once per frame
     void Update () {
         Game();
-
-        if (Input.GetKey(KeyCode.N))
-        {
-            Human.CreateHuman(DataBaseManager.GetObjectData("hum_001"));
-        }
 	}
 
     void Game()
@@ -83,10 +90,16 @@ public class GameMode : MonoBehaviour {
                 DispTitle();
                 break;
             case MODE.GAME:
-                if (Input.GetKeyDown(KeyCode.Space)||Input.GetButtonDown("circle"))
+                if (Input.GetKeyDown(KeyCode.Space))
                 {
-                        GameEnd();
                         canvas.FadeOut();
+                        GameEnd();
+                    return;
+                }
+                if (robCastle.CastleHp < 0||humCastle.CastleHp<0)
+                {
+                    GameEnd();
+                    canvas.FadeOut();
                 }
                 break;
             case MODE.GALLERY:
@@ -161,21 +174,23 @@ public class GameMode : MonoBehaviour {
         {
             if (mode == MODE.TITLE)
             {
-                switch (titleselect)
-                {
-                    case 0:
-                        canvas.FadeIn();
-                        StartUp();
-                        break;
-                    case 1:
-                        canvas.HideImage();
-                        GalleryStart();
-                        break;
-                    case 2:
-                        break;
-                    default:
-                        break;
-                }
+                canvas.FadeIn();
+                StartUp();
+                //switch (titleselect)
+                //{
+                //    case 0:
+                //        canvas.FadeIn();
+                //        StartUp();
+                //        break;
+                //    case 1:
+                //        canvas.HideImage();
+                //        GalleryStart();
+                //        break;
+                //    case 2:
+                //        break;
+                //    default:
+                //        break;
+                //}
             }
         }
     }
@@ -233,14 +248,26 @@ public class GameMode : MonoBehaviour {
         //５．オブジェクト追加
         //CastleInstance();//使用しない
 
+        if (robCastle == null)
+        {
+            robCastle = FindObjectOfType<RobotCastle>();
+            robCastle.Initialize(2000, 15.0f, 20.0f);
+        }
+        if (humCastle == null)
+        {
+            humCastle = FindObjectOfType<HumanCastle>();
+            humCastle.Initialize(1000, 50.0f, 30.0f);
+        }
         ObjectInstance();
 
-        //ミニマップ
-        GameObject mini = new GameObject();
-        miniCam = mini.AddComponent<Camera>();
-        miniMap = mini.gameObject.AddComponent<MiniMap>();
-        miniMap.Initialize(player,miniCam);
-
+        ////ミニマップ
+        //if (miniCam == null || miniMap == null)
+        //{
+        //    GameObject mini = new GameObject();
+        //    miniCam = mini.AddComponent<Camera>();
+        //    miniMap = mini.gameObject.AddComponent<MiniMap>();
+        //    miniMap.Initialize(player, miniCam);
+        //}
         //６．ゲーム開始
         GameStart();
     }
@@ -260,6 +287,7 @@ public class GameMode : MonoBehaviour {
         controller.SetControll(false);
         ObjectManager.AllClear();
         ObjectInstance();
+        cam.GetComponent<ChangeShader>().StartShader(-1);
     }
 
     void GameStop()
@@ -283,6 +311,6 @@ public class GameMode : MonoBehaviour {
 
     void ObjectInstance()
     {
-        StageCreator.StartUp();
+        stage.StartUp();
     }
 }

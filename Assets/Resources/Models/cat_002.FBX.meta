@@ -1625,10 +1625,95 @@ ModelImporter:
     4300636: HM_wall4
     4300638: HM_wall1
     9500000: //RootNode
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 05 - Default
+    second: {fileID: 2100000, guid: 76f6c8af04adff043a2f3b6cf669a24c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CastleRoof
+    second: {fileID: 2100000, guid: b86d5505f7a73064f80b469816a90059, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CastleWall
+    second: {fileID: 2100000, guid: 8963f607d8e3ef8498d191086587dff8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Church_B
+    second: {fileID: 2100000, guid: 5e77bd1004177c74cbd0474532369816, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Church_W
+    second: {fileID: 2100000, guid: 3a237f7c695137a468cf6a3319f33a84, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ground
+    second: {fileID: 2100000, guid: 9550ef149df27d84d85cd500354dee72, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: HouseRoof_1
+    second: {fileID: 2100000, guid: 2cd28c04727f2fc4f8e77a0a186e18e1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: HouseRoof_2
+    second: {fileID: 2100000, guid: 4d58e5ae3d99cd9459720709f3fd1a7c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: HouseWall
+    second: {fileID: 2100000, guid: 570436b1141fa504b92297d78c92a565, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #147'
+    second: {fileID: 2100000, guid: 03579caf0bcfa084892735e567dc2657, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #204'
+    second: {fileID: 2100000, guid: 8f86878441006184a8cc5cd177c29cba, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #568'
+    second: {fileID: 2100000, guid: be1413e363c9ba84d952b0c84f56af1b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wall
+    second: {fileID: 2100000, guid: be81ee3b3167cb846b4eac408bb2be1e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WellRoof
+    second: {fileID: 2100000, guid: 58f3c7450f27bd3419b8009630f3c3d9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Well_1
+    second: {fileID: 2100000, guid: c900a66ea69e97e48a7db6d95557e01b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Well_2
+    second: {fileID: 2100000, guid: 29b11c2fab4331f48bc3c3196aec0454, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Well_3
+    second: {fileID: 2100000, guid: b2488ebc81b271244975e4783b315cfb, type: 2}
   materials:
     importMaterials: 1
-    materialName: 0
+    materialName: 1
     materialSearch: 1
     materialLocation: 1
   animations:

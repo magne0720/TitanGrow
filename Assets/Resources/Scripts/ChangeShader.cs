@@ -27,17 +27,14 @@ public class ChangeShader : MonoBehaviour
     void Update()
     {
 
-        if (timer > 1.0f)
-        {
-            StopShader();
-        }
-        if (timer < 0)
-        {
-            StopShader();
-        }
-
         if (isActive)
             timer += Time.deltaTime * activeMode;
+
+        if (timer > 1.0f||timer<0)
+        {
+            StopShader();
+        }
+     
         //(x2+y2-1)3=x2y3
 
         float x = Mathf.Cos(timer * Mathf.PI * 2.0f);
@@ -58,8 +55,6 @@ public class ChangeShader : MonoBehaviour
     }
     public void StartShader(int mode)
     {
-        if (isActive) return;
-
         isActive = true;
         if (mode > 0)
         {

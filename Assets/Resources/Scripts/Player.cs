@@ -12,7 +12,7 @@ public class Player : BaseCharacter
     private int FoodPoint;                                       //食ったものポイント 
     private float CastAwaySpeed = 1250.0f;                   //投げた時のスピード
     private float GrowTime = 0.0f;                                //成長が止まっている時間
-    private Vector3 GrowRate = new Vector3(0.001f, 0.001f, 0.001f);  //大きさの倍率
+    public Vector3 GrowRate = new Vector3(0.01f, 0.01f, 0.01f);  //大きさの倍率
 
     private float actiontimer = 0;//待機モーションフラグ
 
@@ -20,6 +20,8 @@ public class Player : BaseCharacter
     private const float TIME_ACTION_THROW_IN = 1.0f;
     private const float TIME_ACTION_THROW_OUT = 1.0f;
     private const float TIME_ACTION_EAT = 1.0f;
+
+    public GameObject armPos;
 
     public static GameObject CreatePlayer(string path,Vector3 pos=new Vector3())
     {
@@ -48,12 +50,14 @@ public class Player : BaseCharacter
         catchObjects = new List<GameObject>();
         SetStatus(STATUS.WAIT);
         actiontimer = 0;
+        FoodPoint = 0;
         Initialize();
         //GetComponent<Rigidbody>().freezeRotation = true;
         transform.name = "Player";
         transform.tag = "Player";
         anim.runtimeAnimatorController =
             Resources.Load("Models/bigmen", typeof(RuntimeAnimatorController)) as RuntimeAnimatorController;
+
 
         gameObject.layer = 8;
 
@@ -66,18 +70,14 @@ public class Player : BaseCharacter
         }
         catch { }
 
-
-        transform.localScale /= 100.0f;
+        //右手の位置を取得
+        armPos = GameObject.Find("Tit_armL");
+        
     }
 
     // Update is called once per frame
     override public void Update()
     {
-        //Debug
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            AddForce(new Vector3(0, 100, 100),1.0f);
-        }
 
         searchTimer += Time.deltaTime;
         if (searchTimer >= 0.1f)
@@ -87,7 +87,6 @@ public class Player : BaseCharacter
         }
         if (HP < 0)
         {
-            Debug.Log("DEATH");
             SetStatus(STATUS.DEATH);
         }
         actiontimer += Time.deltaTime;
@@ -98,7 +97,12 @@ public class Player : BaseCharacter
                 actiontimer = 0;
                 break;
             case STATUS.WALK:
-                actiontimer = 0;
+                if (actiontimer > 0.8f)
+                {
+                    actiontimer = 0;
+                    AC.clip = Resources.Load("Sounds/step_1") as AudioClip;
+                    AC.Play();
+                }
                 break;
             case STATUS.DEATH:
                 if (actiontimer > 5.0f)
@@ -151,18 +155,23 @@ public class Player : BaseCharacter
         //    }
         //}
         //MyPosition = transform.position;
+        
         //成長の制御
         Grow(FoodPoint);
 
         if (myStatus == STATUS.WAIT || myStatus == STATUS.WALK)
+        {
             Move(MySpeed);
 
+        }
         if (Math.Length(TargetPosition) >= 0.01f)
         {
+            SetStatus(STATUS.WALK);
             anim.SetFloat("walk", 1.0f);
         }
         else
         {
+            SetStatus(STATUS.WAIT);
             anim.SetFloat("walk", 0.0f);
         }
 
@@ -172,13 +181,19 @@ public class Player : BaseCharacter
         //}
         //SetMass(transform.localScale.magnitude);
         //UnderGround();
+
+        //持っているものの位置
         if (catchObjects.Count > 0)
         {
             foreach (GameObject g in catchObjects)
             {
-                //g.GetComponent<Rigidbody>().isKinematic = false;
-                g.transform.position = transform.forward * transform.localScale.z + transform.position+new Vector3(0,10,3);
-            }
+                try
+                {
+                    //g.GetComponent<Rigidbody>().isKinematic = false;
+                    g.transform.position = armPos.transform.position;
+                }
+                catch { }
+                }
         }
     }
 
@@ -205,11 +220,14 @@ public class Player : BaseCharacter
         //g.transform.parent = this.transform;
         //子のあたり判定を消す
         //g.GetComponent<Collider>().enabled = false;
+
+
+        AC.clip = Resources.Load("Sounds/pick") as AudioClip;
+        AC.Play();
     }
     //つかむ
     public void Catch(List<GameObject> objs)
     {
-
         catchObjects.Clear();
         //つかんだもの情報
         if (objs.Count > 0)
@@ -233,6 +251,8 @@ public class Player : BaseCharacter
                     }
             }
         }
+        AC.clip = Resources.Load("Sounds/pick") as AudioClip;
+        AC.Play();
     }
 
     //投げる
@@ -254,6 +274,9 @@ public class Player : BaseCharacter
         // アニメーターで動かす
         anim.SetTrigger("castaway");
 
+
+        AC.clip = Resources.Load("Sounds/throw") as AudioClip;
+        AC.Play();
     }
 
     //離す
@@ -272,6 +295,9 @@ public class Player : BaseCharacter
         catchObjects.Clear();
         // アニメーターで動かす
         anim.SetTrigger("release");
+
+        AC.clip = Resources.Load("Sounds/put") as AudioClip;
+        AC.Play();
     }
 
     //食べる
@@ -299,6 +325,10 @@ public class Player : BaseCharacter
         catchObjects.Clear();
         // アニメーターで動かす
         anim.SetTrigger("eat");
+
+
+        AC.clip = Resources.Load("Sounds/explosion") as AudioClip;
+        AC.Play();
     }
 
     //食べた時のポイントを追加する
@@ -317,7 +347,7 @@ public class Player : BaseCharacter
                 GrowTime = 0;
                 FoodPoint--;
             }
-            return;
+            //return;
         }
         else
         {

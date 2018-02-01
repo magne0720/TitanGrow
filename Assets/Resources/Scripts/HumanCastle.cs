@@ -29,7 +29,7 @@ public class HumanCastle : Castle {
     }
     // Use this for initialization
     void Start () {
-        Initialize(100,50.0f,30);
+        Initialize(1000,20.0f,30);
 
 
 	}
@@ -74,5 +74,9 @@ public class HumanCastle : Castle {
                 CreatePositions[count] = new Vector3(x, y, z);
                 count++;
             }
+    }
+    void OnCollisionEnter(Collision c)
+    {
+        CastleHp--;
     }
 }

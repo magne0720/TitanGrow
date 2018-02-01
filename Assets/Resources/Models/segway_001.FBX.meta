@@ -42,12 +42,32 @@ ModelImporter:
     4300008: SegRLeg_R
     4300010: SegB
     9500000: //RootNode
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Seg_001
+    second: {fileID: 2100000, guid: e435703c49c26da43b0df6681b6cc437, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Seg_002
+    second: {fileID: 2100000, guid: c5ca62ea1be0e964db6dd9fdaad7f9a0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Seg_003
+    second: {fileID: 2100000, guid: 99886d0d15e39d0438f2ce696d708286, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Seg_004
+    second: {fileID: 2100000, guid: fc00913dfea90264c94fe2419f0643cb, type: 2}
   materials:
     importMaterials: 1
-    materialName: 0
+    materialName: 1
     materialSearch: 1
-    materialLocation: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -72,7 +92,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 3
     meshCompression: 0
     addColliders: 0
     importVisibility: 1

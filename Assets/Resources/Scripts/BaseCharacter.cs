@@ -14,6 +14,7 @@ public class BaseCharacter : EatBase
     protected float searchRange = 0;//サーチ範囲
     protected bool isFowardHit;
     protected List<GameObject> SearchObjects;
+    protected AudioSource AC;
     public enum STATUS
     {
         WAIT = 0, WALK, DEATH, CATCH, THROW_IN,THROW_OUT, EAT,FIND
@@ -39,12 +40,14 @@ public class BaseCharacter : EatBase
         g.transform.position = pos;
 
         g.gameObject.layer = 8;
+        
 
         return g;
     }
     public override void Initialize()
     {
         anim = GetComponent<Animator>();
+        //anim.updateMode = AnimatorUpdateMode.AnimatePhysics;
         anim.applyRootMotion = true;
 
         gameObject.AddComponent<Rigidbody>().freezeRotation=true;
@@ -82,6 +85,12 @@ public class BaseCharacter : EatBase
         //オブジェクトの追加
         ObjectManager.AddObject(gameObject);
 
+        if (gameObject.GetComponent<AudioSource>() == null)
+        {
+
+            AC = gameObject.AddComponent<AudioSource>();
+
+        }
     }
     public void Initialize(Vector3 pos, float speed)
     {
@@ -105,6 +114,8 @@ public class BaseCharacter : EatBase
 
     public void Move()
     {
+        AC.clip = Resources.Load("Sounds/step_1") as AudioClip;
+        AC.Play();
         if (transform.parent != null)
         {
             return;
@@ -302,7 +313,7 @@ public class BaseCharacter : EatBase
                             isFowardHit = true;
                         }
                         //扇形に見る
-                        if (Math.OnDirectionFan(MyPosition,MyDirection, g.transform.position,searchRange))
+                        if (Math.OnDirectionFan(transform.position,MyDirection, g.transform.position,searchRange))
                         {
                             objs.Add(g);
                         }
@@ -311,9 +322,9 @@ public class BaseCharacter : EatBase
             }
         }
         SearchObjects = objs;
-        Debug.DrawRay(MyPosition, MyDirection * searchHeight, Color.red, 1.0f);
-        Debug.DrawRay(MyPosition, Math.getDirectionDegree(MyDirection, searchRange,searchHeight), Color.green, 1.0f);
-        Debug.DrawRay(MyPosition, Math.getDirectionDegree(MyDirection, -searchRange,searchHeight), Color.green, 1.0f);
+        Debug.DrawRay(transform.position, MyDirection * searchHeight, Color.red, 1.0f);
+        Debug.DrawRay(transform.position, Math.getDirectionDegree(MyDirection, searchRange,searchHeight), Color.green, 1.0f);
+        Debug.DrawRay(transform.position, Math.getDirectionDegree(MyDirection, -searchRange,searchHeight), Color.green, 1.0f);
         return objs;
     }
 
