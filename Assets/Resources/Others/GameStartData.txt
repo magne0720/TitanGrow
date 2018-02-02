@@ -1,6 +1,6 @@
 ﻿#ゲームを始めたときに配置されるプレイヤー・城の位置
 #player
-Titan 0 0 0 
+bigmen 0 0 0 
 #castle1
 cat_001 -650 0 0
 #castle2

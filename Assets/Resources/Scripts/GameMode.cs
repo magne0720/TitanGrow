@@ -96,11 +96,11 @@ public class GameMode : MonoBehaviour {
                         GameEnd();
                     return;
                 }
-                if (robCastle.CastleHp < 0||humCastle.CastleHp<0)
-                {
-                    GameEnd();
-                    canvas.FadeOut();
-                }
+                //if (robCastle.CastleHp < 0||humCastle.CastleHp<0)
+                //{
+                //    GameEnd();
+                //    canvas.FadeOut();
+                //}
                 break;
             case MODE.GALLERY:
                 GallerySelectInput();

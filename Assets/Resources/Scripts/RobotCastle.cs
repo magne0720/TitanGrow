@@ -30,7 +30,7 @@ public class RobotCastle : Castle {
     }
     // Use this for initialization
     void Start () {
-        Initialize(2000,12.0f,20.0f);
+        Initialize(30,12.0f,20.0f);
         offsetPosition = new Vector3(100,0,0)+transform.position;
 
 	}

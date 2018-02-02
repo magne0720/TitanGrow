@@ -35,7 +35,7 @@ public class Player : BaseCharacter
         catch
         {
             //オブジェクトパスが見つからない場合
-            g = Instantiate(Resources.Load("Models/DummyPre", typeof(GameObject))) as GameObject;
+            g = Instantiate(Resources.Load("Models/OUT_BOX", typeof(GameObject))) as GameObject;
             Debug.Log("Object Null");
         }
         g.AddComponent<Player>();
@@ -57,7 +57,8 @@ public class Player : BaseCharacter
         transform.tag = "Player";
         anim.runtimeAnimatorController =
             Resources.Load("Models/bigmen", typeof(RuntimeAnimatorController)) as RuntimeAnimatorController;
-
+        //anim.avatar =
+        //    Resources.Load("Models/bigmenavater", typeof(Avatar))as Avatar;
 
         gameObject.layer = 8;
 
@@ -71,13 +72,24 @@ public class Player : BaseCharacter
         catch { }
 
         //右手の位置を取得
-        armPos = GameObject.Find("Tit_armL");
-        
+        armPos = GameObject.Find("Bone006");
+
+        catchObjects = new List<GameObject>();
+
     }
 
     // Update is called once per frame
     override public void Update()
     {
+        Debug.Log("armpoint"+armPos.transform.position);
+        //持っているものの位置
+            for(int i=0;i<catchObjects.Count;i++)
+            {
+                //g.GetComponent<Rigidbody>().isKinematic = false;
+                catchObjects[i].transform.position = armPos.transform.position+transform.position+transform.forward*10;
+
+                Debug.Log(i);
+            }
 
         searchTimer += Time.deltaTime;
         if (searchTimer >= 0.1f)
@@ -182,23 +194,13 @@ public class Player : BaseCharacter
         //SetMass(transform.localScale.magnitude);
         //UnderGround();
 
-        //持っているものの位置
-        if (catchObjects.Count > 0)
-        {
-            foreach (GameObject g in catchObjects)
-            {
-                try
-                {
-                    //g.GetComponent<Rigidbody>().isKinematic = false;
-                    g.transform.position = armPos.transform.position;
-                }
-                catch { }
-                }
-        }
+     
     }
 
     public void CatchAction()
     {
+        if (catchObjects == null) return;
+
         if (catchObjects.Count > 0)
         {
                 CastAway();          
@@ -228,6 +230,8 @@ public class Player : BaseCharacter
     //つかむ
     public void Catch(List<GameObject> objs)
     {
+        if (objs == null) return;
+
         catchObjects.Clear();
         //つかんだもの情報
         if (objs.Count > 0)

@@ -29,7 +29,7 @@ public class HumanCastle : Castle {
     }
     // Use this for initialization
     void Start () {
-        Initialize(1000,20.0f,30);
+        Initialize(20,20.0f,30);
 
 
 	}
