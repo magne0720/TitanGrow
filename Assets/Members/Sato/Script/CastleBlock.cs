@@ -14,11 +14,12 @@ public class CastleBlock : MonoBehaviour {
     //壁破壊のトリガー
     bool wall;
 
+    float time=5.7f;
+
 
 
     // Use this for initialization
     void Start () {
-
 
         wall = false;
 
@@ -28,6 +29,12 @@ public class CastleBlock : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+        time = time -= Time.deltaTime;
+        if (time <= 0)
+        {
+            Break();
+        }
 
         //CastleBlockHpが0のとき部位破壊
         if (CastleBlockHp <= 0) {
@@ -69,7 +76,7 @@ public class CastleBlock : MonoBehaviour {
        rb.useGravity = true;
         rb.AddExplosionForce(force, new Vector3(x, y, z), 0.0f);
        // Destroy(part.gameObject, 5f);
-        Destroy(this.gameObject,1.5f);
+        Destroy(this.gameObject,13.5f);
     }
     void OnTriggerEnter(Collider collider)
     {
