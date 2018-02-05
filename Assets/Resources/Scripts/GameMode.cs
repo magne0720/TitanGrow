@@ -96,11 +96,11 @@ public class GameMode : MonoBehaviour {
                         GameEnd();
                     return;
                 }
-                //if (robCastle.CastleHp < 0||humCastle.CastleHp<0)
-                //{
-                //    GameEnd();
-                //    canvas.FadeOut();
-                //}
+                if (robCastle.CastleHp < 0 || humCastle.CastleHp < 0)
+                {
+                    GameEnd();
+                    canvas.FadeOut();
+                }
                 break;
             case MODE.GALLERY:
                 GallerySelectInput();
@@ -251,13 +251,13 @@ public class GameMode : MonoBehaviour {
         if (robCastle == null)
         {
             robCastle = FindObjectOfType<RobotCastle>();
-            robCastle.Initialize(2000, 15.0f, 20.0f);
         }
+            robCastle.Initialize(100, 15.0f, 30.0f);
         if (humCastle == null)
         {
             humCastle = FindObjectOfType<HumanCastle>();
-            humCastle.Initialize(1000, 50.0f, 30.0f);
         }
+            humCastle.Initialize(60, 30.0f, 30.0f);
         ObjectInstance();
 
         ////ミニマップ

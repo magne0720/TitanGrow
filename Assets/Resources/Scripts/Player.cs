@@ -19,7 +19,7 @@ public class Player : BaseCharacter
     private const float TIME_ACTION_CATCH = 1.0f;
     private const float TIME_ACTION_THROW_IN = 1.0f;
     private const float TIME_ACTION_THROW_OUT = 1.0f;
-    private const float TIME_ACTION_EAT = 1.0f;
+    private const float TIME_ACTION_EAT = 2.0f;
 
     public GameObject armPos;
 
@@ -52,7 +52,7 @@ public class Player : BaseCharacter
         actiontimer = 0;
         FoodPoint = 0;
         Initialize();
-        //GetComponent<Rigidbody>().freezeRotation = true;
+
         transform.name = "Player";
         transform.tag = "Player";
         anim.runtimeAnimatorController =
@@ -72,9 +72,10 @@ public class Player : BaseCharacter
         catch { }
 
         //右手の位置を取得
-        armPos = GameObject.Find("Bone006");
+        armPos = GameObject.Find("Bone005");
 
-        catchObjects = new List<GameObject>();
+        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
+        GetComponent<Rigidbody>().freezeRotation = true; ;
 
     }
 
@@ -85,10 +86,11 @@ public class Player : BaseCharacter
         //持っているものの位置
             for(int i=0;i<catchObjects.Count;i++)
             {
-                //g.GetComponent<Rigidbody>().isKinematic = false;
-                catchObjects[i].transform.position = armPos.transform.position+transform.position+transform.forward*10;
+            //g.GetComponent<Rigidbody>().isKinematic = false;
+            //catchObjects[i].transform.position = armPos.transform.position+transform.position+transform.forward*10;
+            catchObjects[i].transform.position = transform.position+transform.forward*transform.localScale.z*1.5f;
 
-                Debug.Log(i);
+            //Debug.Log(i);
             }
 
         searchTimer += Time.deltaTime;
@@ -320,6 +322,7 @@ public class Player : BaseCharacter
         {
             //ポイントを得る処理
             EatPoint(g.GetComponent<EatBase>());
+            EatPoint(1);
 
             //食べたものを消す処理
             ObjectManager.removeObject(g);
@@ -339,6 +342,10 @@ public class Player : BaseCharacter
     public void EatPoint(EatBase e)
     {
         FoodPoint += e.GetEatPoint();
+    }
+    public void EatPoint(int e)
+    {
+        FoodPoint += e;
     }
     //自身の成長
     public void Grow(int point)

@@ -21,6 +21,9 @@ public class Castle : MonoBehaviour {
     //兵士出撃のトリガー
     public bool GoSortie;
 
+    public GameObject enmPos;
+    public GameObject exp;
+
     public  static GameObject CreateCastle(string path, Vector3 pos = new Vector3())
     {
         //Debug.Log(path + "," + pos.z);

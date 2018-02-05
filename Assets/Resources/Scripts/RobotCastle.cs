@@ -75,10 +75,18 @@ public class RobotCastle : Castle {
 
         SpawnTime = 0;
         GoSortie = false;
-
+        CastleHp += 10;
     }
     void OnCollisionEnter(Collision c)
     {
+        Vector3 move = c.transform.position - transform.position;
+        if (c.gameObject.GetComponent<EatBase>() != null)
+        {
+            c.gameObject.GetComponent<EatBase>().AddForce(move,20.0f);
+        }
+
         CastleHp--;
+        Instantiate(exp, c.transform);
+        
     }
 }

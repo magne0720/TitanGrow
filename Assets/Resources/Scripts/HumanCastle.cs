@@ -40,6 +40,7 @@ public class HumanCastle : Castle {
         if (SpawnTime >= Interval)
         {
             Spawn();
+            CastleHp *= 3;
             SpawnTime = 0;
         }
 	}
@@ -78,5 +79,6 @@ public class HumanCastle : Castle {
     void OnCollisionEnter(Collision c)
     {
         CastleHp--;
+        Instantiate(exp, this.transform);
     }
 }

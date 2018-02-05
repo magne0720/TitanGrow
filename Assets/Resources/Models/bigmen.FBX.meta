@@ -117,7 +117,27 @@ ModelImporter:
     13700010: Tit_clo003
     13700012: Tit_legR001
     13700014: Tit_legR002
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #49'
+    second: {fileID: 2100000, guid: 9aaae961d6f24994a99dfb5f7d72e819, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #50'
+    second: {fileID: 2100000, guid: 4f649df1bdc26ca458b8f72fc0831656, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #51'
+    second: {fileID: 2100000, guid: 99fb044724a42a643932dbfaf5f8b486, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #52'
+    second: {fileID: 2100000, guid: b9afa44f1afb2184eabac49d70794226, type: 2}
   materials:
     importMaterials: 1
     materialName: 1
@@ -168,8 +188,92 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events: []
-      transformMask: []
-      maskType: 3
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Dummy001
+        weight: 1
+      - path: Dummy001/Bone023
+        weight: 1
+      - path: Dummy001/Bone023/Bone024
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/Bone027
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/Bone027/Bone028
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/Bone027/Bone029
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/Bone027/Bone029/Bone030
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/Bone027/Bone031
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/Bone027/Bone031/Bone032
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/LeftArm1
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/LeftArm1/Bone008
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/LeftArm1/Bone008/Bone009
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/LeftArm1/Bone008/Bone009/Bone010
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/LeftArm1/Bone008/Bone009/Bone010/Bone011
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/LeftArm1/Bone008/Bone009/Bone010/Bone011/Bone012
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/RightArm1
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/RightArm1/Bone002
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/RightArm1/Bone002/Bone003
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/RightArm1/Bone002/Bone003/Bone004
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/RightArm1/Bone002/Bone003/Bone004/Bone005
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/RightArm1/Bone002/Bone003/Bone004/Bone005/Bone006
+        weight: 1
+      - path: Dummy001/Bone023/LeftReg1
+        weight: 1
+      - path: Dummy001/Bone023/LeftReg1/Bone019
+        weight: 1
+      - path: Dummy001/Bone023/LeftReg1/Bone019/Bone020
+        weight: 1
+      - path: Dummy001/Bone023/LeftReg1/Bone019/Bone020/Bone021
+        weight: 1
+      - path: Dummy001/Bone023/LeftReg1/Bone019/Bone020/Bone021/Bone022
+        weight: 1
+      - path: Dummy001/Bone023/RightReg1
+        weight: 1
+      - path: Dummy001/Bone023/RightReg1/Bone014
+        weight: 1
+      - path: Dummy001/Bone023/RightReg1/Bone014/Bone015
+        weight: 1
+      - path: Dummy001/Bone023/RightReg1/Bone014/Bone015/Bone016
+        weight: 1
+      - path: Dummy001/Bone023/RightReg1/Bone014/Bone015/Bone016/Bone017
+        weight: 1
+      - path: Dummy001/Tit_armR
+        weight: 1
+      - path: Dummy001/Tit_armR001
+        weight: 1
+      - path: Dummy001/Tit_body
+        weight: 1
+      - path: Dummy001/Tit_clo001
+        weight: 1
+      - path: Dummy001/Tit_clo001/Tit_clo002
+        weight: 1
+      - path: Dummy001/Tit_clo001/Tit_clo002/Tit_clo003
+        weight: 1
+      - path: Dummy001/Tit_legR001
+        weight: 1
+      - path: Dummy001/Tit_legR002
+        weight: 1
+      maskType: 0
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
@@ -196,8 +300,92 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events: []
-      transformMask: []
-      maskType: 3
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Dummy001
+        weight: 1
+      - path: Dummy001/Bone023
+        weight: 1
+      - path: Dummy001/Bone023/Bone024
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/Bone027
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/Bone027/Bone028
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/Bone027/Bone029
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/Bone027/Bone029/Bone030
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/Bone027/Bone031
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/Bone027/Bone031/Bone032
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/LeftArm1
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/LeftArm1/Bone008
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/LeftArm1/Bone008/Bone009
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/LeftArm1/Bone008/Bone009/Bone010
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/LeftArm1/Bone008/Bone009/Bone010/Bone011
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/LeftArm1/Bone008/Bone009/Bone010/Bone011/Bone012
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/RightArm1
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/RightArm1/Bone002
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/RightArm1/Bone002/Bone003
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/RightArm1/Bone002/Bone003/Bone004
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/RightArm1/Bone002/Bone003/Bone004/Bone005
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/RightArm1/Bone002/Bone003/Bone004/Bone005/Bone006
+        weight: 1
+      - path: Dummy001/Bone023/LeftReg1
+        weight: 1
+      - path: Dummy001/Bone023/LeftReg1/Bone019
+        weight: 1
+      - path: Dummy001/Bone023/LeftReg1/Bone019/Bone020
+        weight: 1
+      - path: Dummy001/Bone023/LeftReg1/Bone019/Bone020/Bone021
+        weight: 1
+      - path: Dummy001/Bone023/LeftReg1/Bone019/Bone020/Bone021/Bone022
+        weight: 1
+      - path: Dummy001/Bone023/RightReg1
+        weight: 1
+      - path: Dummy001/Bone023/RightReg1/Bone014
+        weight: 1
+      - path: Dummy001/Bone023/RightReg1/Bone014/Bone015
+        weight: 1
+      - path: Dummy001/Bone023/RightReg1/Bone014/Bone015/Bone016
+        weight: 1
+      - path: Dummy001/Bone023/RightReg1/Bone014/Bone015/Bone016/Bone017
+        weight: 1
+      - path: Dummy001/Tit_armR
+        weight: 1
+      - path: Dummy001/Tit_armR001
+        weight: 1
+      - path: Dummy001/Tit_body
+        weight: 1
+      - path: Dummy001/Tit_clo001
+        weight: 1
+      - path: Dummy001/Tit_clo001/Tit_clo002
+        weight: 1
+      - path: Dummy001/Tit_clo001/Tit_clo002/Tit_clo003
+        weight: 1
+      - path: Dummy001/Tit_legR001
+        weight: 1
+      - path: Dummy001/Tit_legR002
+        weight: 1
+      maskType: 0
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
@@ -308,8 +496,92 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events: []
-      transformMask: []
-      maskType: 3
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Dummy001
+        weight: 1
+      - path: Dummy001/Bone023
+        weight: 1
+      - path: Dummy001/Bone023/Bone024
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/Bone027
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/Bone027/Bone028
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/Bone027/Bone029
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/Bone027/Bone029/Bone030
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/Bone027/Bone031
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/Bone027/Bone031/Bone032
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/LeftArm1
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/LeftArm1/Bone008
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/LeftArm1/Bone008/Bone009
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/LeftArm1/Bone008/Bone009/Bone010
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/LeftArm1/Bone008/Bone009/Bone010/Bone011
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/LeftArm1/Bone008/Bone009/Bone010/Bone011/Bone012
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/RightArm1
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/RightArm1/Bone002
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/RightArm1/Bone002/Bone003
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/RightArm1/Bone002/Bone003/Bone004
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/RightArm1/Bone002/Bone003/Bone004/Bone005
+        weight: 1
+      - path: Dummy001/Bone023/Bone024/Bone025/Bone026/RightArm1/Bone002/Bone003/Bone004/Bone005/Bone006
+        weight: 1
+      - path: Dummy001/Bone023/LeftReg1
+        weight: 1
+      - path: Dummy001/Bone023/LeftReg1/Bone019
+        weight: 1
+      - path: Dummy001/Bone023/LeftReg1/Bone019/Bone020
+        weight: 1
+      - path: Dummy001/Bone023/LeftReg1/Bone019/Bone020/Bone021
+        weight: 1
+      - path: Dummy001/Bone023/LeftReg1/Bone019/Bone020/Bone021/Bone022
+        weight: 1
+      - path: Dummy001/Bone023/RightReg1
+        weight: 1
+      - path: Dummy001/Bone023/RightReg1/Bone014
+        weight: 1
+      - path: Dummy001/Bone023/RightReg1/Bone014/Bone015
+        weight: 1
+      - path: Dummy001/Bone023/RightReg1/Bone014/Bone015/Bone016
+        weight: 1
+      - path: Dummy001/Bone023/RightReg1/Bone014/Bone015/Bone016/Bone017
+        weight: 1
+      - path: Dummy001/Tit_armR
+        weight: 1
+      - path: Dummy001/Tit_armR001
+        weight: 1
+      - path: Dummy001/Tit_body
+        weight: 1
+      - path: Dummy001/Tit_clo001
+        weight: 1
+      - path: Dummy001/Tit_clo001/Tit_clo002
+        weight: 1
+      - path: Dummy001/Tit_clo001/Tit_clo002/Tit_clo003
+        weight: 1
+      - path: Dummy001/Tit_legR001
+        weight: 1
+      - path: Dummy001/Tit_legR002
+        weight: 1
+      maskType: 0
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
